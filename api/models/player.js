@@ -1,10 +1,5 @@
 var mongoose = require('mongoose')
 var PlayerSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-    indexed: true
-  },
   username: {
     type: String,
     required: true
@@ -19,6 +14,10 @@ var PlayerSchema = new mongoose.Schema({
   },
   registration: {
     type: Number,
+    required: true
+  },
+  code: {
+    type: String,
     required: true
   }
 })
