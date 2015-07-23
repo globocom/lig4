@@ -1,6 +1,7 @@
 'use strict'
 
 // defaults
+
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = 'dev'
 }
@@ -20,7 +21,9 @@ var playerHandler = require('./handlers/player')
 var api = restify.createServer()
 
 // set middlewares
-api.use(restify.bodyParser())
+api.use(restify.bodyParser({
+  mapParams: true
+}))
 api.use(restify.CORS())
 api.use(restify.gzipResponse())
 
@@ -39,14 +42,13 @@ mongoose.connect(nconf.get('database:uri'))
 
 // get up
 var listen = function (port, done) {
-  api.listen(process.env.API_PORT || port, done)
+  api.listen(process.env.API_PORT || nconf.get('server:port'), done)
+  console.log('API at %s', api.url)
 }
 
 // dev mode
 if (!module.parent) {
-  listen(nconf.get('server:port'), function () {
-    console.log('API at %s', api.url)
-  })
+  listen(nconf.get('server:port'))
 }
 
 // export listen fnc
