@@ -1,0 +1,16 @@
+{
+  "app": {
+    "name": "lig4-api"
+  },
+  "server": {
+    "port": 9999,
+    "name": "127.0.0.1",
+    "defaultVersion": "0.0.1",
+    "acceptable": [
+        "application/json"
+    ]
+  },
+  "database": {
+    "uri": "mongodb://localhost:27017/test-lig4-api"
+  }
+}
