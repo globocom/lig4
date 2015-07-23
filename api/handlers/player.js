@@ -23,7 +23,6 @@ var setupPlayer = function (data, onEnd) {
       .ne(player.username) // each other
       .exec(function (err, players) {
 
-        var count = 0;
         players.forEach(function (opponent) {
           var match = new Match()
           match.home = player
