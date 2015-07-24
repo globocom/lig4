@@ -11,6 +11,31 @@ var LeaderboardSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  win: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  draw: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  lost: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  gamesFor: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  gamesAgainst: {
+    type: Number,
+    required: true,
+    default: 0
   }
 })
 
