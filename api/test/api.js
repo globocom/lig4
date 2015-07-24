@@ -50,6 +50,19 @@ describe('API routes testing', function () {
 
     client.post('/api/player', player, function (err, req, res, data) {
       assert.equal(200, res.statusCode)
+    })
+    client.get('/api/player/' + player.username, function (err, req, res, data) {
+      assert.equal(200, res.statusCode)
+      assert.equal(player, JSON.parse(res.body).payload)
+    })
+
+    done()
+  })
+
+  it('should return 204 when a player does not exists.', function (done) {
+
+    client.get('/api/player/dummy', function (err, req, res, data) {
+      assert.equal(204, res.statusCode)
       done()
     })
   })
