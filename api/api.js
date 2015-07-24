@@ -30,7 +30,8 @@ api.use(restify.gzipResponse())
 // set handlers
 api.get('/api/game', gameHandler)
 api.get('/api/leaderboard', leaderboardHandler)
-api.post('/api/player', playerHandler)
+api.get('/api/player/:username', playerHandler.get)
+api.post('/api/player', playerHandler.post)
 
 // config
 nconf.file({
