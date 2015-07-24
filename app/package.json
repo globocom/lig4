@@ -4,7 +4,6 @@
     "html-minifier": "^0.7.2",
     "imagemin": "^3.2.0",
     "mocha": "^2.2.5",
-    "mu2": "https://github.com/gibatronic/Mu/archive/v0.6.1.tar.gz",
     "node-libs-browser": "^0.5.2",
     "node-sass": "^3.2.0",
     "vigilia": "^0.1.0",
