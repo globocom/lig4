@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ligue Quatro - Desafio Javascript</title>
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link href="http://fonts.googleapis.com/css?family=Bitter:400,700|Fjalla+One" rel="stylesheet" type="text/css">
+    <link href="styles/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="intro">
+      <h1 class="intro__title">Ligue Quatro</h1>
+      <span class="intro__ltitle-abel">Desafio Javascript</span>
+      <h3 class="intro__subtitle">O que é?</h3>
+      <p class="intro__description">Baseado no jogo Ligue Quatro, o desafio é criar um algoritimo que seja capaz de escolher a melhor jogada. Os algoritimos iram se enfrentar e veremos qual é o melhor.</p>
+      <nav class="intro__links">
+        <ul>
+          <li>
+            <a class="intro__link" href="#">Acessar</a>
+          </li>
+
+          <li>
+            <a class="intro__link" href="#">Classificação</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="match">
+      <div class="match__wrapper">
+        <ul class="board">
+          <li class="board__column">
+            <div class="board__row"></div>
+          </li>
+
+          <li class="board__column">
+            <div class="board__row">
+              <span class="board__move home-player" data-player="e"></span>
+            </div>
+          </li>
+
+          <li class="board__column">
+            <div class="board__row">
+              <span class="board__move guest-player" data-player="j"></span>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="match__players">
+          <li class="match__player">
+            <h3 class="match__player-name">evandroeisinger</h3>
+            <span class="match__player-position">#1 lugar, 123 pt's</span>
+          </li>
+
+          <li class="match__player">
+            <h3 class="match__player-name">jonathanprates</h3>
+            <span class="match__player-position">#2 lugar, 121 pt's</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <script src="scripts/main.js"></script>
+  </body>
+</html>
