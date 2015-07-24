@@ -25,8 +25,7 @@ styles: tree
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet styles/main.scss public/styles/main.css
 
 templates: tree
-	$(MUSTACHE) --view "`cat package.json`" --root templates main.html > public/index.html
-	$(HTML_MINIFIER) --collapse-whitespace --output public/index.html --remove-comments public/index.html
+	$(HTML_MINIFIER) --collapse-whitespace --output public/app.html --remove-comments app.html
 
 tree:
 	mkdir -p public/images
