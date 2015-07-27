@@ -1,7 +1,7 @@
 'use strict'
 
-var Player = require('./../models/player')
-var Games = require('./../models/game')
+var Player = require('./player')
+var Games = require('./game')
 
 var mongoose = require('mongoose')
 
@@ -21,7 +21,15 @@ var MatchResultSchema = new mongoose.Schema({
 var MatchSchema = new mongoose.Schema({
   players: [Player],
   games: [Games],
-  result: [MatchResultSchema]
+  result: [MatchResultSchema],
+  round: {
+    type: String,
+    required: true
+  },
+  delivered: {
+    type: Boolean,
+    default: false
+  }
 })
 
 module.exports = mongoose.model('Result', MatchResultSchema)
