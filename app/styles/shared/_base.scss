@@ -25,4 +25,15 @@ html {
   font-size: 13px;
   line-height: $golden;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  position: relative;
+  background-color: transparent;
+  cursor: pointer;
+  outline: 0;
 }
