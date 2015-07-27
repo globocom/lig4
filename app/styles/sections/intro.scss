@@ -1,0 +1,87 @@
+.intro {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+
+  @include animation(fadeIn 2s);
+}
+
+.intro::after {
+  position: absolute;
+  content: "";
+  border: 0;
+  width: rem(60px);
+  height: rem(60px);
+  left: 50%;
+  bottom: 0;
+  margin-left: rem(-36px);
+  background:
+    url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEwMCAxMDAiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cG9seWdvbiBmaWxsPSIjMDEwMTAxIiBwb2ludHM9IjIzLjEsMzQuMSA1MS41LDYxLjcgODAsMzQuMSA4MS41LDM1IDUxLjUsNjQuMSAyMS41LDM1IDIzLjEsMzQuMSAiLz48L3N2Zz4=)
+    no-repeat
+    left center;
+
+  @include transform(translateZ(0));
+  @include animation(bounce 2s infinite);
+}
+
+.intro__wrapper {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  margin-top: rem(-183px);
+}
+
+.intro__title {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(95px);
+  font-family: $font-sans-serif;
+  font-weight: 400;
+  line-height: rem(95px);
+  letter-spacing: rem(5px);
+  margin: rem(35px) 0;
+}
+
+.intro__subtitle {
+  color: $gray-strong;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(18px);
+  font-weight: 400;
+  line-height: rem(18px);
+  letter-spacing: rem(2px);
+}
+
+.intro__description {
+  text-align: center;
+  font-size: rem(24px);
+  font-weight: 400;
+  line-height: rem(34px);
+  letter-spacing: rem(1px);
+  margin: rem(35px) 0;
+}
+
+.intro__navigation {
+  text-align: center;
+}
+
+.intro__button {
+  border: 1px solid $gray;
+  color: $gray-strong;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(16px);
+  font-weight: 400;
+  line-height: rem(16px);
+  letter-spacing: rem(2px);
+  padding: rem(15px) rem(25px);
+  border-radius: rem(5px);
+  margin: 0 rem(15px);
+
+  @include transition(background-color .5s ease-in-out);
+}
+
+.intro__button:hover {
+  color: white;
+  background-color: $black;
+}

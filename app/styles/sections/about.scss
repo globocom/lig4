@@ -1,0 +1,41 @@
+.about {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  background: $gray-light;
+
+  @include animation(fadeIn 2s);
+}
+
+.about__wrapper {
+}
+
+.about__title {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(95px);
+  font-family: $font-sans-serif;
+  font-weight: 400;
+  line-height: rem(95px);
+  letter-spacing: rem(5px);
+  margin: rem(35px) 0;
+}
+
+.about__subtitle {
+  color: $gray-strong;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(18px);
+  font-weight: 400;
+  line-height: rem(18px);
+  letter-spacing: rem(2px);
+}
+
+.about__description {
+  text-align: center;
+  font-size: rem(24px);
+  font-weight: 400;
+  line-height: rem(34px);
+  letter-spacing: rem(1px);
+  margin: rem(35px) 0;
+}
