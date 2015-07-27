@@ -1,11 +1,14 @@
 'use strict';
 
-var Game = require('./game');
-var Player = require('./dummy');
+function main () {
+  var link = document.createElement('link');
 
-function initialize() {
-  window.game = new Game(Player, Player);
-  console.log(window.game.run());
-}
+  link.href = 'styles/minor.css';
+  link.media = 'none';
+  link.rel = 'stylesheet';
+  link.addEventListener('load', link.removeAttribute.bind(link, 'media'));
 
-document.addEventListener('DOMContentLoaded', initialize);
+  document.head.appendChild(link);
+};
+
+document.addEventListener('DOMContentLoaded', main);
