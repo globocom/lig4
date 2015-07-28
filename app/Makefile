@@ -23,10 +23,10 @@ scripts: tree
 
 styles: tree
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet styles/main.scss public/styles/main.css
-	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet styles/minor.scss public/styles/minor.css
 
 templates: tree
-	$(HTML_MINIFIER) --collapse-whitespace --output public/app.html --remove-comments app.html
+	$(MUSTACHE) --view "`cat package.json`" --root templates app.html > public/app.html
+	$(HTML_MINIFIER) --collapse-whitespace --output public/app.html --remove-comments public/app.html
 
 tree:
 	mkdir -p public/images
