@@ -1,0 +1,27 @@
+.title {
+  text-transform: uppercase;
+  font-size: rem(95px);
+  font-family: $font-sans-serif;
+  font-weight: 400;
+  line-height: rem(100px);
+  letter-spacing: rem(5px);
+  word-break: break-all;
+  margin: rem(35px) 0;
+}
+
+.subtitle {
+  color: $gray-strong;
+  text-transform: uppercase;
+  font-size: rem(18px);
+  font-weight: 400;
+  line-height: rem(18px);
+  letter-spacing: rem(2px);
+}
+
+.description {
+  font-size: rem(24px);
+  font-weight: 400;
+  line-height: rem(34px);
+  letter-spacing: rem(1px);
+  margin: rem(35px) 0;
+}
