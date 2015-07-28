@@ -1,7 +1,5 @@
 'use strict'
 
-/* jshint +W089 */
-
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = 'dev'
 }
@@ -25,8 +23,11 @@ var FakeEngine = function () {
   }
 }
 
+/**
+ * Load all players from DB.
+ * @param {function} Function to be called at end.
+ */
 function loadPlayers(callback) {
-
   var all = []
   Player.find(function (err, players) {
     if (err) process.exit(err)
@@ -38,6 +39,10 @@ function loadPlayers(callback) {
   })
 }
 
+/**
+ * Randomly sort an array.
+ * @param {array} Array to sort.
+ */
 function shuffleArray(array) {
   console.log('Raffling games...')
   for (var i = array.length - 1; i > 0; i--) {
@@ -49,9 +54,14 @@ function shuffleArray(array) {
   return array
 }
 
+/**
+ * Given a player list, it creates a NxN match list.
+ * @param {array} List of players.
+ * @param {function} Function to be called at end.
+ */
 function createMatches(players, callback) {
   console.log('Creating matches...')
-  // total = players * (players - 1) / 2
+    // total = players * (players - 1) / 2
   var matches = []
   for (var i = 0; i < players.length; i++) {
     for (var j = i + 1; j < players.length; j++) {
@@ -64,6 +74,10 @@ function createMatches(players, callback) {
   callback(matches)
 }
 
+/**
+ * Gets an identifier for this round.
+ * @return {date} Returns a 10-minute truncated Date object.
+ */
 function currentRound() {
   // http://stackoverflow.com/questions/10789384
   var coeff = 1000 * 60 * 10
@@ -72,6 +86,11 @@ function currentRound() {
   return rounded
 }
 
+/**
+ * Insert into mongodb all of pre generated matches.
+ * @param {array} matches An array with pre-generated matches (in-memory).
+ * @param {function} callback Function to be called at end.
+ */
 function saveMatches(matches, callback) {
   console.log('Saving matches...')
   var bulk = []
@@ -92,9 +111,12 @@ function saveMatches(matches, callback) {
   })
 }
 
+/**
+ * Access Match collection and starts a GameEngine for each one.
+ * @param {function} callback Optional function to be called at end.
+ */
 function startBattle(callback) {
-  // para cada partida criada, chama o game e da um update nos results da colection match.
-  // varre os registros para atualizar o leaderboard
+
   console.log('Iiiiiiiiiiiiiiiit\'s time!')
   var engine = new FakeEngine()
 
@@ -109,13 +131,17 @@ function startBattle(callback) {
 
       for (var match of matches) {
         var result = engine.fight(match.players)
-
+          // para cada partida criada, chama o game e da um update nos results da colection match.
+          // varre os registros para atualizar o leaderboard
       }
       callback()
-
     })
 }
 
+/**
+ * Callback waterfall to create a new round of matches.
+ * @param {function} callback Optional function to be called at end.
+ */
 function newRound(callback) {
   console.log('Creating new round')
   loadPlayers(function (all) {
@@ -127,6 +153,10 @@ function newRound(callback) {
   })
 }
 
+/**
+ * Run lig4-game worker
+ * @param {function} done Optional function to be called at end.
+ */
 function worker(done) {
   console.log('Worker started!')
   mongoose.connect(Config.database.uri, function (err) {
