@@ -1,6 +1,32 @@
-module.exports = function leaderboardHandler(req, res, next) {
+'use strict'
 
-  // GET /leaderboard -> retorna todos playes ordernado por score. Params: limit
-  res.json(200, req.params.name)
-  return next()
+// import models
+var Leaderboard = require('./../models/leaderboard')
+var Response = require('./response')
+
+// Handler for GET in /api/leaderboard
+function _get(req, res, next) {
+
+  Leaderboard
+    .find()
+    .sort({
+      score: -1,
+      win: -1,
+      draw: -1,
+      lost: 1,
+      gamesFor: -1,
+      gamesAgainst: 1
+    })
+    .populate('player')
+    .exec(function (err, data) {
+
+      if (err) return Response.send(500, 'ERRO', err, res, next)
+      if (data.length == 0) return res.send(204)
+      Response.send(200, 'OK', data, res, next)
+
+    })
+}
+
+module.exports = {
+  get: _get
 }
