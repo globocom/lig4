@@ -29,8 +29,9 @@ api.use(restify.gzipResponse())
 
 // set handlers
 api.get('/api/game', gameHandler.get)
-api.get('/api/leaderboard', leaderboardHandler)
+api.get('/api/leaderboard', leaderboardHandler.get)
 api.get('/api/player/:username', playerHandler.get)
+api.put('/api/player/:username', playerHandler.put)
 api.post('/api/player', playerHandler.post)
 
 // config
