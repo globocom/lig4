@@ -1,98 +1,129 @@
 'use strict'
-//var Match = require('./../api/models/match')
 
+// imports
 var mongoose = require('mongoose')
-var Player = require('./../api/models/player')
 
-  //var Leaderboard = require('./../api/models/leaderboard')
+// models
+var Config = require('./../config/dev.json')
+var Match = require('./../models/match')
+var Player = require('./../models/player')
+var Leaderboard = require('./../models/leaderboard')
 
-var main = function () {
+// For dev only!
+var FakeEngine = function () {
+  return {
+    fight: function (a, b) {
+      return b
+    }
+  }
+}
 
-  var p = new Player({
-    "username": "jonathans2222",
-    "github": "dww25",
-    "email": "dummy@dummies.net",
-    "registration": 1234,
-    "code": "console.log()"
+var loadPlayers = function (callback) {
+  var all = []
+  Player.find(function (err, players) {
+
+    if (err) process.exit(err)
+
+    players.forEach(function (player) {
+      all.push(player)
+    })
+    callback(all)
   })
+}
 
-  Player.find(function(err, p) {
-    console.log(err, p)
+var shuffleArray = function (array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1))
+    var temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array
+}
+
+var createMatches = function (players, callback) {
+  var matches = []
+  for (var i = 0; i < players.length; i++) {
+    for (var j = i + 1; j < players.length; j++) {
+      var player1 = players[i]
+      var player2 = players[j]
+      matches.push([player1, player2])
+    }
+  }
+  matches = shuffleArray(matches)
+  callback(matches)
+}
+
+var currentRound = function () {
+  // http://stackoverflow.com/questions/10789384
+  var coeff = 1000 * 60 * 10
+  var date = new Date()
+  var rounded = new Date(Math.floor(date.getTime() / coeff) * coeff)
+  return rounded
+}
+
+var saveMatches = function (matches, callback) {
+  var bulk = []
+  for (var m of matches) {
+    var match = new Match()
+    var p1 = Player(m[0])
+    var p2 = Player(m[1])
+    match.players.push(p1)
+    match.players.push(p2)
+    match.round = currentRound()
+    bulk.push(match)
+  }
+
+  Match.create(bulk, function (err) {
+    if (err) process.exit(err)
+
+    callback()
   })
+}
 
-  mongoose.connection.on('error', function() {
-      console.log()
-  });
-
-
-  // p.save(function (error) {
-  //   console.log(error)
-  //   mongoose.disconnect()
-  // })
-
-
-
-
-
-  // carrega todos os players na memoria
-  // define uma "rodada" para atribuir a propriedade round
-  // cria no mnogo N x N partidas para esse round
-  // Marca o flag como delivered = false
+var startBattle = function () {
   // para cada partida criada, chama o game e da um update nos results da colection match.
   // varre os registros para atualizar o leaderboard
+  console.log('Iiiiiiiiiiiiiiiit\'s time!')
+  var engine = new FakeEngine()
 
-}
-mongoose.connect('mongodb://webgo:webgo@ds053312.mongolab.com:53312/webgo', function (error) {
-  main()
+  Match
+    .find()
+    .where('round')
+    .equals(currentRound())
+    .populates('players')
+    .exec(function (err, match) {
 
-})
+      if (err) process.exit(err)
+      engine.fight(match.players, function (result) {
+        console.log(result)
 
-
-
-
-/*
-
-
-
-players.forEach(function (opponent) {
-  var match = new Match()
-  match.home = player
-  match.guest = opponent
-  match.save(function (err) {
-    // OK!
-  })
-})
-onEnd(player)
-
-
-var setupPlayer = function (data, onEnd) {
-
-
-
-    // Insert into leaderboard
-    var leaderboard = new Leaderboard()
-    leaderboard.player = player
-    leaderboard.score = 0
-    leaderboard.save()
-
-    // Create matches
-    Player
-      .find()
-      .where('username')
-      .ne(player.username) // each other
-      .exec(function (err, players) {
-
-        players.forEach(function (opponent) {
-          var match = new Match()
-          match.home = player
-          match.guest = opponent
-          match.save(function (err) {
-            // OK!
-          })
-        })
-        onEnd(player)
       })
+    })
+}
+
+var newRound = function (callback) {
+  loadPlayers(function (all) {
+    createMatches(all, function (matches) {
+      saveMatches(matches, function () {
+        console.log('Matches OK!')
+        callback()
+      })
+    })
   })
 }
 
-*/
+var main = function () {
+  mongoose.connect(Config.database.uri, function (err) {
+
+    if (err) process.exit(err)
+
+    newRound(function () {
+      startBattle(function () {
+        console.log('See you in 10 minutes. zzz ZZZ zzz')
+      })
+    })
+  })
+}
+
+main()
