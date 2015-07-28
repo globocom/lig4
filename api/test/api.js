@@ -11,12 +11,6 @@ var mongoose = require('mongoose')
 var assert = require('assert')
 var api = require('./../api')
 
-// import models
-var Player = require('./../models/player')
-var Match = require('./../models/match')
-var Leaderboard = require('./../models/leaderboard')
-var Game = require('./../models/game')
-
 // init the test client
 var client = restify.createJsonClient({
   url: 'http://127.0.0.1:9999',
@@ -28,10 +22,7 @@ describe('API routes testing', function () {
   before(function () {
 
     // Cleans collections
-    Game.remove()
-    Match.remove()
-    Player.remove()
-    Leaderboard.remove()
+    mongoose.connection.db.dropDatabase()
 
     // Starts server
     api.listen()
@@ -41,8 +32,8 @@ describe('API routes testing', function () {
   it('should return ok after inserting a new player.', function (done) {
 
     var player = {
-      username: 'username_1',
-      github: 'https://dummy.uri/',
+      username: 'api_username_1',
+      github: 'https://dummy.uri/api_username_1',
       email: 'dummy@dummies.net',
       registration: 1234,
       code: 'console.log()'
@@ -51,9 +42,14 @@ describe('API routes testing', function () {
     client.post('/api/player', player, function (err, req, res, data) {
       assert.equal(200, res.statusCode)
     })
+
     client.get('/api/player/' + player.username, function (err, req, res, data) {
+      var response = JSON.parse(res.body)
+        .payload
+      delete response.__v
+      delete response._id
       assert.equal(200, res.statusCode)
-      assert.equal(player, JSON.parse(res.body).payload)
+      assert.equal(JSON.stringify(player), JSON.stringify(response))
     })
 
     done()
