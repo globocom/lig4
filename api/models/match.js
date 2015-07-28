@@ -9,9 +9,10 @@ var MatchSchema = new mongoose.Schema({
   //result: [MatchResultSchema],
   round: {
     type: Date,
-    required: true
+    required: true,
+    index: true
   },
-  delivered: {
+  ack: {
     type: Boolean,
     default: false
   }

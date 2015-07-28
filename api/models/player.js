@@ -3,16 +3,19 @@ var PlayerSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    index: true
   },
   github: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    index: true
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   registration: {
     type: Number,
