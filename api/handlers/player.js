@@ -46,8 +46,8 @@ function _put(req, res, next) {
   })
 }
 
-
 module.exports = {
   get: _get,
-  post: _post
+  post: _post,
+  put: _put
 }
