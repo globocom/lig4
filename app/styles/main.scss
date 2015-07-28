@@ -2,7 +2,13 @@
 
 @import 'shared/colors';
 @import 'shared/fonts';
-@import 'shared/base';
+@import 'shared/normalize';
 @import 'shared/animations';
 
+@import 'elements/typographies';
+@import 'elements/blocks';
+@import 'elements/buttons';
+
 @import 'sections/intro';
+@import 'sections/about';
+@import 'sections/ranking';
