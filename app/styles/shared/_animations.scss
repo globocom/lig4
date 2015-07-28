@@ -26,21 +26,49 @@
   60% { @include transform(translateY(rem(-5px))); }
 }
 
-@-moz-keyframes loader {
+@-moz-keyframes bounce {
   0%, 20%, 50%, 80%, 100% { @include transform(translateY(0)); }
   40% { @include transform(translateY(rem(-10px))); }
   60% { @include transform(translateY(rem(-5px))); }
 }
 
-@-webkit-keyframes loader {
+@-webkit-keyframes bounce {
   0%, 20%, 50%, 80%, 100% { @include transform(translateY(0)); }
   40% { @include transform(translateY(rem(-10px))); }
   60% { @include transform(translateY(rem(-5px))); }
 }
 
-@-ms-keyframes loader {
+@-ms-keyframes bounce {
   0%, 20%, 50%, 80%, 100% { @include transform(translateY(0)); }
   40% { @include transform(translateY(rem(-10px))); }
   60% { @include transform(translateY(rem(-5px))); }
 }
 
+// grow
+@keyframes grow {
+  0%, 20% { @include transform(scale(0)); }
+  40% { @include transform(scale(1.25)); }
+  60% { @include transform(scale(.85)); }
+  100% { @include transform(scale(1)); }
+}
+
+@-moz-keyframes grow {
+  0%, 20% { @include transform(scale(0)); }
+  40% { @include transform(scale(1.25)); }
+  60% { @include transform(scale(.85)); }
+  100% { @include transform(scale(1)); }
+}
+
+@-webkit-keyframes grow {
+  0%, 20% { @include transform(scale(0)); }
+  40% { @include transform(scale(1.25)); }
+  60% { @include transform(scale(.85)); }
+  100% { @include transform(scale(1)); }
+}
+
+@-ms-keyframes grow {
+  0%, 20% { @include transform(scale(0)); }
+  40% { @include transform(scale(1.25)); }
+  60% { @include transform(scale(.85)); }
+  100% { @include transform(scale(1)); }
+}

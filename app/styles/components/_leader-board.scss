@@ -1,10 +1,8 @@
 .leader-board {
   width: 100%;
   margin: rem(35px) 0;
-  padding: rem(35px) 0;
-  border: 1px solid $gray;
-  border-left: 0;
-  border-right: 0;
+  padding-top: rem(35px);
+  border-top: 1px solid $gray;
   color: $gray-strong;
   line-height: rem(42px);
   font-size: rem(22px);
