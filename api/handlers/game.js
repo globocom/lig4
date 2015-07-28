@@ -1,7 +1,26 @@
+'use strict'
 
-module.exports = function gameHandler (req, res, next) {
+// import models
+var Match = require('./../models/match')
+var Response = require('./response')
 
-  // GET /game -> retorna players [{player, winner}, {player}], moves [{player, position}], board (final)
-  res.json(200, req.params.name)
-  return next()
+// Handler for GET in /api/game
+function _get(req, res, next) {
+
+  Match
+    .findOne()
+    .where('ack')
+    .equals(false)
+    .sort('-_id')
+    .populate('players')
+    .exec(function (err, match) {
+
+      if (err) return Response.send(500, 'ERRO', err, res, next)
+      Response.send(200, 'OK', match, res, next)
+
+    })
+}
+
+module.exports = {
+  get: _get
 }
