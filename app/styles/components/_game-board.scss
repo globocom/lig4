@@ -1,0 +1,9 @@
+.game-board {
+  width: 100%;
+  margin: rem(35px) 0;
+  padding: rem(35px) 0;
+  border-top: 1px solid $gray;
+  color: $gray-strong;
+  line-height: rem(42px);
+  font-size: rem(22px);
+}
