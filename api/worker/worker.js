@@ -1,10 +1,16 @@
 'use strict'
 
+/* jshint +W089 */
+
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'dev'
+}
+
 // imports
 var mongoose = require('mongoose')
 
 // models
-var Config = require('./../config/dev.json')
+var Config = require('./../config/' + process.env.NODE_ENV + '.json')
 var Match = require('./../models/match')
 var Player = require('./../models/player')
 var Leaderboard = require('./../models/leaderboard')
@@ -12,26 +18,28 @@ var Leaderboard = require('./../models/leaderboard')
 // For dev only!
 var FakeEngine = function () {
   return {
-    fight: function (a, b) {
-      return b
+    fight: function (players) {
+      //console.log(players[0].username + ' vs ' + players[1].username)
+      return players[1]
     }
   }
 }
 
-var loadPlayers = function (callback) {
+function loadPlayers(callback) {
+
   var all = []
   Player.find(function (err, players) {
-
     if (err) process.exit(err)
-
     players.forEach(function (player) {
       all.push(player)
     })
+    console.log('Total of ' + all.length + ' players loaded.')
     callback(all)
   })
 }
 
-var shuffleArray = function (array) {
+function shuffleArray(array) {
+  console.log('Raffling games...')
   for (var i = array.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1))
     var temp = array[i]
@@ -41,7 +49,9 @@ var shuffleArray = function (array) {
   return array
 }
 
-var createMatches = function (players, callback) {
+function createMatches(players, callback) {
+  console.log('Creating matches...')
+  // total = players * (players - 1) / 2
   var matches = []
   for (var i = 0; i < players.length; i++) {
     for (var j = i + 1; j < players.length; j++) {
@@ -54,7 +64,7 @@ var createMatches = function (players, callback) {
   callback(matches)
 }
 
-var currentRound = function () {
+function currentRound() {
   // http://stackoverflow.com/questions/10789384
   var coeff = 1000 * 60 * 10
   var date = new Date()
@@ -62,7 +72,8 @@ var currentRound = function () {
   return rounded
 }
 
-var saveMatches = function (matches, callback) {
+function saveMatches(matches, callback) {
+  console.log('Saving matches...')
   var bulk = []
   for (var m of matches) {
     var match = new Match()
@@ -76,12 +87,12 @@ var saveMatches = function (matches, callback) {
 
   Match.create(bulk, function (err) {
     if (err) process.exit(err)
-
+    console.log('Total of ' + bulk.length + ' matches have been defined!')
     callback()
   })
 }
 
-var startBattle = function () {
+function startBattle(callback) {
   // para cada partida criada, chama o game e da um update nos results da colection match.
   // varre os registros para atualizar o leaderboard
   console.log('Iiiiiiiiiiiiiiiit\'s time!')
@@ -91,39 +102,46 @@ var startBattle = function () {
     .find()
     .where('round')
     .equals(currentRound())
-    .populates('players')
-    .exec(function (err, match) {
+    .populate('players')
+    .exec(function (err, matches) {
 
       if (err) process.exit(err)
-      engine.fight(match.players, function (result) {
-        console.log(result)
 
-      })
+      for (var match of matches) {
+        var result = engine.fight(match.players)
+
+      }
+      callback()
+
     })
 }
 
-var newRound = function (callback) {
+function newRound(callback) {
+  console.log('Creating new round')
   loadPlayers(function (all) {
     createMatches(all, function (matches) {
       saveMatches(matches, function () {
-        console.log('Matches OK!')
         callback()
       })
     })
   })
 }
 
-var main = function () {
+function worker(done) {
+  console.log('Worker started!')
   mongoose.connect(Config.database.uri, function (err) {
-
-    if (err) process.exit(err)
-
     newRound(function () {
       startBattle(function () {
-        console.log('See you in 10 minutes. zzz ZZZ zzz')
+        console.log('See you in 10 minutes. zzz ZZZ zzz...')
+        if (done) done()
+        else mongoose.disconnect() // cant send disconnect as callback
       })
     })
   })
 }
 
-main()
+// runnnig
+if (!module.parent) worker()
+
+// export main fnc
+module.exports = worker
