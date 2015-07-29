@@ -58,9 +58,13 @@ GameBoard.prototype.applyPosition = function (player, column, row) {
 
   for (var i = -1; i < row; i++) {
     position += this.options.columns;
-  };
+  }
 
   position = position - (this.options.columns - column);
+
+  if (position > length) {
+    throw new Error('Invalid position: ' + column + ',' + row);
+  }
 
   positions[position].className = 'game-board__position ' + player;
 }
