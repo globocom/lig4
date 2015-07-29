@@ -1,16 +1,16 @@
 'use strict'
 
-// import models
+// import models and libs
 var Player = require('./../models/player')
-var Response = require('./response')
+var Response = require('./../libs/response')
 
 // Handler for POST in /api/player
 function _post(req, res, next) {
 
-  // TODO: query github api
   // TODO: server code validation
 
   var player = new Player(req.params)
+
   player.save(function (err) {
     if (err) return Response.send(500, 'ERROR', err, res, next)
     Response.send(200, 'OK', player, res, next)
@@ -20,7 +20,7 @@ function _post(req, res, next) {
 // Handler for GET in /api/player/:username
 function _get(req, res, next) {
 
-  // TODO: query github api
+  if (!req.params.username) Response.send(400, 'BAD_REQUEST', {}, res, next)
 
   Player.findOne()
     .where('username')
@@ -35,15 +35,40 @@ function _get(req, res, next) {
 // Handler for PUT in /api/player/:username
 function _put(req, res, next) {
 
-  // TODO: query github api
+  // TODO: server code validation
 
-  var data = JSON.parse(req.body)
+  if (req.body.username !== req.params.username) {
+    return Response.send(400, 'BAD_REQUEST', req.body, res, next)
+  }
 
-  Player.update({ username: data.username }, data, function (err, affected) {
-    if (err) return Response.send(500, 'ERROR', err, res, next)
-    if (affected === 0) return res.send(204)
-    Response.send(200, 'OK', {}, res, next)
-  })
+  Player
+    .findOne()
+    .where('username')
+    .equals(req.params.username)
+    .exec(function (err, player) {
+
+      if (!player) return res.send(204)
+      if (err) return Response.send(500, 'ERROR', err, res, next)
+
+      // Users cannot change their username, github or e-mail.
+
+      if (player.github === req.body.github &&
+        player.username === req.body.username &&
+        player.email === req.body.email) {
+
+        player.registration = req.body.registration
+        player.code = req.body.code
+        player.save(function (err) {
+          if (err) return Response.send(500, 'ERROR', err, res, next)
+          return Response.send(200, 'OK', player, res, next)
+        })
+
+      } else {
+
+        return Response.send(400, 'BAD_REQUEST', {}, res, next)
+
+      }
+    })
 }
 
 module.exports = {
