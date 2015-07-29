@@ -1,9 +1,7 @@
 'use strict';
 
+var GameBoard = require('./components/gameboard');
 var scrollToSection = require('./libs/scroll');
-
-// elements
-var navigationButtons;
 
 // functions
 function navigationHandler (e) {
@@ -16,11 +14,15 @@ function navigationHandler (e) {
 
 // main function
 function main () {
-  navigationButtons = document.getElementsByClassName('navigation-button');
+  var navigationButtons = document.getElementsByClassName('navigation-button');
+  var rankingGameElement = document.getElementById('ranking-game');
+  var rankingGame = new GameBoard(rankingGameElement);
 
   for (var i = navigationButtons.length - 1; i >= 0; i--) {
     navigationButtons[i].addEventListener('click', navigationHandler);
   }
+
+  window.game = rankingGame;
 };
 
 document.addEventListener('DOMContentLoaded', main);
