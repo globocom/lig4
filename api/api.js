@@ -17,6 +17,7 @@ var Config = require('./config/' + process.env.NODE_ENV + '.json')
 var gameHandler = require('./handlers/game')
 var leaderboardHandler = require('./handlers/leaderboard')
 var playerHandler = require('./handlers/player')
+var github = require('./libs/github')
 
 // create server
 var api = restify.createServer()
@@ -25,8 +26,7 @@ var api = restify.createServer()
 api.use(restify.bodyParser())
 api.use(restify.CORS())
 api.use(restify.gzipResponse())
-
-// github auth middleware
+api.use(github.validateRequest())
 
 // set handlers
 api.get('/api/game', gameHandler.get)
