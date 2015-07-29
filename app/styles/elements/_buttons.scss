@@ -18,3 +18,16 @@
   color: white;
   background-color: $black;
 }
+
+.github-button {
+  width: 100%;
+  margin: rem(35px) 0;
+  display: block;
+  border: 1px solid $black;
+  background-color: $black;
+  color: $gray-strong;
+}
+
+.github-button:hover {
+  color: white;
+}
