@@ -1,8 +1,8 @@
 'use strict'
 
-// import models
+// import models and libs
 var Match = require('./../models/match')
-var Response = require('./response')
+var Response = require('./../libs/response')
 
 // Handler for GET in /api/game
 function _get(req, res, next) {

@@ -1,8 +1,8 @@
 'use strict'
 
-// import models
+// import models and libs
 var Leaderboard = require('./../models/leaderboard')
-var Response = require('./response')
+var Response = require('./../libs/response')
 
 // Handler for GET in /api/leaderboard
 function _get(req, res, next) {

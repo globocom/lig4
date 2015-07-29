@@ -21,11 +21,11 @@ describe('API routes testing', function () {
 
   before(function () {
 
-    // Cleans collections
-    mongoose.connection.db.dropDatabase()
-
     // Starts server
     api.listen()
+
+    // Cleans collections
+    mongoose.connection.db.dropDatabase()
 
   })
 
@@ -40,10 +40,12 @@ describe('API routes testing', function () {
     }
 
     client.post('/api/player', player, function (err, req, res, data) {
+      if (err) throw err;
       assert.equal(200, res.statusCode)
     })
 
     client.get('/api/player/' + player.username, function (err, req, res, data) {
+      if (err) throw err;
       var response = JSON.parse(res.body)
         .payload
       delete response.__v
@@ -59,6 +61,22 @@ describe('API routes testing', function () {
 
     client.get('/api/player/dummy', function (err, req, res, data) {
       assert.equal(204, res.statusCode)
+      done()
+    })
+  })
+
+  it('should return BAD_REQUEST when username is different from url.', function (done) {
+
+    var player = {
+      username: 'user',
+      github: 'https://dummy.uri/api_username_1',
+      email: 'dummy@dummies.net',
+      registration: 1234,
+      code: 'console.log()'
+    }
+
+    client.put('/api/player/notuser', player, function (err, req, res, data) {
+      assert.equal(400, res.statusCode)
       done()
     })
   })

@@ -8,7 +8,7 @@ process.env.NODE_ENV = 'test'
 // imports
 var mongoose = require('mongoose')
 var assert = require('assert')
-var worker = require('./../worker/worker')
+var worker = require('./../worker')
 
 // import models
 var Player = require('./../models/player')

@@ -8,10 +8,10 @@ if (!process.env.NODE_ENV) {
 var mongoose = require('mongoose')
 
 // models
-var Config = require('./../config/' + process.env.NODE_ENV + '.json')
-var Match = require('./../models/match')
-var Player = require('./../models/player')
-var Leaderboard = require('./../models/leaderboard')
+var Config = require('./config/' + process.env.NODE_ENV + '.json')
+var Match = require('./models/match')
+var Player = require('./models/player')
+var Leaderboard = require('./models/leaderboard')
 
 // For dev only!
 var FakeEngine = function () {
@@ -27,7 +27,7 @@ var FakeEngine = function () {
  * Load all players from DB.
  * @param {function} Function to be called at end.
  */
-function loadPlayers(callback) {
+function loadPlayers (callback) {
   var all = []
   Player.find(function (err, players) {
     if (err) process.exit(err)
