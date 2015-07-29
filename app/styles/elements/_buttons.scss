@@ -19,15 +19,17 @@
   background-color: $black;
 }
 
-.github-button {
+.block-button {
   width: 100%;
   margin: rem(35px) 0;
   display: block;
   border: 1px solid $black;
   background-color: $black;
   color: $gray-strong;
+
+  @include transition(color .25s ease-in-out);
 }
 
-.github-button:hover {
+.block-button:hover {
   color: white;
 }
