@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose')
+
 var LeaderboardSchema = new mongoose.Schema({
   player: {
     type: mongoose.Schema.Types.ObjectId,
