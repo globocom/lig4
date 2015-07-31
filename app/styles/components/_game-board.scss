@@ -102,10 +102,27 @@
   border-radius: 100%;
   box-sizing: border-box;
 
+  @include transition(opacity, 1s);
+
   &::after {
     content: "";
     display: block;
     margin-top: 100%;
+  }
+
+  &::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border: 5px solid white;
+
+    @include transform(scale(0));
+    @include transition(all .5s ease-out);
   }
 
   &.guest-play {
@@ -118,18 +135,9 @@
 
   &.guest-play::before,
   &.home-play::before {
-    content: "";
-    width: 100%;
-    height: 100%;
     background-color: $red;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
-    border-radius: 100%;
-    border: 5px solid white;
 
-    @include animation(grow 1s);
+    @include transform(scale(1));
   }
 
   &.home-play::before {
@@ -137,16 +145,10 @@
   }
 }
 
-.home-player-lose {
-  .game-board__home-player,
-  .home-play {
-    opacity: .25;
-  }
-}
+.game-board--sequence .game-board__position {
+  opacity: .25;
 
-.guest-player-lose {
-  .game-board__guest-player,
-  .guest-play {
-    opacity: .25;
+  &.game-board__position--sequence {
+    opacity: 1;
   }
 }
