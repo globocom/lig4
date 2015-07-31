@@ -8,7 +8,7 @@ if (!process.env.NODE_ENV) {
 var mongoose = require('mongoose')
 
 // models
-var Config = require('./config/' + process.env.NODE_ENV + '.json')
+var config = require('./config/' + process.env.NODE_ENV + '.json')
 var Match = require('./models/match')
 var Player = require('./models/player')
 
@@ -121,7 +121,7 @@ function newRound (callback) {
  */
 function scheduler (done) {
   console.log('Scheduler started!')
-  mongoose.connect(Config.database.uri, function (err) {
+  mongoose.connect(config.database.uri, function (err) {
     newRound(function () {
       console.log('See you in 10 minutes. zzz ZZZ zzz...')
       if (done) done()

@@ -8,7 +8,7 @@ if (!process.env.NODE_ENV) {
 var mongoose = require('mongoose')
 
 // models
-var Config = require('./config/' + process.env.NODE_ENV + '.json')
+var config = require('./config/' + process.env.NODE_ENV + '.json')
 var Match = require('./models/match')
 var Player = require('./models/player')
 
@@ -57,7 +57,7 @@ function startBattle (callback) {
  */
 function runner(done) {
   console.log('Runner started!')
-  mongoose.connect(Config.database.uri, function (err) {
+  mongoose.connect(config.database.uri, function (err) {
     startBattle(function () {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback

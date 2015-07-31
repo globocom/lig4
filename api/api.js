@@ -11,7 +11,7 @@ var restify = require('restify')
 var mongoose = require('mongoose')
 
 // config
-var Config = require('./config/' + process.env.NODE_ENV + '.json')
+var config = require('./config/' + process.env.NODE_ENV + '.json')
 
 // routes
 var gameHandler = require('./handlers/game')
@@ -26,6 +26,8 @@ var api = restify.createServer()
 api.use(restify.bodyParser())
 api.use(restify.CORS())
 api.use(restify.gzipResponse())
+api.use(restify.acceptParser(config.server.acceptable))
+
 api.use(github.validateRequest())
 
 // set handlers
@@ -38,15 +40,15 @@ api.post('/api/player', playerHandler.post)
 // get up
 var listen = function (port, done) {
   // connect to mongodb
-  mongoose.connect(Config.database.uri, function () {
-    api.listen(process.env.API_PORT || Config.server.port, done)
+  mongoose.connect(config.database.uri, function () {
+    api.listen(process.env.API_PORT || config.server.port, done)
     console.log('API at %s', api.url)
   })
 }
 
 // dev mode
 if (!module.parent) {
-  listen(Config.server.port)
+  listen(config.server.port)
 }
 
 // export listen fnc

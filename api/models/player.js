@@ -1,4 +1,7 @@
+'use strict'
+
 var mongoose = require('mongoose')
+
 var PlayerSchema = new mongoose.Schema({
   username: {
     type: String,
