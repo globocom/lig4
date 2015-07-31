@@ -3,5 +3,9 @@
     "mocha": "^2.2.5"
   },
   "private": "true",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {
+    "mongoose": "^4.0.8",
+    "restify": "^3.0.3"
+  }
 }
