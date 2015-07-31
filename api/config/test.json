@@ -4,7 +4,6 @@
   },
   "server": {
     "port": 9999,
-    "name": "127.0.0.1",
     "defaultVersion": "0.0.1",
     "acceptable": [
         "application/json"

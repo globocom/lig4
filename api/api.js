@@ -1,7 +1,6 @@
 'use strict'
 
 // defaults
-
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = 'dev'
 }
@@ -9,8 +8,6 @@ if (!process.env.NODE_ENV) {
 // imports
 var restify = require('restify')
 var mongoose = require('mongoose')
-
-// config
 var config = require('./config/' + process.env.NODE_ENV + '.json')
 
 // routes
@@ -40,7 +37,7 @@ api.post('/api/player', playerHandler.post)
 // get up
 var listen = function (port, done) {
   // connect to mongodb
-  mongoose.connect(config.database.uri, function () {
+  mongoose.connect(process.env.DB_URI || config.database.uri, function () {
     api.listen(process.env.API_PORT || config.server.port, done)
     console.log('API at %s', api.url)
   })
