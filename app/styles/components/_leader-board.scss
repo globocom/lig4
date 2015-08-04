@@ -4,7 +4,7 @@
   padding-top: rem(35px);
   border-top: 1px solid $gray;
   color: $gray-strong;
-  line-height: rem(42px);
+  line-height: rem(80px);
   font-size: rem(22px);
 
   tr,
@@ -22,13 +22,17 @@
 .leader-board__position {
   width: 40px;
   text-align: left;
+  font-size: rem(25px);
 }
 
 .leader-board__player {
   text-align: center;
+  font-weight: 300;
+  font-size: rem(30px);
 }
 
 .leader-board__score {
   width: 100px;
   text-align: right;
+  font-size: rem(25px);
 }

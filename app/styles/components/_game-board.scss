@@ -6,11 +6,6 @@
   border-bottom: 1px solid $gray;
 }
 
-.game-board__loading {
-  margin-bottom: rem(20px);
-  text-align: center;
-}
-
 .game-board__players {
   display: block;
   margin-bottom: rem(20px);
@@ -68,15 +63,14 @@
   line-height: rem(18px);
   font-weight: 700;
   display: block;
-  letter-spacing: rem(1px);
 }
 
 .game-board__player-info {
   color: $gray-strong;
   text-transform: uppercase;
-  font-size: rem(13px);
+  font-size: rem(16px);
   font-weight: 300;
-  line-height: rem(13px);
+  line-height: rem(16px);
   letter-spacing: rem(1px);
 }
 
@@ -121,7 +115,7 @@
     left: 0;
     box-sizing: border-box;
     border-radius: 100%;
-    border: 5px solid white;
+    border: rem(10px) solid $gray-light;
 
     @include transform(scale(0));
     @include transition(all .5s ease-out);
