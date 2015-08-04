@@ -7,6 +7,9 @@ function GameBoard (element) {
   var players = this.board.players = {};
   var self = this;
 
+  // set container
+  container.className += ' game-board';
+
   // set options
   options.rows = Number(element.getAttribute('data-rows')) || 6;
   options.columns = Number(element.getAttribute('data-columns')) || 7;
@@ -91,7 +94,7 @@ GameBoard.prototype.load = function (match) {
   players.guestInfo.innerHTML = guest.score + ' pontos';
 
   // reset container
-  container.className = container.className.replace(' game-board--sequence', '');
+  container.className = container.className.replace('game-board--sequence', '');
 
   // reset position
   for (var i = positions.length - 1; i >= 0; i--) {
