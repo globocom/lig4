@@ -12,10 +12,10 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['tap'],
     frameworks: ['jasmine'],
-    files: ['app.js'],
+    files: ['components/*.js'],
 
     preprocessors: {
-      'app.js': ['webpack']
+      'components/*.js': ['webpack']
     },
 
     webpack: {
