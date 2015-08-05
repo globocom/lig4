@@ -12,7 +12,7 @@ var guestNameElement;
 var guestInfoElement;
 
 var testGameOptions = {
-  interval: 1,
+  interval: .1,
   rows: 6,
   columns: 7,
   players: true,
@@ -53,6 +53,7 @@ describe('GameBoard', function () {
     homeInfoElement = homeElement.getElementsByClassName('game-board__player-info')[0];
     guestNameElement = guestElement.getElementsByClassName('game-board__player-name')[0];
     guestInfoElement = guestElement.getElementsByClassName('game-board__player-info')[0];
+    positionsElement = gameboardElement.getElementsByClassName('game-board__positions')[0];
   });
 
   afterEach(function () {
@@ -85,6 +86,7 @@ describe('GameBoard', function () {
     expect(homeInfoElement).toBeTruthy();
     expect(guestNameElement).toBeTruthy();
     expect(guestInfoElement).toBeTruthy();
+    expect(positionsElement).toBeTruthy();
   });
 
   it('should create the positions correctly', function () {
@@ -105,4 +107,49 @@ describe('GameBoard', function () {
     expect(homeInfoElement.innerHTML).toBe([homePlayer.score, ' pontos'].join(''));
     expect(guestInfoElement.innerHTML).toBe([guestPlayer.score, ' pontos'].join(''));
   });
+
+  it('should play all game moves', function (done) {
+    testGame.options.interval = 0;
+
+    testGame.load(testGameMatch).play(function(gameboard) {
+      var homePlays = positionsElement.getElementsByClassName('home-play');
+      var guestPlays = positionsElement.getElementsByClassName('guest-play');
+
+      expect(homePlays.length + guestPlays.length).toEqual(testGameMatch.moves.length);
+
+      done();
+    });
+
+  }, 0);
+
+  it('should have a sequence of four', function (done) {
+    testGame.options.interval = 0;
+
+    testGame.load(testGameMatch).play(function(gameboard) {
+      var sequencePlays = positionsElement.getElementsByClassName('game-board__position--sequence');
+
+      expect(sequencePlays.length).toEqual(4);
+
+      done();
+    });
+
+  }, 0);
+
+  it('should reset the board after load a new match', function (done) {
+    testGame.options.interval = 0;
+
+    testGame.load(testGameMatch).play(function(gameboard) {
+      testGame.load(testGameMatch);
+
+      var homePlays = positionsElement.getElementsByClassName('home-play');
+      var guestPlays = positionsElement.getElementsByClassName('guest-play');
+      var sequencePlays = positionsElement.getElementsByClassName('game-board__position--sequence');
+
+      expect(gameboardElement.className.indexOf('game-board--finished')).toEqual(-1);
+      expect(homePlays.length + guestPlays.length + sequencePlays.length).toEqual(0);
+
+      done();
+    });
+
+  }, 0);
 });

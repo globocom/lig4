@@ -94,7 +94,7 @@ GameBoard.prototype.load = function (match) {
   players.guestInfo.innerHTML = guest.score + ' pontos';
 
   // reset container
-  container.className = container.className.replace('game-board--sequence', '');
+  container.className = container.className.replace('game-board--finished', '');
 
   // reset position
   for (var i = positions.length - 1; i >= 0; i--) {
@@ -128,7 +128,7 @@ GameBoard.prototype.play = function (callback) {
   }
 
   // show sequence
-  this.container.className += ' game-board--sequence';
+  this.container.className += ' game-board--finished';
 
   // execute callback
   if (this.callback) this.callback(this);
