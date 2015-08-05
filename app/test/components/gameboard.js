@@ -1,3 +1,5 @@
+'use strict';
+
 var GameBoard = require('../../scripts/components/gameboard');
 
 var testGame;
@@ -10,6 +12,7 @@ var homeNameElement;
 var homeInfoElement;
 var guestNameElement;
 var guestInfoElement;
+var positionsElement;
 
 var testGameOptions = {
   interval: .1,

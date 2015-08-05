@@ -6,7 +6,7 @@ module.exports = function(config) {
     basePath: '',
     browsers: ['Chrome'],
     frameworks: ['jasmine'],
-    files: ['components/*.js'],
+    files: ['components/*.js', 'libs/*.js'],
 
     plugins: [
       require('karma-webpack'),
@@ -15,7 +15,8 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-      'components/*.js': ['webpack']
+      'components/*.js': ['webpack'],
+      'libs/*.js': ['webpack'],
     },
 
     webpackMiddleware: {
