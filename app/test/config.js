@@ -9,9 +9,9 @@ module.exports = function(config) {
     files: ['components/*.js', 'libs/*.js'],
 
     plugins: [
-      require('karma-webpack'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine'),
+      'karma-webpack',
+      'karma-jasmine',
+      'karma-chrome-launcher',
     ],
 
     preprocessors: {
