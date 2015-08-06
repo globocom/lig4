@@ -40,9 +40,12 @@ var matchesLog = [{
 // functions
 function navigationHandler (e) {
   var button  = e.currentTarget;
-  var section = document.getElementById(button.getAttribute('data-section'));
+  var sectionName = button.getAttribute('data-section');
+  var sectionElement = document.getElementById(sectionName);
 
-  scrollToSection(section);
+  window.location.hash = sectionName;
+
+  scrollToSection(sectionElement, 500);
 }
 
 // main function
