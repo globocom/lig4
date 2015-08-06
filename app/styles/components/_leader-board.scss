@@ -1,0 +1,38 @@
+.leader-board {
+  width: 100%;
+  margin: rem(35px) 0;
+  padding-top: rem(35px);
+  border-top: 1px solid $gray;
+  color: $gray-strong;
+  line-height: rem(80px);
+  font-size: rem(22px);
+
+  tr,
+  td {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.leader-board tr:first-child {
+  color: $black;
+}
+
+.leader-board__position {
+  width: 40px;
+  text-align: left;
+  font-size: rem(25px);
+}
+
+.leader-board__player {
+  text-align: center;
+  font-weight: 300;
+  font-size: rem(30px);
+}
+
+.leader-board__score {
+  width: 100px;
+  text-align: right;
+  font-size: rem(25px);
+}
