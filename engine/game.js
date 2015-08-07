@@ -4,49 +4,47 @@ var Board = require('./board');
 
 function Game(FirstPlayer, SecondPlayer) {
   this.board    = new Board();
-  this.players  = [new FirstPlayer("Jose"), new SecondPlayer("Maria")];
-  this.maxPlays = Math.pow(this.board.size, 2);
-
-  window.board = this.board;
+  this.players  = [new FirstPlayer, new SecondPlayer];
 }
 
 Game.prototype.run = function() {
   var winner = null;
 
-  for (var play = 0; play < this.maxPlays; play++) {
-    var player  = play % 2;
-    var columns = this.board.getAvailableColumns()
-    var column  = this.players[player].move(columns);
+  // FIXME: force player chars or when instantiating?
+  this.players[0].char = 'x'
+  this.players[1].char = 'o'
+
+  for (var play = 0; play < this.board.maxMoves; play++) {
+    var currentPlayer = this.players[play % 2];
+    var columns = this.board.getAvailableColumns();
+    var column  = currentPlayer.move(columns);
 
     while(columns.indexOf(column) < 0) {
-      column = this.players[player].move(columns);
+      column = currentPlayer.move(columns);
     }
 
-    this.board.push(player, column);
+    this.board.push(currentPlayer, column);
 
     if (this.matchAnalyzer()) {
-      // console.log(this.players[player])
-      winner = this.players[player]
+      winner = currentPlayer
       break;
     }
   };
-  console.log(this.players)
-  // console.log(winner);
-  return winner
 
+  return winner;
 };
 
 Game.prototype.matchAnalyzer = function() {
   var match = false;
 
-  for (var column = 0; column < this.board.size; column++) {
+  for (var column = 0; column < this.board.width; column++) {
     var columns = this.board.matrix[column];
 
     if (match) {
       break;
     }
 
-    for (var row = 0; row < columns.length; row++) {
+    for (var row = 0; row < this.board.height; row++) {
       var position = columns[row];
 
       if (position == null) {
@@ -72,8 +70,7 @@ Game.prototype.matchAnalyzer = function() {
         break;
       }
 
-      // diagonal dir
-
+      // diagonal right
       if ( this.board.matrix[column] &&
            this.board.matrix[column + 3] &&
            this.board.matrix[column + 1][row + 1] == position &&
@@ -83,7 +80,7 @@ Game.prototype.matchAnalyzer = function() {
           match = true;
           break;
       }
-
+      // diagonal left
       if ( this.board.matrix[column] &&
            this.board.matrix[column + 3] &&
            this.board.matrix[column + 1][row - 1] == position &&

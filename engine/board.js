@@ -1,15 +1,16 @@
 function Board() {
-  this.size = 6;
+  this.width = 7;
+  this.height = 6;
+  this.maxMoves = this.width * this.height;
   this.matrix = this.buildMatrix();
 }
 
 Board.prototype.push = function(player, column) {
   var row = this.matrix[column].lastIndexOf(null);
 
-  if (row < 0)
-    return false;
+  if (row < 0) return false;
 
-  this.matrix[column][row] = player;
+  this.matrix[column][row] = player.char;
 
   return [column, row];
 };
@@ -17,10 +18,9 @@ Board.prototype.push = function(player, column) {
 Board.prototype.buildMatrix = function() {
   var matrix = [];
 
-  for (var i = 0; i < this.size; i++) {
+  for (var i = 0; i < this.width; i++) { // columns
     matrix[i] = []
-
-    for (var j = 0; j < this.size; j++) {
+    for (var j = 0; j < this.height; j++) { // rows
       matrix[i][j] = null;
     }
   }
@@ -31,7 +31,8 @@ Board.prototype.buildMatrix = function() {
 Board.prototype.getAvailableColumns = function() {
   var positions = [];
 
-  for(var column in this.matrix) {
+  for ( var column in this.matrix ) {
+
     if (this.matrix[column].lastIndexOf(null) >=0 )
       positions.push(parseInt(column));
   }
