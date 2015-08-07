@@ -6,7 +6,7 @@
     "port": 9999,
     "defaultVersion": "0.0.1",
     "acceptable": [
-        "application/json"
+      "application/json"
     ]
   },
   "database": {
