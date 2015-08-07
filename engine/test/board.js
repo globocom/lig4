@@ -26,7 +26,6 @@ describe('Board', function() {
     it('add a piece to the board', function(){
       var player = { 'char': 'x'}
       this.board.push(player, 0)
-      this.board.draw();
       assert.equal(this.board.matrix[0][5], 'x');
     });
   });
