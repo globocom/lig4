@@ -1,5 +1,5 @@
 MOCHA=node_modules/mocha/bin/mocha
-PM2DEV=pm2-dev
+PM2DEV=node_modules/pm2/bin/pm2-dev
 NODE=node
 
 .SILENT:
