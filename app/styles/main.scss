@@ -1,1 +1,18 @@
 @import 'bourbon';
+
+@import 'shared/colors';
+@import 'shared/fonts';
+@import 'shared/normalize';
+@import 'shared/animations';
+
+@import 'elements/typographies';
+@import 'elements/blocks';
+@import 'elements/buttons';
+
+@import 'components/leader-board';
+@import 'components/game-board';
+
+@import 'sections/intro';
+@import 'sections/about';
+@import 'sections/participate';
+@import 'sections/ranking';

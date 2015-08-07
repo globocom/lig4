@@ -1,0 +1,35 @@
+.button {
+  border: 1px solid $gray;
+  color: $gray-strong;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(16px);
+  font-weight: 400;
+  line-height: rem(16px);
+  letter-spacing: rem(2px);
+  padding: rem(15px) rem(25px);
+  border-radius: rem(5px);
+  margin: 0 rem(15px);
+
+  @include transition(background-color .5s ease-in-out);
+}
+
+.button:hover {
+  color: white;
+  background-color: $black;
+}
+
+.block-button {
+  width: 100%;
+  margin: rem(35px) 0;
+  display: block;
+  border: 1px solid $black;
+  background-color: $black;
+  color: $gray-strong;
+
+  @include transition(color .25s ease-in-out);
+}
+
+.block-button:hover {
+  color: white;
+}

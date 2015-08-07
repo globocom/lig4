@@ -1,0 +1,52 @@
+'use strict'
+
+// defaults
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'dev'
+}
+
+// imports
+var restify = require('restify')
+var mongoose = require('mongoose')
+var config = require('./config/' + process.env.NODE_ENV + '.json')
+
+// routes
+var gameHandler = require('./handlers/game')
+var leaderboardHandler = require('./handlers/leaderboard')
+var playerHandler = require('./handlers/player')
+var github = require('./libs/github')
+
+// create server
+var api = restify.createServer()
+
+// set middlewares
+api.use(restify.bodyParser())
+api.use(restify.CORS())
+api.use(restify.gzipResponse())
+api.use(restify.acceptParser(config.server.acceptable))
+
+api.use(github.validateRequest())
+
+// set handlers
+api.get('/api/game', gameHandler.get)
+api.get('/api/leaderboard', leaderboardHandler.get)
+api.get('/api/player/:username', playerHandler.get)
+api.put('/api/player/:username', playerHandler.put)
+api.post('/api/player', playerHandler.post)
+
+// get up
+var listen = function (port, done) {
+  // connect to mongodb
+  mongoose.connect(process.env.DB_URI || config.database.uri, function () {
+    api.listen(process.env.API_PORT || config.server.port, done)
+    console.log('API at %s', api.url)
+  })
+}
+
+// dev mode
+if (!module.parent) {
+  listen(config.server.port)
+}
+
+// export listen fnc
+module.exports.listen = listen

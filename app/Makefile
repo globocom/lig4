@@ -5,9 +5,11 @@ MUSTACHE=node_modules/mu2/bin/mu
 SASS=node_modules/node-sass/bin/node-sass
 VIGILIA=node_modules/vigilia/bin/vigilia
 WEBPACK=node_modules/webpack/bin/webpack.js
-MOCHA=node_modules/mocha/bin/mocha
+KARMA=node_modules/karma/bin/karma
 
 .SILENT:
+
+.PHONY: test watch clean images scripts styles templates tree
 
 build: images scripts styles templates
 
@@ -25,8 +27,8 @@ styles: tree
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet styles/main.scss public/styles/main.css
 
 templates: tree
-	$(MUSTACHE) --view "`cat package.json`" --root templates main.html > public/index.html
-	$(HTML_MINIFIER) --collapse-whitespace --output public/index.html --remove-comments public/index.html
+	$(MUSTACHE) --view "`cat package.json`" --root templates app.html > public/app.html
+	$(HTML_MINIFIER) --collapse-whitespace --output public/app.html --remove-comments public/app.html
 
 tree:
 	mkdir -p public/images
@@ -36,5 +38,5 @@ tree:
 watch: build
 	$(VIGILIA) 'images/**/*':'make images' 'scripts/**/*.js':'make scripts' 'styles/**/*.scss':'make styles' 'templates/**/*.html':'make templates'
 
-tests:
-	$(MOCHA)
+test:
+	$(KARMA) start test/config.js

@@ -1,7 +1,12 @@
 {
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "pm2": "^0.14.6"
   },
   "private": "true",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {
+    "mongoose": "^4.0.8",
+    "restify": "^3.0.3"
+  }
 }
