@@ -40,4 +40,14 @@ Board.prototype.getAvailableColumns = function() {
   return positions;
 }
 
+Board.prototype.draw = function () {
+  for (var row = 0; row < this.height; row++) {
+    for (var column = 0; column < this.width; column++) {
+      var cell = this.matrix[column][row] || ' ';
+      process.stdout.write("| " +  cell + " ");
+    }
+    process.stdout.write("\n");
+  }
+};
+
 module.exports = Board;
