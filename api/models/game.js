@@ -1,6 +1,7 @@
 'use strict'
 
-var mongoose = require('mongoose')
+var mongoose = require('../libs/mongoose');
+
 var GameSchema = new mongoose.Schema({
   board: {
     type: Array
@@ -8,6 +9,6 @@ var GameSchema = new mongoose.Schema({
   moves: {
     type: Array
   }
-})
+});
 
-module.exports = mongoose.model('Game', GameSchema)
+module.exports = mongoose.model('Game', GameSchema);

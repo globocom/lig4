@@ -1,7 +1,7 @@
 'use strict'
 
-var Game = require('./game')
-var mongoose = require('mongoose')
+var mongoose = require('../libs/mongoose');
+var Game = require('./game');
 
 var MatchSchema = new mongoose.Schema({
   players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }],
@@ -16,6 +16,6 @@ var MatchSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
-})
+});
 
-module.exports = mongoose.model('Match', MatchSchema)
+module.exports = mongoose.model('Match', MatchSchema);

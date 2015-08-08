@@ -1,6 +1,6 @@
 'use strict'
 
-var mongoose = require('mongoose')
+var mongoose = require('../libs/mongoose');
 
 var LeaderboardSchema = new mongoose.Schema({
   player: {
@@ -39,6 +39,6 @@ var LeaderboardSchema = new mongoose.Schema({
     required: true,
     default: 0
   }
-})
+});
 
-module.exports = mongoose.model('Leaderboard', LeaderboardSchema)
+module.exports = mongoose.model('Leaderboard', LeaderboardSchema);
