@@ -1,6 +1,6 @@
 'use strict'
 
-function validateRequest() {
+function validateRequest () {
 
   // access github api
   // validate "logged"user
