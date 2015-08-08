@@ -16,25 +16,25 @@ var leaderboardController = require('./controllers/leaderboard');
 var playerController = require('./controllers/player');
 
 // create express application
-var app = express();
+var api = express();
 
 // set view
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+api.set('views', path.join(__dirname, 'views'));
+api.set('view engine', 'jade');
 
 // set midlewares
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+api.use(bodyParser.json());
+api.use(bodyParser.urlencoded({ extended: false }));
+api.use(express.static(path.join(__dirname, 'public')));
 
 // set controllers && handlers
-app.use('/', indexController);
+api.use('/', indexController);
 
-app.use('/api/game', gameController);
-app.use('/api/player', playerController);
-app.use('/api/leaderboard', leaderboardController);
+api.use('/api/game', gameController);
+api.use('/api/player', playerController);
+api.use('/api/leaderboard', leaderboardController);
 
-// run app
-module.exports = app.listen(config.server.port, function () {
-  console.log('app listening at port %s', config.server.port);
+// run api
+module.exports = api.listen(config.server.port, function () {
+  console.log('api listening at port %s', config.server.port);
 });
