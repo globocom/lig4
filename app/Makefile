@@ -8,19 +8,22 @@ WEBPACK=node_modules/webpack/bin/webpack.js
 
 .SILENT:
 
-.PHONY: run run-dev test
+.PHONY: run test clean-client scripts-client styles-client watch-client test-client
 
 # app tasks
 
 test:
 	$(MOCHA)
 
-run:
+run: build-client
 	$(NODE) app.js
 
 # client tasks
 
 build-client: clean-client scripts-client styles-client
+
+watch-client: build-client
+	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client' 'client/styles/**/*.scss':'make styles-client'
 
 clean-client:
 	rm -fr public
@@ -29,9 +32,6 @@ clean-client:
 tree-client:
 	mkdir -p public/scripts
 	mkdir -p public/styles
-
-watch-client: build-client
-	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client' 'client/styles/**/*.scss':'make styles-client'
 
 scripts-client: tree-client
 	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js > /dev/null
