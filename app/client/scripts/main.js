@@ -43,8 +43,6 @@ function navigationHandler (e) {
   var sectionName = button.getAttribute('data-section');
   var sectionElement = document.getElementById(sectionName);
 
-  window.location.hash = sectionName;
-
   scrollToSection(sectionElement, 500);
 }
 

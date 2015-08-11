@@ -1,20 +1,24 @@
 {
   "devDependencies": {
+    "mocha": "^2.2.5",
+    "pm2": "^0.14.6",
+    "supertest": "^1.0.1",
     "bourbon": "^4.2.3",
-    "html-minifier": "^0.7.2",
-    "imagemin": "^3.2.0",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2.0",
     "karma-jasmine": "^0.3.6",
     "karma-webpack": "^1.7.0",
-    "mu2": "https://github.com/gibatronic/Mu/archive/v0.6.1.tar.gz",
-    "node-libs-browser": "^0.5.2",
     "node-sass": "^3.2.0",
-    "phantomjs": "^1.9.17",
     "vigilia": "^0.1.0",
     "webpack": "^1.10.0"
   },
   "private": "true",
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "dependencies": {
+    "express": "^4.13.3",
+    "mongoose": "^4.0.8",
+    "body-parser": "~1.13.2",
+    "jade": "~1.11.0"
+  }
 }

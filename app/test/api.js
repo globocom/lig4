@@ -20,7 +20,7 @@ describe('API routes testing', function () {
 
   before(function () {
     // starts api server
-    api = require('../api');
+    api = require('../app');
 
     // cleans collections
     mongoose.connection.db.dropDatabase();

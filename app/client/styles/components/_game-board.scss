@@ -117,7 +117,7 @@
     left: 0;
     box-sizing: border-box;
     border-radius: 100%;
-    border: rem(10px) solid $gray-light;
+    border: rem(10px) solid white;
 
     @include transition(all, .5s);
   }
