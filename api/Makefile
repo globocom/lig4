@@ -4,7 +4,9 @@ NODE=node
 
 .SILENT:
 
-tests:
+.PHONY: run run-dev test
+
+test:
 	$(MOCHA)
 
 run:

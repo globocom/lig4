@@ -1,6 +1,6 @@
 'use strict'
 
-var mongoose = require('mongoose')
+var mongoose = require('../libs/mongoose');
 
 var PlayerSchema = new mongoose.Schema({
   username: {
@@ -28,6 +28,6 @@ var PlayerSchema = new mongoose.Schema({
     type: String,
     required: true
   }
-})
+});
 
-module.exports = mongoose.model('Player', PlayerSchema)
+module.exports = mongoose.model('Player', PlayerSchema);

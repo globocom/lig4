@@ -1,52 +1,40 @@
-'use strict'
+'use strict';
 
 // defaults
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'dev'
-}
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 
 // imports
-var restify = require('restify')
-var mongoose = require('mongoose')
-var config = require('./config/' + process.env.NODE_ENV + '.json')
+var path = require('path');
+var bodyParser = require('body-parser');
+var express = require('express');
+var config = require('./config');
 
-// routes
-var gameHandler = require('./handlers/game')
-var leaderboardHandler = require('./handlers/leaderboard')
-var playerHandler = require('./handlers/player')
-var github = require('./libs/github')
+// controllers
+var indexController = require('./controllers/index');
+var gameController = require('./controllers/game');
+var leaderboardController = require('./controllers/leaderboard');
+var playerController = require('./controllers/player');
 
-// create server
-var api = restify.createServer()
+// create express application
+var api = express();
 
-// set middlewares
-api.use(restify.bodyParser())
-api.use(restify.CORS())
-api.use(restify.gzipResponse())
-api.use(restify.acceptParser(config.server.acceptable))
+// set view
+api.set('views', path.join(__dirname, 'views'));
+api.set('view engine', 'jade');
 
-api.use(github.validateRequest())
+// set midlewares
+api.use(bodyParser.json());
+api.use(bodyParser.urlencoded({ extended: false }));
+api.use(express.static(path.join(__dirname, 'public')));
 
-// set handlers
-api.get('/api/game', gameHandler.get)
-api.get('/api/leaderboard', leaderboardHandler.get)
-api.get('/api/player/:username', playerHandler.get)
-api.put('/api/player/:username', playerHandler.put)
-api.post('/api/player', playerHandler.post)
+// set controllers && handlers
+api.use('/', indexController);
 
-// get up
-var listen = function (port, done) {
-  // connect to mongodb
-  mongoose.connect(process.env.DB_URI || config.database.uri, function () {
-    api.listen(process.env.API_PORT || config.server.port, done)
-    console.log('API at %s', api.url)
-  })
-}
+api.use('/api/game', gameController);
+api.use('/api/player', playerController);
+api.use('/api/leaderboard', leaderboardController);
 
-// dev mode
-if (!module.parent) {
-  listen(config.server.port)
-}
-
-// export listen fnc
-module.exports.listen = listen
+// run api
+module.exports = api.listen(config.server.port, function () {
+  console.log('api listening at port %s', config.server.port);
+});

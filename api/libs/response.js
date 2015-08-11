@@ -1,14 +1,14 @@
 'use strict'
 
 function send (statusCode, status, payload, res, next) {
+  var nextReturn = (statusCode < 400);
 
-  var nextReturn = (statusCode < 400)
-
-  res.json(statusCode, {
+  res.status(statusCode).json({
     status: status,
     payload: payload
-  })
-  return next(nextReturn)
+  });
+
+  return next(nextReturn);
 }
 
-module.exports.send = send
+module.exports.send = send;
