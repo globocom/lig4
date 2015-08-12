@@ -20,7 +20,7 @@ router.post('/', function (req, res, next) {
 
 // GET in /api/player/:username
 router.get('/:username', function (req, res, next) {
-  if (!req.params.username) Response.send(400, 'BAD_REQUEST', {}, res, next)
+  if (!req.params.username) return Response.send(400, 'BAD_REQUEST', {}, res, next)
 
   Player.findOne()
     .where('username')
@@ -29,7 +29,7 @@ router.get('/:username', function (req, res, next) {
       if (err) return Response.send(500, 'ERROR', err, res, next);
       if (!player) return res.sendStatus(204);
 
-      Response.send(200, 'OK', player, res, next);
+      return Response.send(200, 'OK', player, res, next);
     });
 });
 
