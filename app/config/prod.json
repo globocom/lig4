@@ -11,5 +11,11 @@
   },
   "database": {
     "uri": "mongodb://"
+  },
+  "github": {
+    "client_id": "",
+    "client_secret": "",
+    "access_token_url": "https://github.com/login/oauth/access_token",
+    "authorize_url": "https://github.com/login/oauth/authorize"
   }
 }
