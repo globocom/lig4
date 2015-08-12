@@ -9,8 +9,8 @@ var router = express.Router();
 router.get('/callback', function (req, res, next) {
   var config = req.app.get('config');
   var ghclient = new github.Github(
-    config.github.client_id,
-    config.github.client_secret
+    process.env.GITHUB_ID || config.github.client_id,
+    process.env.GITHUB_SECRET || config.github.client_secret
   );
 
   ghclient.token(req.query.code, req.session, function (token) {
@@ -24,7 +24,8 @@ router.get('/callback', function (req, res, next) {
 // GET in /login
 router.get('/login', function (req, res, next) {
   var config = req.app.get('config');
-  var authorize = github.Endpoints.AUTHORIZE_BASE_URL + config.github.client_id
+  var client_id = process.env.GITHUB_ID || config.github.client_id;
+  var authorize = github.Endpoints.AUTHORIZE_BASE_URL + client_id;
   res.redirect(authorize)
 });
 

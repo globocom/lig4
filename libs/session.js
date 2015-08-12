@@ -5,7 +5,7 @@ var session = require('express-session')
 function setup (app) {
   var conf = app.get('config');
   var options = {
-    secret: conf.session.secret,
+    secret: process.env.SESSION_SECRET || conf.session.secret,
     cookie: {},
     resave: true,
     saveUninitialized: true
