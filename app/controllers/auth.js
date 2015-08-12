@@ -7,7 +7,6 @@ var router = express.Router();
 
 // GET in /callback
 router.get('/callback', function (req, res, next) {
-
   var config = req.app.get('config');
   var ghclient = new github.Github(
     config.github.client_id,
@@ -20,7 +19,6 @@ router.get('/callback', function (req, res, next) {
       res.redirect('/editor');
     });
   });
-
 });
 
 // GET in /login

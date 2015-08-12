@@ -11,16 +11,6 @@ var nock = require('nock');
 
 var app, request;
 
-nock('https://github.com')
-  .post('/login/oauth/access_token')
-  .reply(200, { 'access_token': '123ABC' });
-
-
-nock('https://api.github.com')
-  .get('/user')
-  .reply(200, { 'login': 'api_username_1' });
-
-
 describe('API routes testing', function () {
   var player = {
     username: 'api_username_1',
@@ -31,6 +21,15 @@ describe('API routes testing', function () {
   };
 
   before(function (done) {
+    // mock github service
+    nock('https://github.com')
+      .post('/login/oauth/access_token')
+      .reply(200, { 'access_token': '123ABC' });
+
+    nock('https://api.github.com')
+      .get('/user')
+      .reply(200, { 'login': 'api_username_1' });
+
     // starts api server
     app = require('../app');
     request = supertest.agent(app);
