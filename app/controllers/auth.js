@@ -1,7 +1,7 @@
 'use strict';
 
-var request = require('request');
 var express = require('express');
+var github = require('./../libs/github');
 
 var router = express.Router();
 
@@ -9,29 +9,24 @@ var router = express.Router();
 router.get('/callback', function (req, res, next) {
 
   var config = req.app.get('config');
-  var data = {
-    'json': {
-      'client_id': config.github.client_id,
-      'client_secret': config.github.client_secret,
-      'code': req.query.code
-    }
-  }
-
-  request.post(config.github.access_token_url, data,
-    function (error, response, body) {
-      if (!error && response.statusCode === 200) {
-        req.session.auth = body;
-        res.redirect('/editor');
-      }
-      // Needs an error handler here...
-    }
+  var ghclient = new github.Github(
+    config.github.client_id,
+    config.github.client_secret
   );
+
+  ghclient.token(req.query.code, req.session, function (token) {
+    ghclient.get('/user', token, function (user) {
+      req.session.user = user;
+      res.redirect('/editor');
+    });
+  });
+
 });
 
 // GET in /login
 router.get('/login', function (req, res, next) {
   var config = req.app.get('config');
-  var authorize = config.github.authorize_url + '?client_id=' + config.github.client_id
+  var authorize = github.Endpoints.AUTHORIZE_BASE_URL + config.github.client_id
   res.redirect(authorize)
 });
 

@@ -7,9 +7,7 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
 
   // GET user data
-  res.render('editor', {
-    session: req.session.auth.access_token
-  });
+  res.render('editor', { user: req.session.user, title: 'Playground' });
 
 });
 
