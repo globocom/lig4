@@ -5,7 +5,7 @@ var request = require('request');
 var Endpoints = {
   'ACCESS_TOKEN_URL': 'https://github.com/login/oauth/access_token',
   'AUTHORIZE_BASE_URL': 'https://github.com/login/oauth/authorize?client_id=',
-  'API_BASE_URL': 'https://api.github.com',
+  'API_BASE_URL': 'https://api.github.com'
 }
 
 function Github (client_id, client_secret) {

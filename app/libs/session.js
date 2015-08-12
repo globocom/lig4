@@ -22,8 +22,6 @@ function validate () {
 
   return function (req, res, next) {
 
-    if (process.env.NODE_ENV === 'test') return next();
-
     if (req.session.access_token === undefined) {
       if (req.url.indexOf('/api') > -1) {
         return res.sendStatus(401);
