@@ -2,6 +2,9 @@
   "app": {
     "name": "lig4-api"
   },
+  "session": {
+    "secret": "secret"
+  },
   "server": {
     "port": 8080,
     "defaultVersion": "0.0.1",
