@@ -13,7 +13,7 @@
     ]
   },
   "database": {
-    "uri": "mongodb://"
+    "uri": ""
   },
   "github": {
     "client_id": "",
