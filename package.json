@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "bourbon": "^4.2.3",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2.0",
@@ -8,11 +7,9 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^2.2.5",
     "nock": "^2.10.0",
-    "node-sass": "^3.2.0",
     "pm2": "^0.14.6",
     "supertest": "^1.0.1",
-    "vigilia": "^0.1.0",
-    "webpack": "^1.10.0"
+    "vigilia": "^0.1.0"
   },
   "private": "true",
   "version": "0.0.0",
@@ -22,6 +19,9 @@
     "express-session": "^1.11.3",
     "jade": "~1.11.0",
     "mongoose": "^4.0.8",
-    "request": "^2.60.0"
+    "request": "^2.60.0",
+    "node-sass": "^3.2.0",
+    "webpack": "^1.10.0",
+    "bourbon": "^4.2.3"
   }
 }
