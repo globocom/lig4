@@ -7,7 +7,7 @@ process.env.NODE_ENV = 'test';
 var request = require('supertest');
 var mongoose = require('../libs/mongoose');
 var assert = require('assert');
-var api;
+var app;
 
 describe('API routes testing', function () {
   var player = {
@@ -20,21 +20,21 @@ describe('API routes testing', function () {
 
   before(function () {
     // starts api server
-    api = require('../app');
+    app = require('../app');
 
     // cleans collections
     mongoose.connection.db.dropDatabase();
   });
 
   it('should return ok after inserting a new player.', function (done) {
-    request(api)
+    request(app)
       .post('/api/player')
       .send(player)
       .expect(200, done);
   });
 
   it('should return the player inserted', function (done) {
-    request(api)
+    request(app)
       .get('/api/player/' + player.username)
       .expect(200)
       .expect(function (res) {
@@ -49,18 +49,18 @@ describe('API routes testing', function () {
   });
 
   it('should return 204 when a player does not exists.', function (done) {
-    request(api).get('/api/player/dummy').expect(204, done);
+    request(app).get('/api/player/dummy').expect(204, done);
   })
 
   it('should return BAD_REQUEST when username is different from url.', function (done) {
-    request(api)
+    request(app)
       .put('/api/player/notuser')
       .send(player)
       .expect(400, done);
   });
 
   after(function () {
-    api.close();
+    app.close();
     mongoose.connection.db.dropDatabase();
   });
 
