@@ -2,6 +2,9 @@
   "app": {
     "name": "lig4-api"
   },
+  "session": {
+    "secret": "dummy"
+  },
   "server": {
     "port": 9999,
     "defaultVersion": "0.0.1",
@@ -11,5 +14,9 @@
   },
   "database": {
     "uri": "mongodb://localhost:27017/test-lig4-api"
+  },
+  "github": {
+    "client_id": "dummy",
+    "client_secret": "dummy"
   }
 }

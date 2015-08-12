@@ -8,33 +8,43 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
 var config = require('./config');
+var session = require('./libs/session');
 
 // controllers
 var indexController = require('./controllers/index');
+var authController = require('./controllers/auth');
+
 var gameController = require('./controllers/game');
 var leaderboardController = require('./controllers/leaderboard');
 var playerController = require('./controllers/player');
+var editorController = require('./controllers/editor');
 
 // create express application
-var api = express();
+var app = express();
 
 // set view
-api.set('views', path.join(__dirname, 'views'));
-api.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.set('config', config)
 
 // set midlewares
-api.use(bodyParser.json());
-api.use(bodyParser.urlencoded({ extended: false }));
-api.use(express.static(path.join(__dirname, 'public')));
+app.use(session.setup(app));
+app.use(session.validate());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // set controllers && handlers
-api.use('/', indexController);
+app.use('/', indexController);
+app.use('/auth', authController);
+app.use('/editor', editorController);
 
-api.use('/api/game', gameController);
-api.use('/api/player', playerController);
-api.use('/api/leaderboard', leaderboardController);
+app.use('/api/game', gameController);
+app.use('/api/player', playerController);
+app.use('/api/leaderboard', leaderboardController);
 
-// run api
-module.exports = api.listen(config.server.port, function () {
-  console.log('api listening at port %s', config.server.port);
+// run app
+module.exports = app.listen(config.server.port, function () {
+  console.log('app listening at port %s', config.server.port);
 });

@@ -4,8 +4,5 @@ html
     include sections/head.jade
 
   body
-    include sections/intro.jade
-    include sections/about.jade
-    include sections/rank.jade
-
+    | #{ user.login }
     script(src='scripts/main.js')
