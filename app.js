@@ -45,6 +45,6 @@ app.use('/api/player', playerController);
 app.use('/api/leaderboard', leaderboardController);
 
 // run app
-module.exports = app.listen(config.server.port, function () {
+module.exports = app.listen(process.env.PORT || config.server.port, function () {
   console.log('app listening at port %s', config.server.port);
 });

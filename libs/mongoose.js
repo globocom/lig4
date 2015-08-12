@@ -9,7 +9,7 @@ function disconnect () {
 }
 
 // connect to mongo
-mongoose.connect(config.database.uri || process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
+mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT || config.database.uri, function (err) {
   if (err) {
     console.log(err);
     process.exit(0);
