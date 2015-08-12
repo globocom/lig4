@@ -7,7 +7,7 @@ function setup (app) {
   var conf = app.get('config');
   var options = {
     secret: conf.session.secret,
-    cookie: { secure: false },
+    cookie: {},
     resave: true,
     saveUninitialized: true
   }
@@ -18,4 +18,26 @@ function setup (app) {
   return session(options)
 }
 
-module.exports.setup = setup
+function validate () {
+
+  return function (req, res, next) {
+
+    if (process.env.NODE_ENV === 'test') return next();
+
+    if (req.session.auth === undefined) {
+
+      if (req.url.indexOf('/api') > -1) {
+        return res.sendStatus(401);
+
+      } else if (req.url.indexOf('/editor') > -1) {
+        return res.redirect('/auth/login');
+      }
+    }
+    next();
+  }
+}
+
+module.exports = {
+  'setup': setup,
+  'validate': validate
+}

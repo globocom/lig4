@@ -30,6 +30,7 @@ app.set('config', config)
 
 // set midlewares
 app.use(session.setup(app));
+app.use(session.validate());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
