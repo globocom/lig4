@@ -17,8 +17,6 @@
   },
   "github": {
     "client_id": "dummy",
-    "client_secret": "dummy",
-    "access_token_url": "https://github.com/login/oauth/access_token",
-    "authorize_url": "https://github.com/login/oauth/authorize"
+    "client_secret": "dummy"
   }
 }
