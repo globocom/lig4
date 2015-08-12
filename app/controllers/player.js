@@ -11,6 +11,10 @@ var Response = require('./../libs/response')
 router.post('/', function (req, res, next) {
   var player = new Player(req.body)
 
+  if (player.username !== req.session.user.login) {
+    return Response.send(400, 'BAD_REQUEST', {}, res, next)
+  }
+
   player.save(function (err) {
     if (err) return Response.send(500, 'ERROR', err, res, next)
 
@@ -21,7 +25,9 @@ router.post('/', function (req, res, next) {
 // GET in /api/player/:username
 router.get('/:username', function (req, res, next) {
 
-  if (req.params.username !== req.session.user.login) return Response.send(400, 'BAD_REQUEST', {}, res, next)
+  if (req.params.username !== req.session.user.login) {
+    return Response.send(400, 'BAD_REQUEST', {}, res, next)
+  }
 
   Player.findOne()
     .where('username')
@@ -37,7 +43,9 @@ router.get('/:username', function (req, res, next) {
 // PUT in /api/player/:username
 router.put('/:username', function (req, res, next) {
 
-  if (req.body.username !== req.params.username || req.body.username !== req.session.user.login) {
+  if (req.body.username !== req.params.username ||
+      req.body.username !== req.session.user.login) {
+
     return Response.send(400, 'BAD_REQUEST', req.body, res, next);
   }
 
