@@ -12,8 +12,8 @@ function setup (app) {
     saveUninitialized: true
   }
   if (process.env.NODE_ENV === 'prod') {
-    app.set('trust proxy', 1) // trust first proxy
-    options.cookie.secure = true // serve secure cookies
+    app.set('trust proxy', 1);
+    options.cookie.secure = true;
   }
   return session(options)
 }
@@ -24,8 +24,7 @@ function validate () {
 
     if (process.env.NODE_ENV === 'test') return next();
 
-    if (req.session.auth === undefined) {
-
+    if (req.session.access_token === undefined) {
       if (req.url.indexOf('/api') > -1) {
         return res.sendStatus(401);
 
