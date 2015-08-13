@@ -14,7 +14,7 @@ function setup (app) {
     secret: process.env.SESSION_SECRET || conf.session.secret,
     cookie: {},
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
     store: store
   }
 
