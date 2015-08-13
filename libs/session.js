@@ -3,13 +3,13 @@
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
-var store = new MongoDBStore({
-  uri: process.env.DBAAS_MONGODB_ENDPOINT,
-  collection: 'lig4sessions'
-});
-
 function setup (app) {
   var conf = app.get('config');
+  var store = new MongoDBStore({
+    uri: process.env.DBAAS_MONGODB_ENDPOINT || conf.database.uri,
+    collection: 'lig4sessions'
+  });
+
   var options = {
     secret: process.env.SESSION_SECRET || conf.session.secret,
     cookie: {},
