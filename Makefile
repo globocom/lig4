@@ -6,7 +6,7 @@ SASS=node_modules/node-sass/bin/node-sass
 VIGILIA=node_modules/vigilia/bin/vigilia
 WEBPACK=node_modules/webpack/bin/webpack.js
 
-.SILENT:
+#.SILENT:
 
 .PHONY: run test clean-client scripts-client styles-client watch-client test-client
 
@@ -34,7 +34,7 @@ tree-client:
 	mkdir -p public/styles
 
 scripts-client: tree-client
-	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js > /dev/null
+	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js
 
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css
