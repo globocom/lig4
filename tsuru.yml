@@ -1,3 +1,0 @@
-hooks:
-    build:
-        - make build-client
