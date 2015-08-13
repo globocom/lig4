@@ -1,6 +1,12 @@
 'use strict';
 
-var session = require('express-session')
+var session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
+
+var store = new MongoDBStore({
+  uri: process.env.DBAAS_MONGODB_ENDPOINT,
+  collection: 'lig4sessions'
+});
 
 function setup (app) {
   var conf = app.get('config');
@@ -9,6 +15,7 @@ function setup (app) {
     cookie: {},
     resave: true,
     saveUninitialized: true
+    store: store
   }
 
   if (process.env.NODE_ENV === 'prod') {

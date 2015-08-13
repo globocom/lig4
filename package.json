@@ -15,13 +15,14 @@
   "version": "0.0.0",
   "dependencies": {
     "body-parser": "~1.13.2",
+    "bourbon": "^4.2.3",
+    "connect-mongodb-session": "^1.0.3",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "jade": "~1.11.0",
     "mongoose": "^4.0.8",
-    "request": "^2.60.0",
     "node-sass": "^3.2.0",
-    "webpack": "^1.10.0",
-    "bourbon": "^4.2.3"
+    "request": "^2.60.0",
+    "webpack": "^1.10.0"
   }
 }
