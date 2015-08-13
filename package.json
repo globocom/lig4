@@ -21,7 +21,6 @@
     "express-session": "^1.11.3",
     "jade": "~1.11.0",
     "mongoose": "^4.0.8",
-    "node-sass": "^3.2.0",
     "request": "^2.60.0",
     "webpack": "^1.10.0"
   }
