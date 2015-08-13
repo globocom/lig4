@@ -2,6 +2,7 @@
 
 var express = require('express');
 var github = require('./../libs/github');
+var Response = require('./../libs/response')
 
 var router = express.Router();
 
@@ -13,8 +14,12 @@ router.get('/callback', function (req, res, next) {
     process.env.GITHUB_SECRET || config.github.client_secret
   );
 
-  ghclient.token(req.query.code, req.session, function (token) {
-    ghclient.get('/user', token, function (user) {
+  ghclient.token(req.query.code, req.session, function (err, token) {
+    if (err) return Response.send(500, 'ERROR', err, res, next)
+
+    ghclient.get('/user', token, function (err, user) {
+      if (err) return Response.send(500, 'ERROR', err, res, next);
+
       req.session.user = user;
       res.redirect('/editor');
     });

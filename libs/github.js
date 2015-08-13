@@ -8,7 +8,7 @@ var Endpoints = {
   'API_BASE_URL': 'https://api.github.com'
 }
 
-function Github (client_id, client_secret) {
+function Github(client_id, client_secret) {
   this.client_id = client_id;
   this.client_secret = client_secret;
 }
@@ -26,10 +26,8 @@ Github.prototype.token = function (code, session, callback) {
   };
 
   request.post(Endpoints.ACCESS_TOKEN_URL, data, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
       session.access_token = body.access_token;
-      callback(session.access_token);
-    }
+      callback(error, session.access_token);
   });
 }
 
@@ -44,7 +42,7 @@ Github.prototype.get = function (endpoint, token, callback) {
   };
 
   request.get(options, function (error, response, body) {
-    callback(JSON.parse(body));
+    callback(error, JSON.parse(body));
   });
 }
 
