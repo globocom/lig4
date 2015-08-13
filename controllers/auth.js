@@ -21,7 +21,8 @@ router.get('/callback', function (req, res, next) {
       if (err) return Response.send(500, 'ERROR', err, res, next);
 
       req.session.user = user;
-      res.redirect('/editor');
+      //res.redirect('/editor');
+      res.json(err)
     });
   });
 });
