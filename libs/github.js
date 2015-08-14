@@ -27,7 +27,7 @@ Github.prototype.token = function (code, session, callback) {
 
   request.post(Endpoints.ACCESS_TOKEN_URL, data, function (error, response, body) {
 
-    console.log('Github token: ', error, response, body)
+    console.log('Github token: ', error, null, body)
 
     session.access_token = body.access_token;
 
@@ -47,7 +47,7 @@ Github.prototype.get = function (endpoint, token, callback) {
   };
 
   request.get(options, function (error, response, body) {
-    console.log('Github get: ', error, response, body)
+    console.log('Github get: ', error, null, body)
 
     if (body.error) error = body;
     callback(error, JSON.parse(body));
