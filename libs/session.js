@@ -3,7 +3,7 @@
 var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
-function setup (app) {
+function setup(app) {
   var conf = app.get('config');
   var store = new MongoDBStore({
     uri: process.env.DBAAS_MONGODB_ENDPOINT || conf.database.uri,
@@ -19,15 +19,16 @@ function setup (app) {
   }
 
   if (process.env.NODE_ENV === 'prod') {
-    app.set('trust proxy', 1);
-    options.cookie.secure = true;
+    //app.set('trust proxy', 1);
+    //options.cookie.secure = true;
   }
 
   return session(options)
 }
 
-function validate () {
+function validate() {
   return function (req, res, next) {
+    console.log('Validate Session: ', req.session)
     if (req.session.access_token === undefined) {
       if (req.url.indexOf('/api') > -1) {
         return res.sendStatus(401);

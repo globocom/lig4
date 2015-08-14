@@ -15,7 +15,7 @@ function Github(client_id, client_secret) {
 
 Github.prototype.token = function (code, session, callback) {
 
-  if (session.access_token) {
+  if (session.access_token !== undefined) {
     console.log('Current token is: ', session.access_token);
     return callback(null, session.access_token);
   }
@@ -29,11 +29,8 @@ Github.prototype.token = function (code, session, callback) {
   };
 
   request.post(Endpoints.ACCESS_TOKEN_URL, data, function (error, response, body) {
-
     console.log('Github token: ', error, null, body)
-
     session.access_token = body.access_token;
-
     if (body.error) error = body;
     callback(error, session.access_token);
   });
