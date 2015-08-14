@@ -15,7 +15,10 @@ function Github(client_id, client_secret) {
 
 Github.prototype.token = function (code, session, callback) {
 
-  if (session.access_token) return callback(session.access_token);
+  if (session.access_token) {
+    console.log('Current token is: ', session.access_token);
+    return callback(null, session.access_token);
+  }
 
   var data = {
     'json': {
