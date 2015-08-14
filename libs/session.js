@@ -20,10 +20,12 @@ function setup (app) {
     name: 'lig4game'
   }
 
+  /*
   if (process.env.NODE_ENV === 'prod') {
     app.set('trust proxy', 1);
     options.cookie.secure = true;
   }
+  */
 
   return session(options)
 }
