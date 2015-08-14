@@ -8,7 +8,7 @@ var Endpoints = {
   'API_BASE_URL': 'https://api.github.com'
 }
 
-function Github(client_id, client_secret) {
+function Github (client_id, client_secret) {
   this.client_id = client_id;
   this.client_secret = client_secret;
 }
