@@ -7,9 +7,12 @@ VIGILIA=node_modules/vigilia/bin/vigilia
 WEBPACK=node_modules/webpack/bin/webpack.js
 GIT=git
 
-#.SILENT:
-
 .PHONY: run tsuru-publish test clean-client scripts-client styles-client watch-client test-client
+
+# tsuru tasks
+
+tsuru-publish: build-client
+	$(GIT) push tsuru-git@git.tsuru.globoi.com:lig4.git
 
 # app tasks
 
@@ -18,9 +21,6 @@ test:
 
 run: build-client
 	$(NODE) app.js
-
-tsuru-publish: build-client
-	$(GIT) push tsuru-git@git.tsuru.globoi.com:lig4.git
 
 # client tasks
 

@@ -1,12 +1,17 @@
 .title {
   text-transform: uppercase;
-  font-size: rem(95px);
+  font-size: rem(70px);
   font-family: $font-sans;
   font-weight: 700;
-  line-height: rem(100px);
+  line-height: rem(65px);
   letter-spacing: rem(-5px);
-  word-break: break-all;
   margin: rem(35px) 0;
+
+  @media screen and (max-width: 420px) {
+    font-size: rem(35px);
+    line-height: rem(30px);
+    letter-spacing: rem(-1px);
+  }
 }
 
 .subtitle {
@@ -24,4 +29,12 @@
   line-height: rem(34px);
   letter-spacing: rem(1px);
   margin: rem(35px) 0;
+
+  @media screen and (max-width: 420px) {
+    font-size: rem(22px);
+    font-weight: 400;
+    line-height: rem(32px);
+    letter-spacing: rem(1px);
+    margin: rem(32px) 0;
+  }
 }

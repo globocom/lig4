@@ -10,8 +10,13 @@
   padding: rem(15px) rem(25px);
   border-radius: rem(5px);
   margin: 0 rem(15px);
+  box-sizing: border-box;
 
   @include transition(background-color .5s ease-in-out);
+
+  @media screen and (max-width: 420px) {
+    margin: rem(10px);
+  }
 }
 
 .button:hover {
@@ -26,6 +31,8 @@
   border: 1px solid $black;
   background-color: $black;
   color: $gray-strong;
+  text-decoration: none;
+  line-height: rem(18px);
 
   @include transition(color .25s ease-in-out);
 }
