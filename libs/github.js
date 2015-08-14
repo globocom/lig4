@@ -26,10 +26,13 @@ Github.prototype.token = function (code, session, callback) {
   };
 
   request.post(Endpoints.ACCESS_TOKEN_URL, data, function (error, response, body) {
-      session.access_token = body.access_token;
 
-      if (body.error) error = body;
-      callback(error, session.access_token);
+    console.log('Github token: ', error, response, body)
+
+    session.access_token = body.access_token;
+
+    if (body.error) error = body;
+    callback(error, session.access_token);
   });
 }
 
@@ -44,6 +47,8 @@ Github.prototype.get = function (endpoint, token, callback) {
   };
 
   request.get(options, function (error, response, body) {
+    console.log('Github get: ', error, response, body)
+
     if (body.error) error = body;
     callback(error, JSON.parse(body));
   });
