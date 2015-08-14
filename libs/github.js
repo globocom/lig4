@@ -44,6 +44,7 @@ Github.prototype.get = function (endpoint, token, callback) {
   };
 
   request.get(options, function (error, response, body) {
+    if (body.error) error = body;
     callback(error, JSON.parse(body));
   });
 }
