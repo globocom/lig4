@@ -15,7 +15,9 @@ function setup (app) {
     cookie: {},
     resave: true,
     saveUninitialized: true,
-    store: store
+    store: store,
+    proxy: true,
+    name: 'lig4game'
   }
 
   if (process.env.NODE_ENV === 'prod') {
