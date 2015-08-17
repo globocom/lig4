@@ -54,9 +54,11 @@ tree-client:
 
 scripts-client: tree-client
 	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js
+	$(WEBPACK) --bail -p client/scripts/editor.js public/scripts/editor.js
 
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css
+	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/editor.scss public/styles/editor.css
 
 test-client:
 	$(KARMA) start client/test/config.js
