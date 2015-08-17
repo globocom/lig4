@@ -4,14 +4,13 @@ var session = require('express-session');
 var MongoDBStore = require('connect-mongodb-session')(session);
 
 function setup (app) {
-  var conf = app.get('config');
   var store = new MongoDBStore({
-    uri: process.env.DBAAS_MONGODB_ENDPOINT || conf.database.uri,
+    uri: process.env.MONGODB_URI,
     collection: 'lig4sessions'
   });
 
   var options = {
-    secret: process.env.SESSION_SECRET || conf.session.secret,
+    secret: process.env.SESSION_SECRET,
     cookie: {},
     resave: true,
     saveUninitialized: true,
@@ -19,13 +18,6 @@ function setup (app) {
     proxy: true,
     name: 'lig4game'
   }
-
-  /*
-  if (process.env.NODE_ENV === 'prod') {
-    app.set('trust proxy', 1);
-    options.cookie.secure = true;
-  }
-  */
 
   return session(options)
 }

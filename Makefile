@@ -5,14 +5,23 @@ BOURBON=node_modules/bourbon/app/assets/stylesheets
 SASS=node_modules/node-sass/bin/node-sass
 VIGILIA=node_modules/vigilia/bin/vigilia
 WEBPACK=node_modules/webpack/bin/webpack.js
+PM2=node_modules/pm2/bin/pm2
 GIT=git
 
-.PHONY: run tsuru-publish test clean-client scripts-client styles-client watch-client test-client
+.PHONY: run stop logs monit test runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
 
 # tsuru tasks
 
 tsuru-publish: build-client
 	$(GIT) push tsuru-git@git.tsuru.globoi.com:lig4.git
+
+# scheduler & runner tasks
+
+scheduler:
+	$(NODE) scheduler.js
+
+runner:
+	$(NODE) runner.js
 
 # app tasks
 
@@ -20,7 +29,16 @@ test:
 	$(MOCHA)
 
 run: build-client
-	$(NODE) app.js
+	$(PM2) start config/dev.json
+
+logs:
+	$(PM2) logs config/dev.json
+
+monit:
+	$(PM2) monit config/dev.json
+
+stop:
+	$(PM2) delete config/dev.json
 
 # client tasks
 
@@ -39,9 +57,11 @@ tree-client:
 
 scripts-client: tree-client
 	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js
+	$(WEBPACK) --bail -p client/scripts/editor.js public/scripts/editor.js
 
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css
+	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/editor.scss public/styles/editor.css
 
 test-client:
 	$(KARMA) start client/test/config.js

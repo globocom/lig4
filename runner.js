@@ -1,12 +1,13 @@
 'use strict'
 
-if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev'
+if (!process.env.MONGODB_URI) {
+  process.env.MONGODB_URI = require('./config/dev.json').apps[0].env.MONGODB_URI;
+}
 
 // imports
 var mongoose = require('mongoose')
 
 // models
-var config = require('./config/' + process.env.NODE_ENV + '.json')
 var Player = require('./models/player')
 var Match = require('./models/match')
 var AsyncPool = require('./libs/process')
@@ -47,7 +48,7 @@ function startRound (callback) {
  */
 function runner(done) {
   console.log('Runner started!')
-  mongoose.connect(config.database.uri, function (err) {
+  mongoose.connect(process.env.MONGODB_URI, function (err) {
     startRound(function () {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback

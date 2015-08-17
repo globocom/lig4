@@ -1,8 +1,14 @@
 doctype html
 html
   head
-    include sections/head.jade
+    title='Ligue Quatro - Editor'
+
+    meta(charset='UTF-8')
+    meta(name='viewport', content='initial-scale=1, width=device-width')
+
+    link(href='//fonts.googleapis.com/css?family=Open+Sans:400,300,700', rel='stylesheet')
+    link(href='styles/editor.css', rel='stylesheet')
 
   body
     | #{ user.login }
-    script(src='scripts/main.js')
+    script(src='scripts/editor.js')

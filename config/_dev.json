@@ -1,0 +1,16 @@
+{
+  "apps" : [{
+    "name"        : "app",
+    "script"      : "app.js",
+    "watch"       : true,
+    "cwd"         : "./",
+    "env": {
+        "NODE_ENV": "development",
+        "PORT": 9999,
+        "MONGODB_URI": "",
+        "SESSION_SECRET": "",
+        "GITHUB_ID": "",
+        "GITHUB_SECRET": ""
+    }
+  }]
+}
