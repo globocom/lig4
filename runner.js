@@ -33,7 +33,7 @@ function startRound (callback) {
         callback();
       });
       pool.on('message', function (m) {
-        console.log("child sent ", m.username);
+        console.log("child sent ", m);
       });
       for (var match of matches) {
         pool.add('./sandbox.js', match);
