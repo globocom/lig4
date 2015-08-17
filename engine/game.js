@@ -2,12 +2,16 @@
 
 var Board = require('./board');
 
-function Game(FirstPlayer, SecondPlayer) {
-  this.board    = new Board();
-  this.players  = [new FirstPlayer, new SecondPlayer];
+function Game() {
+  this.board = new Board();
+  this.players = [];
 }
 
-Game.prototype.run = function() {
+Game.prototype.addPlayer = function (player) {
+  this.players.push(player)
+}
+
+Game.prototype.run = function () {
   var winner = null;
 
   // FIXME: force player chars or when instantiating?
@@ -17,9 +21,9 @@ Game.prototype.run = function() {
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
     var columns = this.board.getAvailableColumns();
-    var column  = currentPlayer.move(columns);
+    var column = currentPlayer.move(columns);
 
-    while(columns.indexOf(column) < 0) {
+    while (columns.indexOf(column) < 0) {
       column = currentPlayer.move(columns);
     }
 
@@ -34,7 +38,7 @@ Game.prototype.run = function() {
   return winner;
 };
 
-Game.prototype.matchAnalyzer = function() {
+Game.prototype.matchAnalyzer = function () {
   var match = false;
 
   for (var column = 0; column < this.board.width; column++) {
@@ -52,43 +56,43 @@ Game.prototype.matchAnalyzer = function() {
       }
 
       // vertical
-      if ( columns[row + 1] == position &&
-           columns[row + 2] == position &&
-           columns[row + 3] == position){
+      if (columns[row + 1] == position &&
+        columns[row + 2] == position &&
+        columns[row + 3] == position) {
         match = true;
         break;
       }
 
       // horizontal
-      if ( this.board.matrix[column] &&
-           this.board.matrix[column + 3] &&
-           this.board.matrix[column + 1][row] == position &&
-           this.board.matrix[column + 2][row] == position &&
-           this.board.matrix[column + 3][row] == position){
+      if (this.board.matrix[column] &&
+        this.board.matrix[column + 3] &&
+        this.board.matrix[column + 1][row] == position &&
+        this.board.matrix[column + 2][row] == position &&
+        this.board.matrix[column + 3][row] == position) {
 
         match = true;
         break;
       }
 
       // diagonal right
-      if ( this.board.matrix[column] &&
-           this.board.matrix[column + 3] &&
-           this.board.matrix[column + 1][row + 1] == position &&
-           this.board.matrix[column + 2][row + 2] == position &&
-           this.board.matrix[column + 3][row + 3] == position){
+      if (this.board.matrix[column] &&
+        this.board.matrix[column + 3] &&
+        this.board.matrix[column + 1][row + 1] == position &&
+        this.board.matrix[column + 2][row + 2] == position &&
+        this.board.matrix[column + 3][row + 3] == position) {
 
-          match = true;
-          break;
+        match = true;
+        break;
       }
       // diagonal left
-      if ( this.board.matrix[column] &&
-           this.board.matrix[column + 3] &&
-           this.board.matrix[column + 1][row - 1] == position &&
-           this.board.matrix[column + 2][row - 2] == position &&
-           this.board.matrix[column + 3][row - 3] == position){
+      if (this.board.matrix[column] &&
+        this.board.matrix[column + 3] &&
+        this.board.matrix[column + 1][row - 1] == position &&
+        this.board.matrix[column + 2][row - 2] == position &&
+        this.board.matrix[column + 3][row - 3] == position) {
 
-          match = true;
-          break;
+        match = true;
+        break;
       }
 
 

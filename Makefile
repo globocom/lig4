@@ -8,7 +8,7 @@ WEBPACK=node_modules/webpack/bin/webpack.js
 PM2=node_modules/pm2/bin/pm2
 GIT=git
 
-.PHONY: run stop logs test runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
+.PHONY: run stop logs monit test runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
 
 # tsuru tasks
 
@@ -33,6 +33,9 @@ run: build-client
 
 logs:
 	$(PM2) logs config/dev.json
+
+monit:
+	$(PM2) monit config/dev.json
 
 stop:
 	$(PM2) delete config/dev.json
