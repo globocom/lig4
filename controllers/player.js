@@ -11,7 +11,7 @@ var Response = require('./../libs/response')
 router.post('/', function (req, res, next) {
 
   // do we really need a POST method?
-  
+
   var player = new Player(req.body)
 
   if (player.username !== req.session.user.login) {
