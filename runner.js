@@ -1,36 +1,21 @@
 'use strict'
 
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'dev'
-}
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev'
 
 // imports
 var mongoose = require('mongoose')
 
 // models
 var config = require('./config/' + process.env.NODE_ENV + '.json')
-var Match = require('./models/match')
 var Player = require('./models/player')
-
-// For dev only!
-var FakeEngine = function () {
-  return {
-    fight: function (players) {
-      //console.log(players[0].username + ' vs ' + players[1].username)
-      return players[1]
-    }
-  }
-}
-
+var Match = require('./models/match')
+var AsyncPool = require('./libs/process')
 
 /**
- * Access Match collection and starts a GameEngine for each one.
+ * Access Match collection and starts a GameEngine for each match.
  * @param {function} callback Optional function to be called at end.
  */
-function startBattle (callback) {
-
-  console.log('Iiiiiiiiiiiiiiiit\'s time!')
-  var engine = new FakeEngine()
+function startRound (callback) {
 
   Match
     .find()
@@ -39,16 +24,21 @@ function startBattle (callback) {
     .populate('players')
     .exec(function (err, matches) {
 
-      if (err) process.exit(err)
+      if (err) process.exit(err);
+      if (matches.length === 0) return callback();
 
+      var pool = new AsyncPool();
+
+      pool.on('finish', function () {
+        callback();
+      });
+      pool.on('message', function (m) {
+        console.log("child sent ", m.username);
+      });
       for (var match of matches) {
-        var result = engine.fight(match.players)
-        console.log(result)
-          // para cada partida criada, chama o game e da um update nos results da colection match.
-          // varre os registros para atualizar o leaderboard
+        pool.add('./sandbox.js', match);
       }
-      callback()
-    })
+    });
 }
 
 /**
@@ -58,12 +48,12 @@ function startBattle (callback) {
 function runner(done) {
   console.log('Runner started!')
   mongoose.connect(config.database.uri, function (err) {
-    startBattle(function () {
+    startRound(function () {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback
     })
   })
-}
+};
 
 // runnnig
 if (!module.parent) runner()
