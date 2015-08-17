@@ -1,14 +1,13 @@
 'use strict'
 
 if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'dev'
+  process.env.DBAAS_MONGODB_ENDPOINT = 'mongodb://localhost:27017/dev-lig4-api';
 }
 
 // imports
 var mongoose = require('mongoose')
 
 // models
-var config = require('./config/' + process.env.NODE_ENV + '.json')
 var Match = require('./models/match')
 var Player = require('./models/player')
 
@@ -21,7 +20,6 @@ var FakeEngine = function () {
     }
   }
 }
-
 
 /**
  * Access Match collection and starts a GameEngine for each one.
@@ -57,7 +55,7 @@ function startBattle (callback) {
  */
 function runner(done) {
   console.log('Runner started!')
-  mongoose.connect(config.database.uri, function (err) {
+  mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
     startBattle(function () {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback

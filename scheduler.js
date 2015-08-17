@@ -1,14 +1,13 @@
 'use strict'
 
 if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'dev'
+  process.env.DBAAS_MONGODB_ENDPOINT = 'mongodb://localhost:27017/dev-lig4-api';
 }
 
 // imports
 var mongoose = require('mongoose')
 
 // models
-var config = require('./config/' + process.env.NODE_ENV + '.json')
 var Match = require('./models/match')
 var Player = require('./models/player')
 
@@ -121,7 +120,7 @@ function newRound (callback) {
  */
 function scheduler (done) {
   console.log('Scheduler started!')
-  mongoose.connect(config.database.uri, function (err) {
+  mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
     newRound(function () {
       console.log('See you in 10 minutes. zzz ZZZ zzz...')
       if (done) done()
