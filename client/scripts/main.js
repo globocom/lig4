@@ -65,6 +65,6 @@ function main () {
       setTimeout(rankingRunner, 2500);
     });
   }) ();
-};
+}
 
 document.addEventListener('DOMContentLoaded', main);
