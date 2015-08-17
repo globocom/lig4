@@ -3,8 +3,6 @@
 var vm = require('vm');
 var engine = require('./engine/game');
 
-if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev'
-
 function onFinish (result) {
   process.send(result);
   process.exit();
