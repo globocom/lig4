@@ -1,7 +1,6 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var config = require('../config');
 
 function disconnect () {
   mongoose.connection.close();
@@ -9,7 +8,7 @@ function disconnect () {
 }
 
 // connect to mongo
-mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT || config.database.uri, function (err) {
+mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
   if (err) {
     console.log(err);
     process.exit(0);

@@ -5,9 +5,10 @@ BOURBON=node_modules/bourbon/app/assets/stylesheets
 SASS=node_modules/node-sass/bin/node-sass
 VIGILIA=node_modules/vigilia/bin/vigilia
 WEBPACK=node_modules/webpack/bin/webpack.js
+PM2=node_modules/pm2/bin/pm2
 GIT=git
 
-.PHONY: run tsuru-publish test clean-client scripts-client styles-client watch-client test-client
+.PHONY: run stop logs test tsuru-publish clean-client scripts-client styles-client watch-client test-client
 
 # tsuru tasks
 
@@ -20,7 +21,13 @@ test:
 	$(MOCHA)
 
 run: build-client
-	$(NODE) app.js
+	$(PM2) start config/dev.json
+
+logs:
+	$(PM2) logs config/dev.json
+
+stop:
+	$(PM2) delete config/dev.json
 
 # client tasks
 

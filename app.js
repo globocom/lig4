@@ -1,13 +1,9 @@
 'use strict';
 
-// defaults
-if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
-
 // imports
 var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
-var config = require('./config');
 var session = require('./libs/session');
 
 // controllers
@@ -26,8 +22,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.set('config', config)
-
 // set midlewares
 app.use(session.setup(app));
 app.use(session.validate());
@@ -45,6 +39,6 @@ app.use('/api/player', playerController);
 app.use('/api/leaderboard', leaderboardController);
 
 // run app
-module.exports = app.listen(process.env.PORT || config.server.port, function () {
-  console.log('app listening at port %s', config.server.port);
+module.exports = app.listen(process.env.PORT, function () {
+  console.log('app listening at port %s', process.env.PORT);
 });
