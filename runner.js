@@ -1,7 +1,7 @@
 'use strict'
 
-if (!process.env.NODE_ENV) {
-  process.env.DBAAS_MONGODB_ENDPOINT = 'mongodb://localhost:27017/dev-lig4-api';
+if (!process.env.MONGODB_URI) {
+  process.env.MONGODB_URI = require('./config/dev.json').apps[0].env.MONGODB_URI;
 }
 
 // imports
@@ -55,7 +55,7 @@ function startBattle (callback) {
  */
 function runner(done) {
   console.log('Runner started!')
-  mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
+  mongoose.connect(process.env.MONGODB_URI, function (err) {
     startBattle(function () {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback

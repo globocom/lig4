@@ -5,7 +5,7 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 
 function setup (app) {
   var store = new MongoDBStore({
-    uri: process.env.DBAAS_MONGODB_ENDPOINT,
+    uri: process.env.MONGODB_URI,
     collection: 'lig4sessions'
   });
 

@@ -1,7 +1,7 @@
 'use strict'
 
-if (!process.env.NODE_ENV) {
-  process.env.DBAAS_MONGODB_ENDPOINT = 'mongodb://localhost:27017/dev-lig4-api';
+if (!process.env.MONGODB_URI) {
+  process.env.MONGODB_URI = require('./config/dev.json').apps[0].env.MONGODB_URI;
 }
 
 // imports
@@ -120,7 +120,7 @@ function newRound (callback) {
  */
 function scheduler (done) {
   console.log('Scheduler started!')
-  mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
+  mongoose.connect(process.env.MONGODB_URI, function (err) {
     newRound(function () {
       console.log('See you in 10 minutes. zzz ZZZ zzz...')
       if (done) done()
