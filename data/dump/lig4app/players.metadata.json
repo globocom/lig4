@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"lig4app.players"},{"v":1,"unique":true,"key":{"username":1},"name":"username_1","ns":"lig4app.players","background":true},{"v":1,"unique":true,"key":{"github":1},"name":"github_1","ns":"lig4app.players","background":true},{"v":1,"key":{"email":1},"name":"email_1","ns":"lig4app.players","background":true}]}

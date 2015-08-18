@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"lig4app.leaderboards"},{"v":1,"key":{"player":1},"name":"player_1","ns":"lig4app.leaderboards","background":true}]}
