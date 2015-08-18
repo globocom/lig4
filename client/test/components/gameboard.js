@@ -104,8 +104,8 @@ describe('GameBoard', function () {
 
     testGame.load(testGameMatch);
 
-    expect(homeNameElement.innerHTML).toBe(['#', homePlayer.position, ' ', homePlayer.name].join(''));
-    expect(guestNameElement.innerHTML).toBe([guestPlayer.name, ' #', guestPlayer.position].join(''));
+    expect(homeNameElement.innerHTML).toBe([homePlayer.name].join(''));
+    expect(guestNameElement.innerHTML).toBe([guestPlayer.name].join(''));
 
     expect(homeInfoElement.innerHTML).toBe([homePlayer.score, ' pontos'].join(''));
     expect(guestInfoElement.innerHTML).toBe([guestPlayer.score, ' pontos'].join(''));
