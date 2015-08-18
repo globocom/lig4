@@ -1,7 +1,8 @@
 'use strict'
 
 if (!process.env.DBAAS_MONGODB_ENDPOINT) {
-  process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json').apps[0].env.DBAAS_MONGODB_ENDPOINT;
+  process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json')
+    .apps[0].env.DBAAS_MONGODB_ENDPOINT;
 }
 
 // imports
@@ -17,21 +18,25 @@ var Player = require('./models/player')
  */
 function loadPlayers (callback) {
   var all = []
-  Player.find(function (err, players) {
-    if (err) process.exit(err)
-    players.forEach(function (player) {
-      all.push(player)
+  Player
+    .find()
+    .where('code')
+    .ne(null)
+    .exec(function (err, players) {
+      if (err) process.exit(err)
+      players.forEach(function (player) {
+        all.push(player);
+      })
+      console.log('Total of ' + all.length + ' players loaded.')
+      callback(all);
     })
-    console.log('Total of ' + all.length + ' players loaded.')
-    callback(all)
-  })
 }
 
 /**
  * Randomly sort an array.
  * @param {array} Array to sort.
  */
-function shuffleArray (array) {
+function shuffleArray(array) {
   console.log('Raffling games...')
   for (var i = array.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1))
@@ -47,7 +52,7 @@ function shuffleArray (array) {
  * @param {array} List of players.
  * @param {function} Function to be called at end.
  */
-function createMatches (players, callback) {
+function createMatches(players, callback) {
   console.log('Creating matches...')
     // total = players * (players - 1) / 2
   var matches = []
@@ -66,7 +71,7 @@ function createMatches (players, callback) {
  * Gets an identifier for this round.
  * @return {date} Returns a 10-minute truncated Date object.
  */
-function currentRound () {
+function currentRound() {
   // http://stackoverflow.com/questions/10789384
   var coeff = 1000 * 60 * 10
   var date = new Date()
@@ -79,7 +84,7 @@ function currentRound () {
  * @param {array} matches An array with pre-generated matches (in-memory).
  * @param {function} callback Function to be called at end.
  */
-function saveMatches (matches, callback) {
+function saveMatches(matches, callback) {
   console.log('Saving matches...')
   var bulk = []
   for (var m of matches) {
