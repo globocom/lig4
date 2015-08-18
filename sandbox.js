@@ -33,7 +33,7 @@ process.on('message', function (match) {
     process = module = require = null;
 
     var options = { timeout: 5000 }
-    var gameContext = { Engine: engine, players: {}, result: {} }
+    var gameContext = { Match: engine, players: {}, result: {}, id: 0 }
     vm.createContext(gameContext);
 
     for (var player of match.players) {
@@ -41,13 +41,14 @@ process.on('message', function (match) {
       vm.createContext(local);
       vm.runInContext(player.code, local, options);
       gameContext.players[player.username] = local.Player;
+      gameContext.id = match._id;
     };
 
     // TODO: validate if p1 and p2 arent null or undefined.
     vm.createContext(gameContext);
 
     var code = "\
-        var engine = new Engine();               \
+        var engine = new Match();                \
         for (var username in players) {          \
             var p = new players[username];       \
             p.username = username;               \
