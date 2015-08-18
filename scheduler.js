@@ -1,7 +1,7 @@
 'use strict'
 
-if (!process.env.MONGODB_URI) {
-  process.env.MONGODB_URI = require('./config/dev.json').apps[0].env.MONGODB_URI;
+if (!process.env.DBAAS_MONGODB_ENDPOINT) {
+  process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json').apps[0].env.DBAAS_MONGODB_ENDPOINT;
 }
 
 // imports
