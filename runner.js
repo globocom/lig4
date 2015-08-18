@@ -34,17 +34,16 @@ function startRound(callback) {
       pool.on('finish', function () {
         callback();
       });
-      pool.on('message', function (result) {
+      pool.on('message', function (resultMatch) {
 
         Match
           .findOne()
           .where('_id')
-          .equals(result.id)
+          .equals(resultMatch.id)
           .populate('players')
           .exec(function (err, match) {
-              match.result = result.match // ??
-              //match.save()
-              console.log(match)
+              match.result = resultMatch.result
+              match.save()
           });
       });
       for (var match of matches) {

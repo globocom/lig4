@@ -9,7 +9,6 @@ var MatchSchema = new mongoose.Schema({
     ref: 'Player'
   }],
   games: [Game.schema],
-  //result: [MatchResultSchema],
   round: {
     type: Date,
     required: true,
@@ -20,7 +19,8 @@ var MatchSchema = new mongoose.Schema({
     default: false
   },
   result: {
-    type: mongoose.Schema.Types.Mixed
+    type: mongoose.Schema.Types.Mixed,
+    default: ""
   }
 });
 
