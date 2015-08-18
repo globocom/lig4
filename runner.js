@@ -1,7 +1,8 @@
 'use strict'
 
 if (!process.env.DBAAS_MONGODB_ENDPOINT) {
-  process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json').apps[0].env.DBAAS_MONGODB_ENDPOINT;
+  process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json')
+    .apps[0].env.DBAAS_MONGODB_ENDPOINT;
 }
 
 // imports
@@ -16,7 +17,7 @@ var AsyncPool = require('./libs/process')
  * Access Match collection and starts a GameEngine for each match.
  * @param {function} callback Optional function to be called at end.
  */
-function startRound (callback) {
+function startRound(callback) {
 
   Match
     .find()
@@ -33,8 +34,18 @@ function startRound (callback) {
       pool.on('finish', function () {
         callback();
       });
-      pool.on('message', function (m) {
-        console.log("child sent ", m);
+      pool.on('message', function (result) {
+
+        Match
+          .findOne()
+          .where('_id')
+          .equals(result.id)
+          .populate('players')
+          .exec(function (err, match) {
+              match.result = result.match // ??
+              //match.save()
+              console.log(match)
+          });
       });
       for (var match of matches) {
         pool.add('./sandbox.js', match);

@@ -4,7 +4,10 @@ var mongoose = require('../libs/mongoose');
 var Game = require('./game');
 
 var MatchSchema = new mongoose.Schema({
-  players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }],
+  players: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player'
+  }],
   games: [Game.schema],
   //result: [MatchResultSchema],
   round: {
@@ -15,6 +18,9 @@ var MatchSchema = new mongoose.Schema({
   ack: {
     type: Boolean,
     default: false
+  },
+  result: {
+    type: mongoose.Schema.Types.Mixed
   }
 });
 

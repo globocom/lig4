@@ -10,7 +10,7 @@ function onFinish (result) {
     var boardPosition = logs[i];
     var boardCol = logs[i].move[0];
     var boardRow = logs[i].move[1];
-    
+
     boardPosition.sequence = false;
     for (var j = 0; j < sequences.length; j++) {
       var sequencePosition = sequences[j];
@@ -20,10 +20,11 @@ function onFinish (result) {
       if (boardCol == sequenceCol && boardRow == sequenceRow) {
         boardPosition.sequence = true;
         break;
-      }; 
+      };
     };
   };
 
+  process.send(result);
   process.exit();
 }
 
