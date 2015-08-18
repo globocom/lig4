@@ -10,6 +10,7 @@ var mongoose = require('mongoose')
 
 // models
 var Player = require('./models/player')
+var Leaderboard = require('./models/leaderboard')
 var Match = require('./models/match')
 var AsyncPool = require('./libs/process')
 
@@ -17,11 +18,9 @@ var AsyncPool = require('./libs/process')
  * Access Match collection and starts a GameEngine for each match.
  * @param {function} callback Optional function to be called at end.
  */
-function startRound (callback) {
+function startRound(callback) {
 
-
-
-    // TODO: Leaderboard!
+  Leaderboard.collection.remove();
 
   Match
     .find()
@@ -46,8 +45,13 @@ function startRound (callback) {
           .equals(resultMatch.id)
           .populate('players')
           .exec(function (err, match) {
-              match.result = resultMatch.result
-              match.save()
+            match.result = resultMatch.result
+            match.save(function (err) {
+
+              var leaderboard = new Leaderboard();
+              leaderboard.winner = match.result.winner
+
+            });
           });
       });
       for (var match of matches) {
