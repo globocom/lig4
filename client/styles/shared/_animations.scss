@@ -45,13 +45,13 @@
   }
 
   60% {
-    border: rem(0px) solid $gray-light;
+    border: rem(0px) solid $yellow-strong;
 
     @include transform(translateY(0));
   }
 
   100% {
-    border: rem(10px) solid $gray-light;
+    border: rem(10px) solid $yellow-strong;
 
     @include transform(translateY(0));
   }
@@ -63,13 +63,13 @@
   }
 
   60% {
-    border: rem(0px) solid $gray-light;
+    border: rem(0px) solid $yellow-strong;
 
     @include transform(translateY(0));
   }
 
   100% {
-    border: rem(10px) solid $gray-light;
+    border: rem(10px) solid $yellow-strong;
 
     @include transform(translateY(0));
   }
@@ -81,13 +81,13 @@
   }
 
   60% {
-    border: rem(0px) solid $gray-light;
+    border: rem(0px) solid $yellow-strong;
 
     @include transform(translateY(0));
   }
 
   100% {
-    border: rem(10px) solid $gray-light;
+    border: rem(10px) solid $yellow-strong;
 
     @include transform(translateY(0));
   }

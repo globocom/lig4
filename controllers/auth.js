@@ -3,6 +3,7 @@
 var express = require('express');
 var github = require('./../libs/github');
 var Response = require('./../libs/response')
+var Player = require('./../models/player');
 
 var router = express.Router();
 
@@ -20,7 +21,26 @@ router.get('/callback', function (req, res, next) {
       if (err) return Response.send(500, 'ERROR', err, res, next);
 
       req.session.user = user;
-      res.redirect('/editor');
+
+      Player
+        .findOne()
+        .where('username')
+        .equals(user.login)
+        .exec(function (err, player) {
+          if (player) return res.redirect('/playground');
+
+          new Player({
+            username: user.login,
+            github: user.html_url,
+            email: user.email,
+            registration: '',
+            code: ' ',
+          }).save(function (err) {
+            if (err) return res.redirect('/');
+
+            res.redirect('/playground');
+          });
+        });
     });
   });
 });

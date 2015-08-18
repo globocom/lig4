@@ -21,7 +21,6 @@ describe('API routes testing', function () {
     username: 'api_username_1',
     github: 'https://dummy.uri/api_username_1',
     email: 'dummy@dummies.net',
-    registration: 1234,
     code: 'console.log();'
   };
 

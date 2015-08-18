@@ -2,8 +2,8 @@
   width: 100%;
   margin: rem(35px) 0;
   padding: rem(35px) 0;
-  border-top: 1px solid $gray;
-  border-bottom: 1px solid $gray;
+  border-top: 1px solid $black;
+  border-bottom: 1px solid $black;
 }
 
 .game-board__players {
@@ -30,10 +30,11 @@
     content: " ";
     position: absolute;
     left: 0;
+    top: 2px;
     width: rem(18px);
     height: rem(18px);
     border-radius: rem(18px);
-    background-color: $blue;
+    background-color: $black;
   }
 }
 
@@ -59,14 +60,14 @@
 .game-board__player-name {
   color: $black;
   text-transform: uppercase;
-  font-size: rem(18px);
-  line-height: rem(18px);
+  font-size: rem(22px);
+  line-height: rem(22px);
   font-weight: 700;
   display: block;
 }
 
 .game-board__player-info {
-  color: $gray-strong;
+  color: $black;
   text-transform: uppercase;
   font-size: rem(16px);
   font-weight: 300;
@@ -95,7 +96,7 @@
   width: 11.25%;
   margin: 1.5%;
   float: left;
-  border: 1px solid $gray;
+  background-color: $yellow-strong;
   border-radius: 100%;
   box-sizing: border-box;
 
@@ -117,7 +118,7 @@
     left: 0;
     box-sizing: border-box;
     border-radius: 100%;
-    border: rem(10px) solid white;
+    border: rem(10px) solid $yellow-strong;
 
     @include transition(all, .5s);
   }
@@ -127,7 +128,7 @@
   }
 
   &.home-play {
-    border-color: $blue;
+    border-color: $black;
   }
 
   &.guest-play::before,
@@ -139,7 +140,7 @@
   }
 
   &.home-play::before {
-    background-color: $blue;
+    background-color: $black;
   }
 }
 

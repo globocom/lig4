@@ -38,3 +38,8 @@ button {
   cursor: pointer;
   outline: 0;
 }
+
+a, a:active {
+  color: inherit;
+  text-decoration: none;
+}

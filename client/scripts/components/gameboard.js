@@ -88,9 +88,9 @@ GameBoard.prototype.load = function (match) {
   this.sequence = match.sequence;
 
   // set players html
-  players.homeName.innerHTML = '#' + home.position + ' ' + home.name;
+  players.homeName.innerHTML = home.name;
   players.homeInfo.innerHTML = home.score + ' pontos';
-  players.guestName.innerHTML =  guest.name + ' #' + guest.position;
+  players.guestName.innerHTML = guest.name;
   players.guestInfo.innerHTML = guest.score + ' pontos';
 
   // reset container

@@ -39,7 +39,7 @@ var matchesLog = [{
 
 // functions
 function navigationHandler (e) {
-  var button  = e.currentTarget;
+  var button = e.currentTarget;
   var sectionName = button.getAttribute('data-section');
   var sectionElement = document.getElementById(sectionName);
 

@@ -20,14 +20,10 @@ var PlayerSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  registration: {
-    type: Number,
-    required: true
-  },
   code: {
     type: String,
     required: true
-  }
+  },
 });
 
 module.exports = mongoose.model('Player', PlayerSchema);

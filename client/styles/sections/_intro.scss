@@ -26,6 +26,10 @@
   @include transform(translateY(-50%));
 }
 
+.intro .subtitle {
+  color: $black;
+}
+
 .intro .title,
 .intro .subtitle,
 .intro .description {

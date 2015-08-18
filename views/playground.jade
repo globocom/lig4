@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+    title='Ligue Quatro - Playground'
+
+    meta(charset='UTF-8')
+    meta(name='viewport', content='initial-scale=1, width=device-width')
+
+    link(href='//fonts.googleapis.com/css?family=Open+Sans:400,300,700', rel='stylesheet')
+    link(href='styles/playground.css', rel='stylesheet')
+
+  body
+    section(id='playground' class='section playground')
+      aside(class='sidebar playground-sidebar')
+        h1(class='title')
+          | Ligue
+          br
+          | Quatro
+
+        h3(class='subtitle')
+          | Playground
+
+        p(class='description')
+          b
+            | #{ user.login }
+            a(href='/auth/logout' class='playground-logout')=' (sair)'
+          | , lorem ipsum dolor sit amet,
+          | sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+        div(class='playground-actions')
+          button(id='test-algorithm-button' class='button')
+            | Testar
+          button(id='submit-algorithm-button' class='button')
+            | Submeter
+
+      textarea(id='playground-textarea' data-username='#{ user.login }' placeholder='Escreva o seu algoritmo...' spellcheck='false' class='playground-editor')
+
+      div(id="playground-runner" class="playground-monitor" data-interval=".25" data-rows="6" data-columns="7" data-players="true")
+
+    script(src='scripts/playground.js')

@@ -31,6 +31,9 @@ test:
 run: build-client
 	$(PM2) start config/dev.json
 
+run-dev:
+	NODE_ENV=development PORT=9999 DBAAS_MONGODB_ENDPOINT=mongodb://localhost:27017/dev-lig4-api SESSION_SECRET=dummy GITHUB_ID=bc33392c8cafa28733ad GITHUB_SECRET=30ddb4561426c4bb4448a522039a2c58cf0c0d2b $(NODE) app.js
+
 logs:
 	$(PM2) logs config/dev.json
 
@@ -57,11 +60,11 @@ tree-client:
 
 scripts-client: tree-client
 	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js
-	$(WEBPACK) --bail -p client/scripts/editor.js public/scripts/editor.js
+	$(WEBPACK) --bail -p client/scripts/playground.js public/scripts/playground.js
 
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css
-	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/editor.scss public/styles/editor.css
+	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/playground.scss public/styles/playground.css
 
 test-client:
 	$(KARMA) start client/test/config.js

@@ -13,7 +13,7 @@ var authController = require('./controllers/auth');
 var gameController = require('./controllers/game');
 var leaderboardController = require('./controllers/leaderboard');
 var playerController = require('./controllers/player');
-var editorController = require('./controllers/editor');
+var playgroundController = require('./controllers/playground');
 
 // create express application
 var app = express();
@@ -23,16 +23,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // set midlewares
-app.use(session.setup(app));
-app.use(session.validate());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session.setup(app));
+app.use(session.validate());
 
 // set controllers && handlers
 app.use('/', indexController);
 app.use('/auth', authController);
-app.use('/editor', editorController);
+app.use('/playground', playgroundController);
 
 app.use('/api/game', gameController);
 app.use('/api/player', playerController);

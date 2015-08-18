@@ -24,7 +24,7 @@ function topPosition (element) {
   return element.getBoundingClientRect().top + window.pageYOffset;
 }
 
-module.exports = function scroll (element, duration) {
+function scroll (element, duration) {
   var position = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0);
   var endPosition = topPosition(element);
   var timer = Date.now();
@@ -44,3 +44,5 @@ module.exports = function scroll (element, duration) {
 
   movePosition();
 };
+
+module.exports = scroll;

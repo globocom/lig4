@@ -27,7 +27,7 @@ function validate () {
     if (req.session.access_token === undefined) {
       if (req.url.indexOf('/api') > -1) {
         return res.sendStatus(401);
-      } else if (req.url.indexOf('/editor') > -1) {
+      } else if (req.url.indexOf('/playground') > -1) {
         return res.redirect('/auth/login');
       }
     }

@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   min-height: 100%;
+  background-color: $yellow;
 
   @include animation(fadeIn 2s);
 }
@@ -18,6 +19,7 @@
 
 .navigation {
   text-align: center;
+  margin: rem(40px) 0 rem(35px) 0;
 }
 
 .code {
