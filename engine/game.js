@@ -2,13 +2,9 @@
 
 var Board = require('./board');
 
-function Game() {
+function Game(player1, player2) {
   this.board = new Board();
-  this.players = [];
-}
-
-Game.prototype.addPlayer = function (player) {
-  this.players.push(player)
+  this.players = [player1, player2];
 }
 
 Game.status = {INVALID_MOVE: "INVALID_MOVE",
@@ -16,10 +12,6 @@ Game.status = {INVALID_MOVE: "INVALID_MOVE",
 
 Game.prototype.run = function () {
   var result = {winner: null, reason: null, logs: [], sequence: [] };
-
-  // FIXME: force player chars or when instantiating?
-  this.players[0].char = 'x'
-  this.players[1].char = 'o'
 
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
