@@ -1,29 +1,9 @@
 'use strict'
 
 var vm = require('vm');
-var engine = require('./engine/game');
+var engine = require('./engine/match');
 
 function onFinish (result) {
-  var sequences = result.match.sequence;
-  var logs = result.match.logs;
-  for (var i = 0; i < logs.length; i++) {
-    var boardPosition = logs[i];
-    var boardCol = logs[i].move[0];
-    var boardRow = logs[i].move[1];
-
-    boardPosition.sequence = false;
-    for (var j = 0; j < sequences.length; j++) {
-      var sequencePosition = sequences[j];
-      var sequenceCol = sequencePosition[0];
-      var sequenceRow = sequencePosition[1];
-
-      if (boardCol == sequenceCol && boardRow == sequenceRow) {
-        boardPosition.sequence = true;
-        break;
-      };
-    };
-  };
-
   process.send(result);
   process.exit();
 }
@@ -55,7 +35,8 @@ process.on('message', function (match) {
             p.username = username;               \
             engine.addPlayer(p);                 \
         }                                        \
-        var match = engine.run();                "
+        engine.run();                            \
+        var result = engine.getResults();        "
 
     vm.runInContext(code, gameContext, options);
     onFinish(gameContext);
