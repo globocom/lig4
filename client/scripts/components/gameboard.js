@@ -1,6 +1,6 @@
 'use strict';
 
-function GameBoard (element) {
+function GameBoard(element) {
   var container = this.container = element;
   var options = this.options = {};
   var board = this.board = {};
@@ -90,7 +90,7 @@ GameBoard.prototype.load = function (match) {
   // set players html
   players.homeName.innerHTML = '#' + home.position + ' ' + home.name;
   players.homeInfo.innerHTML = home.score + ' pontos';
-  players.guestName.innerHTML =  guest.name + ' #' + guest.position;
+  players.guestName.innerHTML = guest.name + ' #' + guest.position;
   players.guestInfo.innerHTML = guest.score + ' pontos';
 
   // reset container
@@ -117,15 +117,17 @@ GameBoard.prototype.play = function (callback) {
   if (callback) this.callback = callback;
 
   // apply current move
-  this.applyPosition(player, column, row, sequence);
+  this.applyPosition(player, column, row);
 
   // increase move
   this.move++;
 
   // if it's not last: play
-  if (this.moves[this.move]) {
+  if (this.moves[this.move]) 
     return this.timer = setTimeout(this.play.bind(this), this.options.interval);
-  }
+
+  // after last move ...
+  this.highlightSequence(this.sequence || []);
 
   // show sequence
   this.container.className += ' game-board--finished';
@@ -134,14 +136,33 @@ GameBoard.prototype.play = function (callback) {
   if (this.callback) this.callback(this);
 }
 
-GameBoard.prototype.applyPosition = function (player, column, row, sequence) {
+
+GameBoard.prototype.highlightSequence = function (sequence) {
+  var positions = this.board.positions;
+
+  // foreach x and y, search for this item and apply a new css class.
+  for (var index in sequence) {
+    var position = 0;
+    var item = sequence[index];
+
+    // calculate row position
+    for (var i = -1; i < item[1]; i++) {
+      position += this.options.columns;
+    }
+
+    // find column position
+    position = position - (this.options.columns - item[0]);
+
+    // apply class
+    positions[position].className += ' game-board__position--sequence';
+  }
+}
+
+GameBoard.prototype.applyPosition = function (player, column, row) {
   var positions = this.board.positions;
   var position = 0;
   var length = positions.length;
   var className = 'game-board__position ' + player;
-
-  // set sequence if it's
-  if (sequence) className += ' game-board__position--sequence';
 
   // calculate row position
   for (var i = -1; i < row; i++) {

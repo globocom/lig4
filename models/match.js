@@ -1,12 +1,12 @@
 'use strict'
 
 var mongoose = require('../libs/mongoose');
-var Game = require('./game');
 
 var MatchSchema = new mongoose.Schema({
-  players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player' }],
-  games: [Game.schema],
-  //result: [MatchResultSchema],
+  players: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Player'
+  }],
   round: {
     type: Date,
     required: true,
@@ -15,6 +15,10 @@ var MatchSchema = new mongoose.Schema({
   ack: {
     type: Boolean,
     default: false
+  },
+  result: {
+    type: mongoose.Schema.Types.Mixed,
+    default: null
   }
 });
 
