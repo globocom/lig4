@@ -1,10 +1,10 @@
 'use strict';
 
 function SequentialPlayer(name) {
-  this.name = name || "Sequential";
+  this.username = name || "Sequential";
 }
 SequentialPlayer.prototype.toString = function() {
-  return this.name;
+  return this.username;
 };
 
 SequentialPlayer.prototype.move = function(availablePositions) {

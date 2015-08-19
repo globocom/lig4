@@ -15,8 +15,10 @@ Match.prototype.addPlayer = function (player) {
 Match.prototype.run = function () {
   this.players[0].char = 'x';
   this.players[1].char = 'o';
-  this.players[0].wins = 0;
-  this.players[1].wins = 0;
+  this.players[0].gamesFor = 0;
+  this.players[1].gamesFor = 0;
+  this.players[0].gamesAgainst = 0;
+  this.players[1].gamesAgainst = 0;
 
   var game, result, homePlayer, awayPlayer;
 
@@ -27,19 +29,48 @@ Match.prototype.run = function () {
     game = new Game(homePlayer, awayPlayer);
     result = game.run();
 
-    if (result.winner) result.winner.wins += 1;
-
     this.games.push(result);
   }
 
+  this.checkResult();
   this.ran = true;
+}
+
+Match.prototype.getWinner = function() {
+
+    if (this.players[0].gamesFor > this.players[1].gamesFor) {
+        return this.players[0];
+    }
+    if (this.players[0].gamesFor < this.players[1].gamesFor){
+        return this.players[1];
+    }
+    return null;
+}
+
+Match.prototype.checkResult = function () {
+  for (var game of this.games) {
+    var player1 = this.players[0];
+    var player2 = this.players[1];
+    if (game.winner === undefined) {
+      continue;
+    }
+    if (game.winner.username === player1.username) {
+      player1.gamesFor += 1;
+      player2.gamesAgainst += 1;
+    } else {
+      player2.gamesFor += 1;
+      player1.gamesAgainst += 1;
+    }
+  }
+  return this.games;
 }
 
 Match.prototype.getResults = function () {
   if (this.ran === false) return {};
 
   return {
-    games: this.games
+    games: this.games,
+    winner: this.getWinner()
   }
 }
 

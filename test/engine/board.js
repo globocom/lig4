@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Board = require('../board');
+    Board = require('../../engine/board');
 
 describe('Board', function() {
   describe('initialize', function () {
