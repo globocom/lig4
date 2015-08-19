@@ -5,46 +5,6 @@ var GameBoard = require('./components/gameboard');
 var scrollToSection = require('./libs/scroll');
 var api = require('./libs/api');
 
-// dummy matches
-var matchesLog = [{
-    players: [{
-      name: 'evandroeisinger',
-      position: 1,
-      score: 120,
-    }, {
-      name: 'jonathanprates',
-      position: 2,
-      score: 110,
-    }],
-    moves: [
-      [0, 0, 5], [1, 1, 5], [0, 2, 5], [1, 3, 5], [0, 4, 5], [1, 5, 5],
-      [0, 6, 5], [0, 0, 4], [1, 1, 4], [1, 2, 4], [1, 3, 4], [1, 4, 4],
-  ],
-  sequence: [
-      [1, 4], [2, 4], [3, 4], [4, 4]
-  ]
- }, {
-    players: [{
-      name: 'jonathanprates',
-      position: 2,
-      score: 110,
-    }, {
-      name: 'lucastephanou',
-      position: 3,
-      score: 100,
-    }],
-    moves: [
-      [0, 2, 5], [1, 1, 5], [0, 0, 5], [1, 3, 5], [0, 6, 5], [1, 5, 5], [0, 4, 5],
-      [1, 0, 4], [0, 1, 4], [1, 2, 4], [1, 3, 4], [0, 4, 4], [1, 5, 4], [0, 6, 4],
-      [0, 0, 3], [1, 1, 3], [1, 2, 3], [1, 3, 3], [0, 4, 3], [1, 5, 3], [0, 6, 3],
-      [0, 0, 2], [1, 1, 2], [0, 2, 2], [0, 3, 2], [1, 4, 2],
-    ],
-    sequence: [
-      [1, 5], [2, 4], [3, 3], [4, 2]
-    ]
-  }];
-
-
 // functions
 function navigationHandler (e) {
   var button = e.currentTarget;
