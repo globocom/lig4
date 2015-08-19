@@ -12,7 +12,7 @@
   margin: 0 rem(15px);
   box-sizing: border-box;
 
-  @include transition(background-color .5s ease-in-out);
+  @include transition(background-color .5s ease-in-out, opacity .5s);
 
   @media screen and (max-width: 420px) {
     margin: rem(10px);
@@ -20,6 +20,12 @@
 }
 
 .button:hover, .button--black {
+  color: white;
+  background-color: $black;
+}
+
+.button:disabled {
+  opacity: .65;
   color: white;
   background-color: $black;
 }

@@ -32,7 +32,6 @@ Board.prototype.getAvailableColumns = function() {
   var positions = [];
 
   for ( var column in this.matrix ) {
-
     if (this.matrix[column].lastIndexOf(null) >=0 )
       positions.push(parseInt(column));
   }

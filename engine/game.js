@@ -8,9 +8,9 @@ function Game(player1, player2) {
 }
 
 Game.status = {
-  INVALID_MOVE: "INVALID_MOVE",
-  LIG4: "LIG4",
-  DRAW: "DRAW"
+  INVALID_MOVE: 'INVALID_MOVE',
+  LIG4: 'LIG4',
+  DRAW: 'DRAW'
 };
 
 Game.prototype.run = function () {

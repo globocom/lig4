@@ -45,8 +45,13 @@ function startRound(callback) {
           .equals(resultMatch.id)
           .populate('players')
           .exec(function (err, match) {
+
+            if (err) return console.error(err);
+
             match.result = resultMatch.result
             match.save(function (err) {
+
+              if (err) return console.error(err);
 
               for (var player of match.players) {
                 var playerScore = match.result.scores[player.username];
@@ -82,7 +87,7 @@ function startRound(callback) {
                       upsert: true
                     },
                     function (err, leaderboard) {
-                      return
+                      if (err) return console.error(err);
                     });
               }
             });
