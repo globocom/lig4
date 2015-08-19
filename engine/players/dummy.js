@@ -1,10 +1,10 @@
 'use strict';
 
 function DummyPlayer(name) {
-  this.name = name || "Dummy";
+  this.username = name || "Dummy";
 }
 DummyPlayer.prototype.toString = function() {
-  return this.name;
+  return this.username;
 };
 
 DummyPlayer.prototype.move = function(availablePositions) {
