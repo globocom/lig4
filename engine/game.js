@@ -2,44 +2,50 @@
 
 var Board = require('./board');
 
-function Game() {
+function Game(player1, player2) {
   this.board = new Board();
-  this.players = [];
+  this.players = [player1, player2];
 }
 
-Game.prototype.addPlayer = function (player) {
-  this.players.push(player)
-}
+Game.status = {
+  INVALID_MOVE: "INVALID_MOVE",
+          LIG4: "LIG4",
+          DRAW: "DRAW" };
 
 Game.prototype.run = function () {
-  var winner = null;
-
-  // FIXME: force player chars or when instantiating?
-  this.players[0].char = 'x'
-  this.players[1].char = 'o'
+  var result = {winner: null, reason: null, logs: [], sequence: [] };
 
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
     var columns = this.board.getAvailableColumns();
     var column = currentPlayer.move(columns);
 
-    while (columns.indexOf(column) < 0) {
-      column = currentPlayer.move(columns);
-    }
+    if (columns.indexOf(column) < 0) {
+      result.winner = this.players[(play+1) % 2];
+      result.reason = Game.status.INVALID_MOVE;
+      break;
+    };
 
-    this.board.push(currentPlayer, column);
+    var move = this.board.push(currentPlayer, column);
+    result.logs.push({username: currentPlayer.username,
+                      move: move});
 
-    if (this.matchAnalyzer()) {
-      winner = currentPlayer
+    var matchSequence = this.matchAnalyzer();
+    if (matchSequence) {
+      result.winner = currentPlayer;
+      result.reason = Game.status.LIG4;
+      result.sequence = matchSequence;
       break;
     }
   };
 
-  return winner;
+  if ( !result.winner ) result.reason = Game.status.DRAW;
+
+  return result;
 };
 
 Game.prototype.matchAnalyzer = function () {
-  var match = false;
+  var match = null;
 
   for (var column = 0; column < this.board.width; column++) {
     var columns = this.board.matrix[column];
@@ -59,7 +65,8 @@ Game.prototype.matchAnalyzer = function () {
       if (columns[row + 1] == position &&
         columns[row + 2] == position &&
         columns[row + 3] == position) {
-        match = true;
+        match = [[column, row], [column, row+1],
+                 [column, row+2], [column, row+3]]
         break;
       }
 
@@ -69,8 +76,8 @@ Game.prototype.matchAnalyzer = function () {
         this.board.matrix[column + 1][row] == position &&
         this.board.matrix[column + 2][row] == position &&
         this.board.matrix[column + 3][row] == position) {
-
-        match = true;
+        match = [[column, row], [column+1, row],
+                 [column+2, row], [column+3, row]]
         break;
       }
 
@@ -80,8 +87,8 @@ Game.prototype.matchAnalyzer = function () {
         this.board.matrix[column + 1][row + 1] == position &&
         this.board.matrix[column + 2][row + 2] == position &&
         this.board.matrix[column + 3][row + 3] == position) {
-
-        match = true;
+        match = [[column, row], [column+1, row+1],
+                 [column+2, row+2], [column+3, row+3]]
         break;
       }
       // diagonal left
@@ -90,8 +97,8 @@ Game.prototype.matchAnalyzer = function () {
         this.board.matrix[column + 1][row - 1] == position &&
         this.board.matrix[column + 2][row - 2] == position &&
         this.board.matrix[column + 3][row - 3] == position) {
-
-        match = true;
+        match = [[column, row], [column+1, row-1],
+                 [column+2, row-2], [column+3, row-3]]
         break;
       }
 

@@ -9,6 +9,9 @@ var Response = require('./../libs/response')
 
 // POST in /api/player
 router.post('/', function (req, res, next) {
+
+  // do we really need a POST method?
+
   var player = new Player(req.body)
 
   if (player.username !== req.session.user.login) {
@@ -42,7 +45,6 @@ router.get('/:username', function (req, res, next) {
 
 // PUT in /api/player/:username
 router.put('/:username', function (req, res, next) {
-
   if (req.params.username !== req.session.user.login) {
     return Response.send(400, 'BAD_REQUEST', req.body, res, next);
   }
@@ -52,7 +54,8 @@ router.put('/:username', function (req, res, next) {
     .where('username')
     .equals(req.session.user.login)
     .exec(function (err, player) {
-      if (!player) return res.sendStatus(204);
+
+      if (!player) player = new Player(req.body); // first access
       if (err) return Response.send(500, 'ERROR', err, res, next);
 
       player.code = req.body.code;
