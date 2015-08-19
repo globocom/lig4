@@ -73,6 +73,13 @@ function testHandler (e) {
     }
 
     // show gameboard render
+    console.log('Ganhou: ' + data.winner.username);
+    console.log('Movimentos:', data.moves);
+    console.log('Sequencia:', data.sequence);
+    testButton.innerHTML = 'Testar';
+    testButton.disabled = false;
+
+    alert('Olhe o seu console: W.I.P');
   });
 }
 

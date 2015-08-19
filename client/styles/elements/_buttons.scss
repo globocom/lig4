@@ -26,6 +26,8 @@
 
 .button:disabled {
   opacity: .65;
+  color: white;
+  background-color: $black;
 }
 
 .block-button {
