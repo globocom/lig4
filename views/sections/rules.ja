@@ -1,0 +1,67 @@
+section(id='rules' class='section rules')
+  div(class='wrapper')
+    h1(class='title') Regulamento
+
+    p(class='description')
+      | Ligue Quatro é um torneio de codificação com objetivo de criar uma forma
+      | divertida de promover Javascript.
+
+      | O torneio sera uma disputa entre códigos submetidos pelos participantes, que
+      | jogam uma versão virtual do jogo de tabuleiro conhecido como "Ligue
+      | Quatro"/"Connect Four"  6x7.
+      | Em cada movimento, um jogador coloca sua peça em uma das colunas e esta cai
+      | até o atingir o topo da pilha ou a ultima linha. Mais informações
+      | https://pt.wikipedia.org/wiki/Lig_4
+
+      | A vitória neste jogo de tabuleiro é obtida quando 4 peças são alinhadas na
+      | horizontal, vertical ou diagonal. É possível há ocorrência de empates.
+
+      | O sistema de disputa é similar a um campeonato de pontos corridos, todos os
+      | participantes disputam "Matches" com todos os outros participantes.
+
+      | Cada "Match" significa dez "Games" disputados entre os códigos. Dos dez
+      | games, cada código inicia 5 vezes e nas outras 5 é o oponente. Exemplo: Uma
+      | "match" entre Fulano vs Ciclano, pode acabar com vitória por 8x2, onde o
+      | Fulano teve 8 vitórias entre os 10 "games" disputados e o Ciclano teve 2. É
+      | possível ocorrer empates, tanto no "game", onde nenhum código obteve vitória
+      | e todas as peças foram colocadas e também na "match" caso o número de
+      | vitórias seja igual.
+
+      | Concluída a "Match", o placar final sera computado na tabela do torneio,
+      | onde uma vitória na Match representa 3 pontos, empate 1 ponto e derrota 0
+      | pontos. O "game" representará gols, logo uma "Match" finalizada Fulano 8 x 2
+      | Ciclano, irá computar 3 pontos para Fulano, 0 para ciclano. Sendo 8
+      | contabilizados pró Fulano, 2 para Ciclano, conforme tabelas de classificação
+      | de campeonatos de futebol.
+
+      | O vencedor do torneio será aquele que ao final de todas as partidas jogadas,
+      | estiver com mais pontos. Em caso de igualdade na pontuação, são critérios de
+      | desempate: 1) mais vitórias, 2) melhor saldo de gols, 3) mais gols pró, 4)
+      | confronto direto.
+
+      | Em caso de dois ou mais participantes empatarem em todos os critérios, sera
+      | realizado um sorteio para definir o campeão do torneio.
+
+      | Todo participante poderá submeter código múltiplas vezes, no entanto cada
+      | submissão irá substituir a anterior. Quando isto é feito, todas as partidas
+      | anteriores serão rodadas novamente, independente do resultado anterior. O
+      | intuito é que o participante possa ao longo do torneio evoluir sua
+      | implementação.
+
+      | A organização do tornerio irá averiguar que as submissões sejam honestas e
+      | respeitem a esportividade do torneio. Qualquer tentativa de burlar o sistema
+      | do torneio, submissões, classificação ou qualquer outro meio considero
+      | antidesportivo ira acarretar na desclassicação do participanente
+      | respónsavel. Reforçamos o intuito educativo, esportivo do torneio e respeito
+      | aos demais participantes.
+
+      | O torneio aceitará submissões  de código durante parte do tempo da BrazilJS
+      | 2015, com abertura para submissões dia 21 de Agosto de 2015 ao 12:00 e
+      | fechamento no dia 22 de Agosto de 2015 as 16h.
+
+      | Quando do fechamento das submissões, a classificação deixará de aparecer no
+      | stand e no site, para que a organização roda as ultimas partidas, confira os
+      | resultados e possa divulgar o vencedor no encerramento do evento.
+
+      | O prêmio ao vencedor é um e-reader  Amazon Kindle Paperwhite, que sera
+      | entregue ao final do evento.
