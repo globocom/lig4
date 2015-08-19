@@ -19,7 +19,7 @@
   }
 }
 
-.button:hover {
+.button:hover, .button--black {
   color: white;
   background-color: $black;
 }

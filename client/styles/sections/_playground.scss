@@ -53,3 +53,11 @@
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   border-left: rem(300px) solid $yellow;
 }
+
+.playground__reset-button {
+  position: fixed;
+  bottom: rem(35px);
+  right: rem(35px);
+  z-index: 2;
+  background-color: white;
+}

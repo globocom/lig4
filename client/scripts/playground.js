@@ -8,6 +8,7 @@ var Algorithm = require('./libs/algorithm');
 // elements and vars
 var testButton;
 var submitButton;
+var resetButtom;
 var playgroundTextarea;
 var playgroundRunner;
 var playgroundTemplate;
@@ -35,6 +36,12 @@ function testHandler (e) {
   // player.algorithm.play();
 }
 
+function resetHandler (e) {
+  e.preventDefault();
+
+  playgroundTextarea.value = playgroundTemplate;
+}
+
 function submitHandler (e) {
   e.preventDefault();
 
@@ -50,6 +57,7 @@ function submitHandler (e) {
 function playground () {
   testButton = document.getElementById('test-algorithm-button');
   submitButton = document.getElementById('submit-algorithm-button');
+  resetButtom = document.getElementById('reset-algorithm-button');
   playgroundTextarea = document.getElementById('playground-textarea');
   playgroundRunner = document.getElementById('playground-runner');
 
@@ -77,6 +85,8 @@ function playground () {
   // set listeners
   testButton.addEventListener('click', testHandler);
   submitButton.addEventListener('click', submitHandler);
+  console.log(resetButtom);
+  resetButtom.addEventListener('click', resetHandler);
 
   // load player algorithm
   api('/player/' + playgroundTextarea.getAttribute('data-username')).get(loadPlayerHandler);

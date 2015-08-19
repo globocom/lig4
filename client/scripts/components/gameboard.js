@@ -90,11 +90,7 @@ GameBoard.prototype.load = function (match) {
   // set players html
   players.homeName.innerHTML = home.name;
   players.homeInfo.innerHTML = home.score + ' pontos';
-<<<<<<< HEAD
   players.guestName.innerHTML = guest.name;
-=======
-  players.guestName.innerHTML = guest.name + ' #' + guest.position;
->>>>>>> c29fdadff41f17c0c5482f646742a1b49dc7d690
   players.guestInfo.innerHTML = guest.score + ' pontos';
 
   // reset container
@@ -127,7 +123,7 @@ GameBoard.prototype.play = function (callback) {
   this.move++;
 
   // if it's not last: play
-  if (this.moves[this.move]) 
+  if (this.moves[this.move])
     return this.timer = setTimeout(this.play.bind(this), this.options.interval);
 
   // after last move ...

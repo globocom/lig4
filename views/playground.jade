@@ -21,17 +21,25 @@ html
           | Playground
 
         p(class='description')
+          | Olá
           b
-            | #{ user.login }
-            a(href='/auth/logout' class='playground-logout')=' (sair)'
-          | , lorem ipsum dolor sit amet,
-          | sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            |  #{ user.login }
+            a(href='/auth/logout' class='playground-logout')=' (sair), '
+          | ao salvar você irá enviar/atualizar o seu algoritmo para o desafio.
+
+        //-   | , neste editor você poderá desenvolver o seu algoritmo.
+
+        //- p(class='description')
+        //-   | Ao salvar você irá atualizar o seu algoritmo no desafio.
 
         div(class='playground-actions')
           button(id='test-algorithm-button' class='button')
             | Testar
-          button(id='submit-algorithm-button' class='button')
-            | Submeter
+          button(id='submit-algorithm-button' class='button button--black')
+            | Salvar
+
+      button(id='reset-algorithm-button' class='button playground__reset-button')
+        | Resetar
 
       textarea(id='playground-textarea' data-username='#{ user.login }' placeholder='Escreva o seu algoritmo...' spellcheck='false' class='playground-editor')
 
