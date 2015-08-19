@@ -4,6 +4,7 @@
 var api = require('./libs/api');
 var Editor = require('./libs/editor');
 var Algorithm = require('./libs/algorithm');
+var Game = require('../../engine/game');
 
 // elements and vars
 var testButton;
@@ -16,7 +17,18 @@ var player;
 
 // functions
 
-function loadPlayerHandler(_player, status) {
+function RandomAlgorithm () {
+  this.move = function(availablePositions) {
+    var index = Math.round((availablePositions.length - 1) * Math.random());
+
+    return availablePositions[index];
+  };
+
+  this.char = 'R';
+  this.username = 'RandomAlgorithm';
+}
+
+function loadPlayerHandler (_player, status) {
   player = _player;
 
   if (!player.code) {
@@ -26,14 +38,42 @@ function loadPlayerHandler(_player, status) {
   playgroundTextarea.value = player.code;
 }
 
+function testAlgorithm (callback) {
+  var game = null;
+  var result = null;
+
+  try {
+    player.algorithm = new Algorithm(playgroundTextarea.value);
+    player.algorithm.username = 'PlayerAlgorithm';
+    player.algorithm.char = 'P';
+
+    game = new Game(player.algorithm, new RandomAlgorithm);
+    result = game.run();
+
+    callback(false, result);
+  } catch (error) {
+    callback(true, error);
+
+    throw error;
+  }
+}
+
 function testHandler (e) {
   e.preventDefault();
 
-  player.algorithm = new Algorithm(playgroundTextarea.value);
-  player.algorithm.validate();
+  testButton.innerHTML = 'Testando...'
+  testButton.disabled = true;
 
-  // get logs from execute player algorithm agaisnt randon algorithm
-  // player.algorithm.play();
+  testAlgorithm(function (err, data) {
+    if (err) {
+      testButton.innerHTML = 'Testar';
+      testButton.disabled = false;
+
+      return alert(data);
+    }
+
+    // show gameboard render
+  });
 }
 
 function resetHandler (e) {
@@ -45,11 +85,31 @@ function resetHandler (e) {
 function submitHandler (e) {
   e.preventDefault();
 
-  // put player algorithm
-  api('/player/' + player.username).put({
-    code: playgroundTextarea.value
-  }, function (res, status) {
-    console.log(res, status);
+  testButton.disabled = true;
+  submitButton.disabled = true;
+  submitButton.innerHTML = 'Salvando...';
+
+  testAlgorithm(function (err, data) {
+    if (err) {
+      testButton.disabled = false;
+      submitButton.innerHTML = 'Salvar';
+      submitButton.disabled = false;
+
+      return alert(data);
+    }
+
+    // save player algorithm
+    api('/player/' + player.username).put({
+      code: playgroundTextarea.value
+    }, function () {
+      testButton.disabled = false;
+      submitButton.disabled = false;
+      submitButton.innerHTML = 'Salvo c/ sucesso!';
+
+      setTimeout(function () {
+        submitButton.innerHTML = 'Salvar';
+      }, 2500);
+    });
   });
 }
 
@@ -61,23 +121,14 @@ function playground () {
   playgroundTextarea = document.getElementById('playground-textarea');
   playgroundRunner = document.getElementById('playground-runner');
 
-  var editor = new Editor({
-      textarea: playgroundTextarea,
-      replaceTab: false,
-      softTabs: false,
-      tabSize: 4,
-      autoOpen: true,
-      overwrite: true,
-      autoStrip: true,
-      autoIndent: true,
-  });
+  new Editor({ textarea: playgroundTextarea });
 
   playgroundTemplate = [
     '\'use strict\';\n\n',
       'function Algorithm () {\n',
-        '\tthis.move = function (avaiblePositions) {\n',
-        '\t\treturn avaiblePositions[0];\n',
-      '\t}',
+        '    this.move = function (avaiblePositions) {\n',
+        '        return avaiblePositions[0];\n',
+      '    }',
     '\n}\n',
     '\nreturn Algorithm;\n'
   ].join('');
@@ -85,7 +136,6 @@ function playground () {
   // set listeners
   testButton.addEventListener('click', testHandler);
   submitButton.addEventListener('click', submitHandler);
-  console.log(resetButtom);
   resetButtom.addEventListener('click', resetHandler);
 
   // load player algorithm

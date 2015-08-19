@@ -33,11 +33,9 @@ html
           button(id='submit-algorithm-button' class='button button--black')
             | Salvar
 
-      button(id='reset-algorithm-button' class='button playground__reset-button')
-        | Resetar
-
-      textarea(id='playground-textarea' data-username='#{ user.login }' placeholder='Escreva o seu algoritmo...' spellcheck='false' class='playground-editor')
-
-      div(id="playground-runner" class="playground-monitor" data-interval=".25" data-rows="6" data-columns="7" data-players="true")
+      div(class='playground-editor')
+        textarea(id='playground-textarea' data-username='#{ user.login }' placeholder='Escreva o seu algoritmo...' spellcheck='false' class='playground-textarea')
+        button(id='reset-algorithm-button' class='button playground__reset-button')
+          | Resetar
 
     script(src='scripts/playground.js')
