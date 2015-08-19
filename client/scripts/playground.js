@@ -3,6 +3,7 @@
 // imports
 var api = require('./libs/api');
 var Editor = require('./libs/editor');
+var Algorithm = require('./libs/algorithm');
 
 // elements and vars
 var testButton;
@@ -17,9 +18,7 @@ var player;
 function loadPlayerHandler(_player, status) {
   player = _player;
 
-  console.log(player);
-
-  if (status == 204) {
+  if (!player.code) {
     return playgroundTextarea.value = playgroundTemplate;
   }
 
@@ -28,6 +27,12 @@ function loadPlayerHandler(_player, status) {
 
 function testHandler (e) {
   e.preventDefault();
+
+  player.algorithm = new Algorithm(playgroundTextarea.value);
+  player.algorithm.validate();
+
+  // get logs from execute player algorithm agaisnt randon algorithm
+  // player.algorithm.play();
 }
 
 function submitHandler (e) {
@@ -37,27 +42,8 @@ function submitHandler (e) {
   api('/player/' + player.username).put({
     code: playgroundTextarea.value
   }, function (res, status) {
-    console.log(res, status)
+    console.log(res, status);
   });
-}
-
-function validateHandler () {
-  var algorithm = playgroundTextarea.value;
-
-  if (algorithm.indexOf('Player') == -1 ||
-      algorithm.indexOf('function') == -1 ||
-      algorithm.indexOf('(') == -1 ||
-      algorithm.indexOf(')') == -1 ||
-      algorithm.indexOf('{') == -1 ||
-      algorithm.indexOf('}') == -1 ||
-      algorithm.indexOf('return') == -1 ||
-      algorithm.indexOf('return Player') == -1 ||
-      algorithm.indexOf('move') == -1) {
-
-    return submitButton.disabled = true;
-  }
-
-  submitButton.disabled = false;
 }
 
 // main function
@@ -80,17 +66,17 @@ function playground () {
 
   playgroundTemplate = [
     '\'use strict\';\n\n',
-      'function Player () {\n',
+      'function Algorithm () {\n',
         '\tthis.move = function (avaiblePositions) {\n',
         '\t\treturn avaiblePositions[0];\n',
       '\t}',
-    '\n}\n'
+    '\n}\n',
+    '\nreturn Algorithm;\n'
   ].join('');
 
   // set listeners
   testButton.addEventListener('click', testHandler);
   submitButton.addEventListener('click', submitHandler);
-  playgroundTextarea.addEventListener('keyup', validateHandler);
 
   // load player algorithm
   api('/player/' + playgroundTextarea.getAttribute('data-username')).get(loadPlayerHandler);

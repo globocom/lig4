@@ -32,9 +32,7 @@ router.get('/callback', function (req, res, next) {
           new Player({
             username: user.login,
             github: user.html_url,
-            email: user.email,
-            registration: '',
-            code: ' ',
+            email: user.email
           }).save(function (err) {
             if (err) return res.redirect('/');
 
