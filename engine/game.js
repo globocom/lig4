@@ -7,8 +7,10 @@ function Game(player1, player2) {
   this.players = [player1, player2];
 }
 
-Game.status = {INVALID_MOVE: "INVALID_MOVE",
-                         LIG4: "LIG4"};
+Game.status = {
+  INVALID_MOVE: "INVALID_MOVE",
+          LIG4: "LIG4",
+          DRAW: "DRAW" };
 
 Game.prototype.run = function () {
   var result = {winner: null, reason: null, logs: [], sequence: [] };
@@ -28,14 +30,16 @@ Game.prototype.run = function () {
     result.logs.push({username: currentPlayer.username,
                       move: move});
 
-    var matchSequence = this.matchAnalyzer(); 
+    var matchSequence = this.matchAnalyzer();
     if (matchSequence) {
       result.winner = currentPlayer;
       result.reason = Game.status.LIG4;
       result.sequence = matchSequence;
       break;
-    };
+    }
   };
+
+  if ( !result.winner ) result.reason = Game.status.DRAW;
 
   return result;
 };
@@ -61,7 +65,7 @@ Game.prototype.matchAnalyzer = function () {
       if (columns[row + 1] == position &&
         columns[row + 2] == position &&
         columns[row + 3] == position) {
-        match = [[column, row], [column, row+1], 
+        match = [[column, row], [column, row+1],
                  [column, row+2], [column, row+3]]
         break;
       }
@@ -72,7 +76,7 @@ Game.prototype.matchAnalyzer = function () {
         this.board.matrix[column + 1][row] == position &&
         this.board.matrix[column + 2][row] == position &&
         this.board.matrix[column + 3][row] == position) {
-        match = [[column, row], [column+1, row], 
+        match = [[column, row], [column+1, row],
                  [column+2, row], [column+3, row]]
         break;
       }
@@ -83,7 +87,7 @@ Game.prototype.matchAnalyzer = function () {
         this.board.matrix[column + 1][row + 1] == position &&
         this.board.matrix[column + 2][row + 2] == position &&
         this.board.matrix[column + 3][row + 3] == position) {
-        match = [[column, row], [column+1, row+1], 
+        match = [[column, row], [column+1, row+1],
                  [column+2, row+2], [column+3, row+3]]
         break;
       }
@@ -93,7 +97,7 @@ Game.prototype.matchAnalyzer = function () {
         this.board.matrix[column + 1][row - 1] == position &&
         this.board.matrix[column + 2][row - 2] == position &&
         this.board.matrix[column + 3][row - 3] == position) {
-        match = [[column, row], [column+1, row-1], 
+        match = [[column, row], [column+1, row-1],
                  [column+2, row-2], [column+3, row-3]]
         break;
       }
