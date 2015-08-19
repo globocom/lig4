@@ -23,25 +23,19 @@ function GameBoard(element) {
 
     players.guestElement = document.createElement('div');
     players.guestName = document.createElement('span');
-    players.guestInfo = document.createElement('span');
 
     players.homeElement = document.createElement('div');
     players.homeName = document.createElement('span');
-    players.homeInfo = document.createElement('span');
 
     players.guestElement.className = 'game-board__guest-player';
     players.homeElement.className = 'game-board__home-player';
 
     players.homeName.className = 'game-board__player-name';
-    players.homeInfo.className = 'game-board__player-info';
     players.guestName.className = 'game-board__player-name';
-    players.guestInfo.className = 'game-board__player-info';
 
     players.homeElement.appendChild(players.homeName);
-    players.homeElement.appendChild(players.homeInfo);
 
     players.guestElement.appendChild(players.guestName);
-    players.guestElement.appendChild(players.guestInfo);
 
     players.element.appendChild(players.homeElement);
     players.element.appendChild(players.guestElement);
@@ -89,9 +83,7 @@ GameBoard.prototype.load = function (gameResult) {
 
   // set players html
   players.homeName.innerHTML = this.homePlayer.username;
-  players.homeInfo.innerHTML = this.homePlayer.score + ' pontos';
   players.guestName.innerHTML = this.guestPlayer.username;
-  players.guestInfo.innerHTML = this.guestPlayer.score + ' pontos';
 
   // reset container
   container.className = container.className.replace('game-board--finished', '');
