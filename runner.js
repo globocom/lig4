@@ -104,6 +104,7 @@ function runner(done) {
     startRound(function () {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback
+      console.log('Runner finished!');
     })
   })
 };
