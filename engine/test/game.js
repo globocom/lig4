@@ -5,10 +5,10 @@ var assert = require('assert'),
 
 describe('Game', function() {
   it('it runs', function () {
-    var game  = new Game(DummyPlayer, DummyPlayer);
+    var game  = new Game(new DummyPlayer, new DummyPlayer);
     assert(game.run());
 
-    var game  = new Game(DummyPlayer, SequentialPlayer);
+    var game  = new Game(new DummyPlayer, new SequentialPlayer);
     assert(game.run());
   });
 });
