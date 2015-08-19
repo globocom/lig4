@@ -26,8 +26,10 @@ Match.prototype.run = function(){
 
     game = new Game(homePlayer, awayPlayer);
     result = game.run();
+
+    if (result.winner) result.winner.wins += 1;
+
     this.games.push(result);
-    result.winner.wins += 1;
   }
 
   this.ran = true;
