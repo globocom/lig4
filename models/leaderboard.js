@@ -38,6 +38,11 @@ var LeaderboardSchema = new mongoose.Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  games: {
+    type: Number,
+    required: true,
+    default: 0
   }
 });
 

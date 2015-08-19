@@ -24,8 +24,8 @@ function startRound(callback) {
 
   Match
     .find()
-    .where('games')
-    .equals([])
+    .where('result')
+    .equals(null)
     .populate('players')
     .exec(function (err, matches) {
 
@@ -48,40 +48,43 @@ function startRound(callback) {
             match.result = resultMatch.result
             match.save(function (err) {
 
-              // node doesn't support destructuring assignment yet
               for (var player of match.players) {
+                var playerScore = match.result.scores[player.username];
 
+                var draw = 0;
+                var score = 0;
+                var wins = 0;
+                var lost = 0;
+
+                if (playerScore.status === 'draw') {
+                  draw = 1;
+                  score = 1;
+                } else if (playerScore.status === 'winner') {
+                  wins = 1;
+                  score = 3;
+                } else {
+                  lost = 1;
+                }
                 Leaderboard
-                  .findOneAndUpdate({ upsert: true })
-                  .where('player')
-                  .equals(player)
-                  .exec(function (err, leaderboard) {
-
-                    console.log(match.result)
-                    /*
-                    // won
-                    leaderboard.win += 1
-                    leaderboard.score += 3
-                      // loose
-                    leaderboard.lost += 1
-                      // tied
-                    leaderboard.draw += 1
-                    leaderboard.score += 1
-                      // for
-                    leaderboard.gamesFor = match.result.bla
-                      // against
-                    leaderboard.gamesAgainst = match.result.bla2
-                    */
-                  })
+                  .findOneAndUpdate({
+                      player: player
+                    }, {
+                      $inc: {
+                        'win': wins,
+                        'score': score,
+                        'draw': draw,
+                        'lost': lost,
+                        'games': 1,
+                        'gamesFor': playerScore.gamesFor,
+                        'gamesAgainst': playerScore.gamesAgainst
+                      }
+                    }, {
+                      upsert: true
+                    },
+                    function (err, leaderboard) {
+                      return
+                    });
               }
-
-              console.log(resultMatch.result)
-
-
-
-              var leaderboard = new Leaderboard();
-              leaderboard.winner = match.result.winner
-
             });
           });
       });

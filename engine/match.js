@@ -6,19 +6,21 @@ function Match() {
   this.ran = false;
   this.games = [];
   this.players = [];
+  this.scores = {}
 }
 
 Match.prototype.addPlayer = function (player) {
   this.players.push(player)
+  this.scores[player.username] = {
+    gamesFor: 0,
+    gamesAgainst: 0,
+    status: null
+  }
 }
 
 Match.prototype.run = function () {
   this.players[0].char = 'x';
   this.players[1].char = 'o';
-  this.players[0].gamesFor = 0;
-  this.players[1].gamesFor = 0;
-  this.players[0].gamesAgainst = 0;
-  this.players[1].gamesAgainst = 0;
 
   var game, result, homePlayer, awayPlayer;
 
@@ -33,33 +35,44 @@ Match.prototype.run = function () {
   }
 
   this.checkResult();
+  this.setWinner();
   this.ran = true;
 }
 
-Match.prototype.getWinner = function() {
+Match.prototype.setWinner = function () {
 
-    if (this.players[0].gamesFor > this.players[1].gamesFor) {
-        return this.players[0];
-    }
-    if (this.players[0].gamesFor < this.players[1].gamesFor){
-        return this.players[1];
-    }
-    return null;
+  var player1 = this.players[0];
+  var player2 = this.players[1];
+
+  if (this.scores[player1.username].gamesFor > this.scores[player2.username].gamesFor) {
+    this.scores[player1.username].status = 'winner';
+    this.scores[player2.username].status = 'looser';
+    return;
+  }
+  if (this.scores[player1.username].gamesFor < this.scores[player2.username].gamesFor) {
+    this.scores[player2.username].status = 'winner';
+    this.scores[player1.username].status = 'looser';
+    return;
+  }
+
+  this.scores[player1.username].status = 'draw';
+  this.scores[player2.username].status = 'draw';
+  return;
 }
 
 Match.prototype.checkResult = function () {
   for (var game of this.games) {
     var player1 = this.players[0];
     var player2 = this.players[1];
-    if (game.winner === undefined) {
+    if (game.winner === null) {
       continue;
     }
     if (game.winner.username === player1.username) {
-      player1.gamesFor += 1;
-      player2.gamesAgainst += 1;
+      this.scores[player1.username].gamesFor += 1;
+      this.scores[player2.username].gamesAgainst += 1;
     } else {
-      player2.gamesFor += 1;
-      player1.gamesAgainst += 1;
+      this.scores[player2.username].gamesFor += 1;
+      this.scores[player1.username].gamesAgainst += 1;
     }
   }
   return this.games;
@@ -70,7 +83,7 @@ Match.prototype.getResults = function () {
 
   return {
     games: this.games,
-    winner: this.getWinner()
+    scores: this.scores
   }
 }
 
