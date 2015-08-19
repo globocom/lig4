@@ -48,6 +48,37 @@ function startRound(callback) {
             match.result = resultMatch.result
             match.save(function (err) {
 
+              // node doesn't support destructuring assignment yet
+              for (var player of match.players) {
+
+                Leaderboard
+                  .findOneAndUpdate({ upsert: true })
+                  .where('player')
+                  .equals(player)
+                  .exec(function (err, leaderboard) {
+
+                    console.log(match.result)
+                    /*
+                    // won
+                    leaderboard.win += 1
+                    leaderboard.score += 3
+                      // loose
+                    leaderboard.lost += 1
+                      // tied
+                    leaderboard.draw += 1
+                    leaderboard.score += 1
+                      // for
+                    leaderboard.gamesFor = match.result.bla
+                      // against
+                    leaderboard.gamesAgainst = match.result.bla2
+                    */
+                  })
+              }
+
+              console.log(resultMatch.result)
+
+
+
               var leaderboard = new Leaderboard();
               leaderboard.winner = match.result.winner
 
