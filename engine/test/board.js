@@ -30,6 +30,17 @@ describe('Board', function() {
     });
   });
 
+  describe('available position', function(){
+    beforeEach(function(){
+      this.board = new Board();
+    });
+
+    it('show all columns available', function(){
+      assert.equal(this.board.getAvailableColumns().length, this.board.width);
+    });
+
+  });
+
   describe('build matrix', function(){
 
   });
