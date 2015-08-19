@@ -23,25 +23,19 @@ function GameBoard(element) {
 
     players.guestElement = document.createElement('div');
     players.guestName = document.createElement('span');
-    players.guestInfo = document.createElement('span');
 
     players.homeElement = document.createElement('div');
     players.homeName = document.createElement('span');
-    players.homeInfo = document.createElement('span');
 
     players.guestElement.className = 'game-board__guest-player';
     players.homeElement.className = 'game-board__home-player';
 
     players.homeName.className = 'game-board__player-name';
-    players.homeInfo.className = 'game-board__player-info';
     players.guestName.className = 'game-board__player-name';
-    players.guestInfo.className = 'game-board__player-info';
 
     players.homeElement.appendChild(players.homeName);
-    players.homeElement.appendChild(players.homeInfo);
 
     players.guestElement.appendChild(players.guestName);
-    players.guestElement.appendChild(players.guestInfo);
 
     players.element.appendChild(players.homeElement);
     players.element.appendChild(players.guestElement);
@@ -75,23 +69,21 @@ function GameBoard(element) {
   };
 }
 
-GameBoard.prototype.load = function (match) {
+GameBoard.prototype.load = function (gameResult) {
   var positions = this.board.positions;
   var container = this.container;
   var players = this.board.players;
-  var home = match.players[0];
-  var guest = match.players[1];
+  this.homePlayer = gameResult.players[0];
+  this.guestPlayer = gameResult.players[1];
 
   // set game data
   this.move = 0;
-  this.moves = match.moves;
-  this.sequence = match.sequence;
+  this.moves = gameResult.moves;
+  this.sequence = gameResult.sequence;
 
   // set players html
-  players.homeName.innerHTML = home.name;
-  players.homeInfo.innerHTML = home.score + ' pontos';
-  players.guestName.innerHTML = guest.name;
-  players.guestInfo.innerHTML = guest.score + ' pontos';
+  players.homeName.innerHTML = this.homePlayer.username;
+  players.guestName.innerHTML = this.guestPlayer.username;
 
   // reset container
   container.className = container.className.replace('game-board--finished', '');
@@ -105,11 +97,10 @@ GameBoard.prototype.load = function (match) {
 }
 
 GameBoard.prototype.play = function (callback) {
-  var current = this.moves[this.move];
-  var player = current[0] ? 'home-play' : 'guest-play';
-  var column = current[1];
-  var row = current[2];
-  var sequence = current[3]
+  var currentMove = this.moves[this.move];
+  var player = currentMove.username === this.homePlayer.username ? 'home-play' : 'guest-play';
+  var column = currentMove.move[0];
+  var row = currentMove.move[1];
 
   // clear timer if already exist
   if (this.timer) clearTimeout(this.timer);
@@ -171,7 +162,6 @@ GameBoard.prototype.applyPosition = function (player, column, row) {
 
   // find column position
   position = position - (this.options.columns - column);
-
   // apply position
   positions[position].className = className;
 }
