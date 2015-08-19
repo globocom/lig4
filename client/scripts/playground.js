@@ -136,8 +136,7 @@ function playground () {
         '    this.move = function (avaiblePositions) {\n',
         '        return avaiblePositions[0];\n',
       '    }',
-    '\n}\n',
-    '\nreturn Algorithm;\n'
+    '\n}\n'
   ].join('');
 
   // set listeners

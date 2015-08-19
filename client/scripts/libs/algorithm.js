@@ -1,7 +1,7 @@
 'use strict';
 
 function Algorithm (algorithmSource) {
-  this.constructor = (new Function('window', algorithmSource))({});
+  this.constructor = (new Function('window', algorithmSource + ' return Algorithm;'))({});
 
   if (!this.constructor || this.constructor.name !== 'Algorithm' || typeof this.constructor !== 'function') {
     throw new Error('You need to return a Algorithm function;');
