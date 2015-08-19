@@ -1,9 +1,8 @@
 .game-board {
   width: 100%;
   margin: rem(35px) 0;
-  padding: rem(35px) 0;
+  padding: rem(35px) 0 0 0;
   border-top: 1px solid $black;
-  border-bottom: 1px solid $black;
 }
 
 .game-board__players {
@@ -96,7 +95,7 @@
   width: 11.25%;
   margin: 1.5%;
   float: left;
-  background-color: $yellow-strong;
+  background-color: $gray;
   border-radius: 100%;
   box-sizing: border-box;
 
@@ -118,7 +117,7 @@
     left: 0;
     box-sizing: border-box;
     border-radius: 100%;
-    border: rem(10px) solid $yellow-strong;
+    border: rem(10px) solid $gray;
 
     @include transition(all, .5s);
   }
