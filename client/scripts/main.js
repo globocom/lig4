@@ -3,6 +3,7 @@
 // imports
 var GameBoard = require('./components/gameboard');
 var scrollToSection = require('./libs/scroll');
+var api = require('./libs/api');
 
 // dummy matches
 var matchesLog = [{
@@ -43,6 +44,7 @@ var matchesLog = [{
     ]
   }];
 
+
 // functions
 function navigationHandler (e) {
   var button = e.currentTarget;
@@ -67,8 +69,12 @@ function main () {
 
   // start ranking board
   (function rankingRunner() {
-    rankingGame.load(matchesLog[Math.round(Math.random())]).play(function () {
-      setTimeout(rankingRunner, 2500);
+    api('/game').get(function(matchResult, status){
+      var randomGame = matchResult.result.games[Math.round(Math.random())];
+      randomGame.players = matchResult.players;
+      rankingGame.load(randomGame).play(function () {
+        setTimeout(rankingRunner, 2500);
+      });
     });
   }) ();
 }
