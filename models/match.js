@@ -18,6 +18,19 @@ var MatchSchema = new mongoose.Schema({
   }
 });
 
+MatchSchema.statics.random = function (callback) {
+  this.count(function (err, count) {
+    if (err) {
+      return callback(err);
+    }
+    var rand = Math.floor(Math.random() * count);
+    this.findOne()
+      .skip(rand)
+      .populate('players')
+      .exec(callback);
+  }.bind(this));
+};
+
 MatchSchema.statics.serialize = function (m) {
   delete m._id;
   delete m.round;
@@ -25,7 +38,9 @@ MatchSchema.statics.serialize = function (m) {
   delete m.ack;
   delete m.result.scores;
   for (var p in m.players) {
-    m.players[p] = { username: m.players[p].username };
+    m.players[p] = {
+      username: m.players[p].username
+    };
   }
   return m
 }
