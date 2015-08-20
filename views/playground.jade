@@ -29,9 +29,10 @@ html
     section(id='playground' class='section playground')
       aside(class='sidebar playground-sidebar')
         h1(class='title')
-          | Ligue
-          br
-          | Quatro
+          a(href='/')
+            | Ligue
+            br
+            | Quatro
 
         h3(class='subtitle')
           | Playground
@@ -39,10 +40,14 @@ html
         p(class='description')
           | Olá
           b
-            |  #{ user.login }
-            a(href='/auth/logout' class='playground-logout')=' (sair), '
-            | o seu algoritmo ainda não foi classificado.
-            | o seu algoritmo é o #4 colocado.
+            |  #{ user.login },
+          if user.rank
+            |  o seu algoritmo é o
+            b
+              |  ##{ user.rank } colocado
+            | .
+          else
+            |  o seu algoritmo ainda não foi classificado.
           br
           br
           | Ao salvar você irá enviar/atualizar o seu algoritmo para o desafio.
