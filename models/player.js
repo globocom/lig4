@@ -25,4 +25,12 @@ var PlayerSchema = new mongoose.Schema({
   },
 });
 
+PlayerSchema.statics.serialize = function (p) {
+  delete p._id;
+  delete p.__v;
+  delete p.code;
+  return p
+}
+
+
 module.exports = mongoose.model('Player', PlayerSchema);
