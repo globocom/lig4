@@ -12,10 +12,6 @@ var MatchSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  ack: {
-    type: Boolean,
-    default: false
-  },
   result: {
     type: mongoose.Schema.Types.Mixed,
     default: null
@@ -28,8 +24,8 @@ MatchSchema.statics.serialize = function (m) {
   delete m.__v;
   delete m.ack;
   delete m.result.scores;
-  for (var p of m.players) {
-    p = { username: p.username };
+  for (var p in m.players) {
+    m.players[p] = { username: m.players[p].username };
   }
   return m
 }
