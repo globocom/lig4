@@ -1,10 +1,15 @@
 'use strict';
 
 function Algorithm (algorithmSource) {
-  this.constructor = (new Function('window', algorithmSource + ' return Algorithm;'))({});
+  if (algorithmSource.indexOf('function') == -1 ||
+      algorithmSource.indexOf('Algorithm') == -1) {
+    throw new Error('You need to have a \'Algorithm\' function;');
+  }
 
-  if (!this.constructor || this.constructor.name !== 'Algorithm' || typeof this.constructor !== 'function') {
-    throw new Error('You need to return a Algorithm function;');
+  this.constructor = (new Function('window', algorithmSource + ' ;return Algorithm;'))({});
+
+  if (!this.constructor || typeof this.constructor !== 'function') {
+    throw new Error('Invalid return statement;');
   }
 
   this.instance = new this.constructor();
