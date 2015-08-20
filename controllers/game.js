@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
       if (err) return Response.send(500, 'ERRO', err, res, next);
       if (!match) return res.send(204);
 
-      Response.send(200, 'OK', match.serialize(), res, next)
+      Response.send(200, 'OK', Match.serialize(match), res, next)
     });
 });
 

@@ -22,5 +22,7 @@ var MatchSchema = new mongoose.Schema({
   }
 });
 
-
+MatchSchema.statics.serialize = function (m) {
+  return m
+}
 module.exports = mongoose.model('Match', MatchSchema);
