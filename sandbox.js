@@ -42,6 +42,7 @@ process.on('message', function (match) {
 
     var code =
       "\
+        'use strict';                            \
         var engine = new Match();                \
         for (var username in players) {          \
             var p = new players[username];       \
