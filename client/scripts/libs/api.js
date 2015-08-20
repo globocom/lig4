@@ -8,7 +8,11 @@ function api(path) {
       xhr.open('GET', url + path);
       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
       xhr.addEventListener('load', function() {
-        callback(JSON.parse(xhr.response).payload, xhr.status);
+        var response = null;
+
+        if (xhr.response) response = JSON.parse(xhr.response).payload
+
+        callback(response, xhr.status);
       });
       xhr.send();
     },
@@ -17,7 +21,11 @@ function api(path) {
       xhr.open('PUT', url + path);
       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
       xhr.addEventListener('load', function() {
-        callback(JSON.parse(xhr.response).payload, xhr.status);
+        var response = null;
+
+        if (xhr.response) response = JSON.parse(xhr.response).payload
+
+        callback(response, xhr.status);
       });
       xhr.send(JSON.stringify(data));
     },

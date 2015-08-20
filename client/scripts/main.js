@@ -30,8 +30,13 @@ function main () {
   // start ranking board
   (function rankingRunner() {
     api('/game').get(function(matchResult, status){
+      if (!matchResult) {
+        return rankingGameElement.parentElement.removeChild(rankingGameElement);
+      }
+
       var randomGame = matchResult.result.games[Math.round(Math.random())];
       randomGame.players = matchResult.players;
+
       rankingGame.load(randomGame).play(function () {
         setTimeout(rankingRunner, 2500);
       });
