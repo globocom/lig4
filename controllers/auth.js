@@ -47,7 +47,7 @@ router.get('/callback', function (req, res, next) {
 router.get('/login', function (req, res, next) {
   var client_id = process.env.GITHUB_ID;
   var authorize = github.Endpoints.AUTHORIZE_BASE_URL + client_id;
-  authorize += '&scope=user,public_repo';
+  authorize += '&scope=user:email,public_repo';
   res.redirect(authorize)
 });
 
