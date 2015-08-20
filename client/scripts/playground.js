@@ -62,8 +62,12 @@ function testAlgorithm (callback, showTestBoard) {
     result.players = [{
       username: player.username
     }, {
-      username: 'RandomAlgorithm'
+      username: 'aleatório'
     }];
+
+    if (result.reason == 'INVALID_MOVE') {
+      throw new Error('The Algorithm returned a invalid column: ' + result.invalidMove + ';');
+    }
 
     if (!showTestBoard) return callback(false, result);
 
@@ -81,7 +85,7 @@ function testAlgorithm (callback, showTestBoard) {
     }, function (play) {
       playgroundTestLogs.innerHTML += [
         '<li>',
-          '<b>', play.username, '</b> jogou na coluna <b>', play.move[0] + 1, '</b>;',
+          '<b>', play.username, '</b> jogou na coluna <b>', play.move[0], '</b>;',
         '</li>'
       ].join('');
 
@@ -187,8 +191,8 @@ function playground () {
   playgroundTemplate = [
     '\'use strict\';\n\n',
       'function Algorithm () {\n',
-        '    this.move = function (availablePositions) {\n',
-        '        return availablePositions[0];\n',
+        '    this.move = function (availableColumns) {\n',
+        '        return availableColumns[0];\n',
       '    }',
     '\n}\n'
   ].join('');

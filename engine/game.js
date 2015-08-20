@@ -29,6 +29,7 @@ Game.prototype.run = function () {
     if (columns.indexOf(column) < 0) {
       result.winner = this.players[(play + 1) % 2];
       result.reason = Game.status.INVALID_MOVE;
+      result.invalidMove = column;
       break;
     };
 
