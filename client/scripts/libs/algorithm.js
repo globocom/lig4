@@ -1,8 +1,19 @@
 'use strict';
 
-function Algorithm (algorithmSource) {
+var availableColumnsMock = [0, 1, 2, 3, 4, 5, 6];
+var availableBoardMock = [
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null],
+    [null, null, null, null, null, null]
+];
+
+function Algorithm(algorithmSource) {
   if (algorithmSource.indexOf('function') == -1 ||
-      algorithmSource.indexOf('Algorithm') == -1) {
+    algorithmSource.indexOf('Algorithm') == -1) {
     throw new Error('You need to have a \'Algorithm\' function;');
   }
 
@@ -18,7 +29,7 @@ function Algorithm (algorithmSource) {
     throw new Error('The Algorithm need to have a move method to make the plays;');
   }
 
-  if (typeof this.instance.move([0]) !== 'number') {
+  if (typeof this.instance.move(availableColumnsMock, availableBoardMock) !== 'number') {
     throw new Error('The Algorithm move method should return a number;');
   }
 
