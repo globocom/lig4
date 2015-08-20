@@ -14,8 +14,6 @@ router.get('/', function (req, res, next) {
     .sort({
       score: -1,
       win: -1,
-      draw: -1,
-      lost: 1,
       gamesFor: -1,
       gamesAgainst: 1
     })
