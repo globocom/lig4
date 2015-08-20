@@ -97,6 +97,7 @@ function testAlgorithm (callback, showTestBoard) {
         '</li>'
       ].join('');
 
+
       console.log(play);
     });
   } catch (error) {
