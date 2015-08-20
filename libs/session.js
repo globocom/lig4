@@ -22,10 +22,11 @@ function setup(app) {
   return session(options)
 }
 
-function validate() {
+function validate () {
   return function (req, res, next) {
 
-    if (req.url.indexOf('/api/game') > -1) {
+    if (req.url.indexOf('/api/game') > -1 ||
+        req.url.indexOf('/api/leaderboard') > -1) {
       return next();
     }
 
