@@ -17,13 +17,18 @@ router.get('/', function (req, res, next) {
       gamesFor: -1,
       gamesAgainst: 1
     })
-    .populate('player')
-    .exec(function (err, data) {
+    .lean()
+    .exec(function (err, leaderboards) {
 
       if (err) return Response.send(500, 'ERRO', err, res, next);
-      if (data.length == 0) return res.sendStatus(204);
+      if (leaderboards.length == 0) return res.sendStatus(204);
 
-      Response.send(200, 'OK', data, res, next);
+      for (var leaderboard of leaderboards) {
+        delete leaderboard._id;
+        delete leaderboard.__v;
+      }
+
+      Response.send(200, 'OK', leaderboards, res, next);
     });
 });
 
