@@ -139,7 +139,9 @@ function closeTestHandler (e) {
 function resetHandler (e) {
   e.preventDefault();
 
-  playgroundTextarea.value = playgroundTemplate;
+  if (window.confirm('Carregar o template inicial do algoritmo?')) {
+    playgroundTextarea.value = playgroundTemplate;
+  }
 }
 
 function submitHandler (e) {
