@@ -11,8 +11,6 @@ var Response = require('./../libs/response');
 router.get('/', function (req, res, next) {
   Match
     .findOne()
-    .where('ack')
-    .equals(false)
     .sort('_id')
     .populate('players')
     .lean()
