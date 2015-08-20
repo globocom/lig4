@@ -1,4 +1,4 @@
-var url = 'http://' + document.location.host + '/api';
+var url = '//' + document.location.host + '/api';
 
 function api(path) {
   var xhr = new XMLHttpRequest();
