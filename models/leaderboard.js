@@ -4,8 +4,7 @@ var mongoose = require('../libs/mongoose');
 
 var LeaderboardSchema = new mongoose.Schema({
   player: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Player',
+    type: String,
     required: true,
     index: true
   },

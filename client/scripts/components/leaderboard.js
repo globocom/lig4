@@ -20,7 +20,7 @@ function LeaderBoard(data) {
     cellScore.className = 'leader-board__score';
 
     cellPos.innerHTML = '#' + String(i + 1);
-    cellPlayer.innerHTML = leaderBoardItem.player.username
+    cellPlayer.innerHTML = leaderBoardItem.player
     cellScore.innerHTML = leaderBoardItem.score;
 
     tableRow.appendChild(cellPos);
