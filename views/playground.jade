@@ -41,7 +41,11 @@ html
           b
             |  #{ user.login }
             a(href='/auth/logout' class='playground-logout')=' (sair), '
-          | ao salvar você irá enviar/atualizar o seu algoritmo para o desafio.
+            | o seu algoritmo ainda não foi classificado.
+            | o seu algoritmo é o #4 colocado.
+          br
+          br
+          | Ao salvar você irá enviar/atualizar o seu algoritmo para o desafio.
 
         div(class='playground-actions')
           button(id='test-algorithm-button' class='button')

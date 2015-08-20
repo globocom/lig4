@@ -173,7 +173,7 @@ function submitHandler (e) {
       setTimeout(function () {
         submitButton.disabled = false;
         submitButton.innerHTML = 'Salvar';
-      }, 2500);
+      }, 1500);
     }, false);
   });
 }
@@ -205,10 +205,10 @@ function playground () {
     '\'use strict\';\n\n',
 
     '/*\n',
-    ' * Classe Algorithm encapsula \n',
-    ' * a lógica para movimentação. \n',
-    ' * A instância da classe persiste \n',
-    ' * persiste durante todo o \'game\'. \n',
+    ' * A função Algorithm encapsula \n',
+    ' * a lógica das jogadas. \n',
+    ' * A instância do Algorithm \n',
+    ' * persiste durante toda a partida. \n',
     ' */ \n\n',
 
       'function Algorithm () {\n\n',
@@ -219,29 +219,33 @@ function playground () {
         '     * Esse método recebe \n',
         '     * as colunas disponíveis \n',
         '     * do tabuleiro e o estado atual \n',
-        '     * do mesmo. \n\n',
-        '     * A variável availableColumns é \n',
-        '     * é disponíveis um Array com as\n',
-        '     * colunas para você colocar. \n',
-        '     * uma peça. Você DEVE escolher\n',
-        '     * um dos elementos desse Array.\n\n',
-        '     * A variável currentBoard \n',
-        '     * é uma cópia da matriz do jogo.  \n',
-        '     * Você PODE utilizar esse valor \n',
-        '     * para definir suas estratégias.\n',
-        '     */\n\n',
-        '    this.move = function (availableColumns, currentBoard) {\n\n',
+        '     * do mesmo. \n',
+        '     */ \n\n',
 
-    '        /*\n',
-    '         * O retorno do método consiste\n',
-    '         * no índice da coluna onde \n',
-    '         * a peça deverá ser jogada. \n',
-    '         * Este indice deverá estar \n',
-    '         * entre as colunas disponíveis. \n',
-    '         * O RETORNO dessa função deve ser\n',
-    '         * um INTEIRO que pertence a\n',
-    '         * availableColumns.\n',
-    '         */\n\n',
+        '    this.move = function (availableColumns, gameBoard) {\n\n',
+
+        '        /*\n',
+        '         * availableColumns: \n',
+        '         * [0, 1, 2, 3, 4, 5, 6]\n',
+        '         * \n',
+        '         * gameBoard: [\n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null] \n',
+        '         * ] \n',
+        '         */ \n\n',
+
+        '        /*\n',
+        '         * O retorno do método \n',
+        '         * deve ser o índice númerico \n',
+        '         * de uma coluna válida, \n',
+        '         * para que a jogada seja \n',
+        '         * realizada com sucesso. \n',
+        '         */\n\n',
 
         '        return availableColumns[0];\n',
       '    }',
