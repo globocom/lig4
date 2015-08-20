@@ -16,7 +16,7 @@ var Player = require('./models/player')
  * Load all players from DB.
  * @param {function} Function to be called at end.
  */
-function loadPlayers (callback) {
+function loadPlayers(callback) {
   var all = []
   Player
     .find()
@@ -108,7 +108,7 @@ function saveMatches(matches, callback) {
  * Callback waterfall to create a new round of matches.
  * @param {function} callback Optional function to be called at end.
  */
-function newRound (callback) {
+function newRound(callback) {
   console.log('Creating new round')
   loadPlayers(function (all) {
     createMatches(all, function (matches) {
@@ -123,15 +123,17 @@ function newRound (callback) {
  * Runs lig4-game scheduler
  * @param {function} done Optional function to be called at end.
  */
-function scheduler (done) {
+function scheduler(done) {
   console.log('Scheduler started!')
   mongoose.connect(process.env.MONGODB_URI, function (err) {
-    newRound(function () {
-      console.log('See you in 10 minutes. zzz ZZZ zzz...')
-      if (done) done()
-      else mongoose.disconnect() // cant send disconnect as callback
+    Match.collection.remove(function () {
+      newRound(function () {
+        console.log('See you in 10 minutes. zzz ZZZ zzz...')
+        if (done) done()
+        else mongoose.disconnect() // cant send disconnect as callback
+      })
     })
-  })
+  });
 }
 
 // runnnig

@@ -8,7 +8,7 @@ WEBPACK=node_modules/webpack/bin/webpack.js
 PM2=node_modules/pm2/bin/pm2
 GIT=git
 
-.PHONY: run stop logs monit test runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
+.PHONY: run stop logs monit test worker runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
 
 # tsuru tasks
 
@@ -16,6 +16,8 @@ tsuru-publish: build-client
 	$(GIT) push tsuru-git@git.tsuru.globoi.com:lig4.git
 
 # scheduler & runner tasks
+
+worker: scheduler runner
 
 scheduler:
 	$(NODE) scheduler.js

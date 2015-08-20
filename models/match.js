@@ -28,9 +28,8 @@ MatchSchema.statics.serialize = function (m) {
   delete m.__v;
   delete m.ack;
   delete m.result.scores;
-  m.result.games = [m.result.games[0]]
-  for (var p in m.players) {
-    m.players[p] = { username: m.players[p].username };
+  for (var p of m.players) {
+    p = { username: p.username };
   }
   return m
 }
