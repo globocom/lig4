@@ -96,7 +96,7 @@ GameBoard.prototype.load = function (gameResult) {
   return this;
 }
 
-GameBoard.prototype.play = function (callback) {
+GameBoard.prototype.play = function (onFinish, onMove) {
   var currentMove = this.moves[this.move];
   var player = currentMove.username === this.homePlayer.username ? 'home-play' : 'guest-play';
   var column = currentMove.move[0];
@@ -104,14 +104,19 @@ GameBoard.prototype.play = function (callback) {
 
   // clear timer if already exist
   if (this.timer) clearTimeout(this.timer);
-  // set callback at first move
-  if (callback) this.callback = callback;
+  // set onMove at first move
+  if (onMove) this.onMove = onMove;
+  // set onFinish at first move
+  if (onFinish) this.onFinish = onFinish;
 
   // apply current move
   this.applyPosition(player, column, row);
 
   // increase move
   this.move++;
+
+  // execute onMove
+  if (this.onMove) this.onMove(currentMove);
 
   // if it's not last: play
   if (this.moves[this.move])
@@ -123,8 +128,8 @@ GameBoard.prototype.play = function (callback) {
   // show sequence
   this.container.className += ' game-board--finished';
 
-  // execute callback
-  if (this.callback) this.callback(this);
+  // execute onFinish
+  if (this.onFinish) this.onFinish(this);
 }
 
 
