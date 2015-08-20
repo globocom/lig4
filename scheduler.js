@@ -131,6 +131,7 @@ function scheduler(done) {
         console.log('See you in 10 minutes. zzz ZZZ zzz...')
         if (done) done()
         else mongoose.disconnect() // cant send disconnect as callback
+        process.exit();
       })
     })
   });

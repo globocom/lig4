@@ -110,6 +110,7 @@ function runner(done) {
       if (done) done()
       else mongoose.disconnect() // cant send disconnect as callback
       console.log('Runner finished!');
+      process.exit();
     })
   })
 };
