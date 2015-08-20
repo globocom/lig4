@@ -17,12 +17,19 @@ var PlayerSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
     index: true
   },
   code: {
     type: String,
   },
 });
+
+PlayerSchema.statics.serialize = function (p) {
+  delete p._id;
+  delete p.__v;
+  delete p.code;
+  return p
+}
+
 
 module.exports = mongoose.model('Player', PlayerSchema);

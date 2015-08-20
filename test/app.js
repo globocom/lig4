@@ -49,7 +49,7 @@ describe('API routes testing', function () {
 
   it('should return ok after inserting a new player.', function (done) {
     request
-      .post('/api/player')
+      .put('/api/player/' + player.username)
       .send(player)
       .expect(200, done);
   });

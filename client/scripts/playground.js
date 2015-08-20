@@ -1,6 +1,7 @@
 'use strict';
 
 // imports
+
 var api = require('./libs/api');
 var Editor = require('./libs/editor');
 var Algorithm = require('./libs/algorithm');
@@ -8,6 +9,7 @@ var Game = require('../../engine/game');
 var GameBoard = require('./components/gameboard');
 
 // elements and vars
+
 var testButton;
 var submitButton;
 var resetButtom;

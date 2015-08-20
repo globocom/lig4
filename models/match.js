@@ -22,4 +22,16 @@ var MatchSchema = new mongoose.Schema({
   }
 });
 
+MatchSchema.statics.serialize = function (m) {
+  delete m._id;
+  delete m.round;
+  delete m.__v;
+  delete m.ack;
+  delete m.result.scores;
+  for (var p of m.players) {
+    p = { username: p.username };
+  }
+  return m
+}
+
 module.exports = mongoose.model('Match', MatchSchema);

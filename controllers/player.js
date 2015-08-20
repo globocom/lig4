@@ -7,24 +7,6 @@ var router = express.Router();
 var Player = require('./../models/player')
 var Response = require('./../libs/response')
 
-// POST in /api/player
-router.post('/', function (req, res, next) {
-
-  // do we really need a POST method?
-
-  var player = new Player(req.body)
-
-  if (player.username !== req.session.user.login) {
-    return Response.send(400, 'BAD_REQUEST', {}, res, next)
-  }
-
-  player.save(function (err) {
-    if (err) return Response.send(500, 'ERROR', err, res, next)
-
-    Response.send(200, 'OK', player, res, next)
-  })
-});
-
 // GET in /api/player/:username
 router.get('/:username', function (req, res, next) {
 

@@ -2,6 +2,7 @@
 
 // imports
 var GameBoard = require('./components/gameboard');
+var LeaderBoard = require('./components/leaderboard');
 var scrollToSection = require('./libs/scroll');
 var api = require('./libs/api');
 
@@ -40,6 +41,14 @@ function main () {
       rankingGame.load(randomGame).play(function () {
         setTimeout(rankingRunner, 2500);
       });
+    });
+  }) ();
+
+  (function leaderboard(){
+    api('/leaderboard').get(function(lbData, status){
+      if(status === 200){
+        LeaderBoard(lbData);
+      }
     });
   }) ();
 }
