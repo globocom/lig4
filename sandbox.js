@@ -16,12 +16,8 @@ process.on('message', function (match) {
     var options = {
       timeout: 5000
     }
-    var gameContext = {
-      Match: engine,
-      players: {},
-      result: {},
-      id: 0
-    }
+    var players = {};
+   
     vm.createContext(gameContext);
 
     for (var player of match.players) {
@@ -34,23 +30,18 @@ process.on('message', function (match) {
         process.exit()
       }
 
-      gameContext.players[player.username] = local.Algorithm || local.Player;
-      gameContext.id = match._id;
+      players[player.username] = local.Algorithm || local.Player;
+      id = match._id;
     };
 
     vm.createContext(gameContext);
 
-    var code =
-      "\
-        'use strict';                            \
-        var engine = new Match();                \
-        for (var username in players) {          \
-            var p = new players[username];       \
-            p.username = username;               \
-            engine.addPlayer(p);                 \
-        }                                        \
-        engine.run();                            \
-        var result = engine.getResults();        "
+    var engine = new Match();                
+    for (var username in players) {          
+        engine.addPlayer({username: username, klass: players[username]});                 
+    }                                        
+    engine.run();                            
+    var result = engine.getResults();        
 
     vm.runInContext(code, gameContext, options);
     onFinish(gameContext);

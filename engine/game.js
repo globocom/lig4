@@ -5,6 +5,7 @@ var Board = require('./board');
 function Game(player1, player2) {
   this.board = new Board();
   this.players = [player1, player2];
+  this.playerMoving = null;
 }
 
 Game.status = {
@@ -23,9 +24,10 @@ Game.prototype.run = function () {
 
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
+    this.playerMoving = currentPlayer;
     var columns = this.board.getAvailableColumns();
     var currentBoard = this.board.cloneBoard();
-    var column = currentPlayer.move(columns, currentBoard);
+    var column = currentPlayer.move(columns.sclice(0), currentBoard);
 
     if (columns.indexOf(column) < 0) {
       result.winner = this.players[(play + 1) % 2];

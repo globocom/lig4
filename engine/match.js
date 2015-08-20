@@ -9,9 +9,10 @@ function Match() {
   this.scores = {}
 }
 
-Match.prototype.addPlayer = function (player) {
-  this.players.push(player)
-  this.scores[player.username] = {
+Match.prototype.addPlayer = function (obj) {
+  obj.char = obj.username;
+  this.players.push(obj);
+  this.scores[obj.username] = {
     gamesFor: 0,
     gamesAgainst: 0,
     status: null
@@ -19,9 +20,6 @@ Match.prototype.addPlayer = function (player) {
 }
 
 Match.prototype.run = function () {
-  this.players[0].char = this.players[0].username;
-  this.players[1].char = this.players[1].username;
-
   var game, result, homePlayer, awayPlayer;
 
   for (var gameNum = 0; gameNum < 10; gameNum++) {
