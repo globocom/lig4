@@ -20,8 +20,6 @@ var AsyncPool = require('./libs/process')
  */
 function startRound(callback) {
 
-  Leaderboard.collection.remove();
-
   Match
     .find()
     .where('result')
@@ -31,6 +29,8 @@ function startRound(callback) {
 
       if (err) process.exit(err);
       if (matches.length === 0) return callback();
+
+      Leaderboard.collection.remove();
 
       var pool = new AsyncPool();
 
@@ -72,7 +72,7 @@ function startRound(callback) {
                 }
                 Leaderboard
                   .findOneAndUpdate({
-                      player: player
+                      player: player.username
                     }, {
                       $inc: {
                         'win': wins,
