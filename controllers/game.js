@@ -10,11 +10,7 @@ var Response = require('./../libs/response');
 // GET in /api/game
 router.get('/', function (req, res, next) {
   Match
-    .findOne()
-    .sort('_id')
-    .populate('players')
-    .lean()
-    .exec(function (err, match) {
+    .random(function (err, match) {
 
       if (err) return Response.send(500, 'ERRO', err, res, next);
       if (!match) return res.send(204);
