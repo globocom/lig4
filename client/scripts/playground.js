@@ -41,6 +41,13 @@ function RandomAlgorithm () {
 function loadPlayerHandler (_player, status) {
   player = _player;
 
+  var expiredCode = localStorage.getItem('lig4-' + player.username);
+
+  if (expiredCode) {
+    localStorage.removeItem('lig4-' + player.username);
+    return playgroundTextarea.value = expiredCode;
+  }
+
   if (!player.code) {
     return playgroundTextarea.value = playgroundTemplate;
   }
@@ -151,12 +158,17 @@ function submitHandler (e) {
       return alert(data);
     }
 
+    if (localStorage) {
+      localStorage.setItem('lig4-' + player.username, playgroundTextarea.value);
+    }
+
     // save player algorithm
     api('/player/' + player.username).put({
       code: playgroundTextarea.value
     }, function () {
       submitButton.innerHTML = 'Salvo c/ sucesso!';
       testButton.disabled = false;
+      localStorage.removeItem('lig4-' + player.username);
 
       setTimeout(function () {
         submitButton.disabled = false;

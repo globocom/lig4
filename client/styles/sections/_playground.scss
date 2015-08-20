@@ -8,6 +8,7 @@
   box-sizing: border-box;
   padding: 0 rem(35px);
   z-index: 999;
+  overflow-y: auto;
 
   @media screen and (max-width: 720px) {
     position: initial;
