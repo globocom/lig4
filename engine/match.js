@@ -19,8 +19,8 @@ Match.prototype.addPlayer = function (player) {
 }
 
 Match.prototype.run = function () {
-  this.players[0].char = 'x';
-  this.players[1].char = 'o';
+  this.players[0].char = this.players[0].username;
+  this.players[1].char = this.players[1].username;
 
   var game, result, homePlayer, awayPlayer;
 

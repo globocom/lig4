@@ -7,7 +7,7 @@ var scrollToSection = require('./libs/scroll');
 var api = require('./libs/api');
 
 // functions
-function navigationHandler (e) {
+function navigationHandler(e) {
   var button = e.currentTarget;
   var sectionName = button.getAttribute('data-section');
   var sectionElement = document.getElementById(sectionName);
@@ -16,7 +16,7 @@ function navigationHandler (e) {
 }
 
 // main function
-function main () {
+function main() {
   var navigationButtons = document.getElementsByClassName('navigation-button');
   var rankingGameElement = document.getElementById('ranking-game');
 
@@ -30,27 +30,30 @@ function main () {
 
   // start ranking board
   (function rankingRunner() {
-    api('/game').get(function(matchResult, status){
-      if (!matchResult) {
-        return rankingGameElement.parentElement.removeChild(rankingGameElement);
-      }
+    api('/game')
+      .get(function (matchResult, status) {
+        if (!matchResult) {
+          return rankingGameElement.parentElement.removeChild(rankingGameElement);
+        }
 
-      var randomGame = matchResult.result.games[Math.round(Math.random())];
-      randomGame.players = matchResult.players;
+        var randomGame = matchResult.result.games[Math.round(Math.random())];
+        randomGame.players = matchResult.players;
 
-      rankingGame.load(randomGame).play(function () {
-        setTimeout(rankingRunner, 2500);
+        rankingGame.load(randomGame)
+          .play(function () {
+            setTimeout(rankingRunner, 2500);
+          });
       });
-    });
-  }) ();
+  })();
 
-  (function leaderboard(){
-    api('/leaderboard').get(function(lbData, status){
-      if(status === 200){
-        LeaderBoard(lbData);
-      }
-    });
-  }) ();
+  (function leaderboard() {
+    api('/leaderboard')
+      .get(function (lbData, status) {
+        if (status === 200) {
+          LeaderBoard(lbData);
+        }
+      });
+  })();
 }
 
 document.addEventListener('DOMContentLoaded', main);

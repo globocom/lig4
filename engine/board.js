@@ -5,7 +5,7 @@ function Board() {
   this.matrix = this.buildMatrix();
 }
 
-Board.prototype.push = function(player, column) {
+Board.prototype.push = function (player, column) {
   var row = this.matrix[column].lastIndexOf(null);
 
   if (row < 0) return false;
@@ -15,7 +15,16 @@ Board.prototype.push = function(player, column) {
   return [column, row];
 };
 
-Board.prototype.buildMatrix = function() {
+Board.prototype.cloneBoard = function () {
+
+  var clone = [];
+  for (var column in this.matrix) {
+    clone.push(this.matrix[column].slice(0))
+  }
+  return clone;
+};
+
+Board.prototype.buildMatrix = function () {
   var matrix = [];
 
   for (var i = 0; i < this.width; i++) { // columns
@@ -28,11 +37,11 @@ Board.prototype.buildMatrix = function() {
   return matrix
 };
 
-Board.prototype.getAvailableColumns = function() {
+Board.prototype.getAvailableColumns = function () {
   var positions = [];
 
-  for ( var column in this.matrix ) {
-    if (this.matrix[column].lastIndexOf(null) >=0 )
+  for (var column in this.matrix) {
+    if (this.matrix[column].lastIndexOf(null) >= 0)
       positions.push(parseInt(column));
   }
 
@@ -43,7 +52,7 @@ Board.prototype.draw = function () {
   for (var row = 0; row < this.height; row++) {
     for (var column = 0; column < this.width; column++) {
       var cell = this.matrix[column][row] || ' ';
-      process.stdout.write("| " +  cell + " ");
+      process.stdout.write("| " + cell + " ");
     }
     process.stdout.write("\n");
   }
