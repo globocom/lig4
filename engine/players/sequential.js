@@ -7,7 +7,7 @@ SequentialPlayer.prototype.toString = function() {
   return this.username;
 };
 
-SequentialPlayer.prototype.move = function(availablePositions) {
+SequentialPlayer.prototype.move = function(availablePositions, board) {
   var closestIndex = Math.min.apply(Math, availablePositions);
   return availablePositions[closestIndex];
 };
