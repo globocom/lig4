@@ -21,7 +21,7 @@ scheduler:
 	$(NODE) scheduler.js
 
 runner:
-	$(NODE) runner.js
+	$(NODE) runner.js --use_strict
 
 # app tasks
 
@@ -29,16 +29,7 @@ test:
 	$(MOCHA)
 
 run: build-client
-	$(PM2) start config/dev.json
-
-run-dev:
-	NODE_ENV=development PORT=9999 DBAAS_MONGODB_ENDPOINT=mongodb://localhost:27017/dev-lig4-api SESSION_SECRET=dummy GITHUB_ID=bc33392c8cafa28733ad GITHUB_SECRET=30ddb4561426c4bb4448a522039a2c58cf0c0d2b $(NODE) app.js
-
-logs:
-	$(PM2) logs config/dev.json
-
-monit:
-	$(PM2) monit config/dev.json
+	$(PM2)-dev start config/dev.json
 
 stop:
 	$(PM2) delete config/dev.json
