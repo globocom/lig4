@@ -189,12 +189,34 @@ function playground () {
   new Editor({ textarea: playgroundTextarea });
 
   playgroundTemplate = [
+
     '\'use strict\';\n\n',
-      'function Algorithm () {\n',
-        '    this.move = function (availableColumns) {\n',
+
+    '/**\n',
+    '* Classe Algorithm encapsula a lógica para movimentação. A instância da\n',
+    '* classe persiste durante todo o \'game\'.\n',
+    '*/\n\n',
+
+      'function Algorithm () {\n\n',
+
+        '    /**\n',
+        '     * Cada chamada de \'move\' corresponde a uma peça jogada. Esse método\n',
+        '     * recebe as posiçōes disponíveis no tabuleiro e o estado atual do\n',
+        '     * mesmo.\n',
+        '     */\n\n',
+
+        '    this.move = function (availableColumns) {\n\n',
+
+    '        /**\n',
+    '        * O retorno do método consiste no índice da coluna onde a peça \n',
+    '        * deverá ser jogada. Essa posição deverá estar entre as opções \n',
+    '        * disponíveis passadas como entrada da aplicação. \n',
+    '        */\n\n',
+
         '        return availableColumns[0];\n',
       '    }',
     '\n}\n'
+
   ].join('');
 
   // set game board attrs
