@@ -50,11 +50,16 @@ html
         div(class='playground-actions')
           button(id='test-algorithm-button' class='button' title='Testar o seu algoritmo.')
             | Testar
+
           button(id='submit-algorithm-button' class='button button--black' title='Salvar algoritmo para a classificação.')
             | Salvar
 
       div(id='playground-editor' class='playground-editor')
         textarea(id='playground-textarea' data-username='#{ user.login }' placeholder='Escreva o seu algoritmo...' spellcheck='false' class='playground-textarea')
+
+        button(id='last-save--button' title='Carregar o seu último jogo.' class='button playground__last-save-button')
+          | Último salvo
+
         button(id='reset-algorithm-button' title='Carregar o template inicial do algoritmo.' class='button playground__reset-button')
           | Template
 

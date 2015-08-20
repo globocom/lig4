@@ -14,6 +14,7 @@ var testButton;
 var submitButton;
 var resetButtom;
 var closeTestButtom;
+var lastSaveButtom;
 var playgroundEditor;
 var playgroundTextarea;
 var playgroundRunner;
@@ -180,12 +181,21 @@ function submitHandler (e) {
   });
 }
 
+function lastSaveHandler (e) {
+  e.preventDefault();
+
+  if (window.confirm('Carregar o seu último algoritmo salvo?')) {
+    document.location.reload();
+  }
+}
+
 // main function
 function playground () {
   testButton = document.getElementById('test-algorithm-button');
   closeTestButtom = document.createElement('button');
   submitButton = document.getElementById('submit-algorithm-button');
   resetButtom = document.getElementById('reset-algorithm-button');
+  lastSaveButtom = document.getElementById('last-save--button');
   playgroundEditor = document.getElementById('playground-editor');
   playgroundWrapper = document.getElementById('playground');
   playgroundTextarea = document.getElementById('playground-textarea');
@@ -271,6 +281,7 @@ function playground () {
   testButton.addEventListener('click', testHandler);
   submitButton.addEventListener('click', submitHandler);
   resetButtom.addEventListener('click', resetHandler);
+  lastSaveButtom.addEventListener('click', lastSaveHandler);
   closeTestButtom.addEventListener('click', closeTestHandler);
 
   // load player algorithm
