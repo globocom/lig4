@@ -13,8 +13,10 @@ section(id='rules' class='section rules')
       | até o atingir o topo da pilha ou a ultima linha. Mais informações
       | https://pt.wikipedia.org/wiki/Lig_4
     p(class='description')
-      | A vitória neste jogo de tabuleiro é obtida quando 4 peças são alinhadas na
-      | horizontal, vertical ou diagonal. É possível há ocorrência de empates.
+      | A vitória neste jogo de tabuleiro é obtida quando é formada uma sequência
+      | de 4 peças são alinhadas na
+      | horizontal, vertical ou diagonal. Caso o tabuleiro seja preenchido e
+      | nenhum dos jogadores formar uma sequência, a partida será considerada empatada.
     p(class='description')
       | O sistema de disputa é similar a um campeonato de pontos corridos, todos os
       | participantes disputam "Matches" com todos os outros participantes.
@@ -23,24 +25,21 @@ section(id='rules' class='section rules')
       | games, cada código inicia 5 vezes e nas outras 5 é o oponente. Exemplo: Uma
       | "match" entre Fulano vs Ciclano, pode acabar com vitória por 8x2, onde o
       | Fulano teve 8 vitórias entre os 10 "games" disputados e o Ciclano teve 2. É
-      | possível ocorrer empates, tanto no "game", onde nenhum código obteve vitória
-      | e todas as peças foram colocadas e também na "match" caso o número de
-      | vitórias seja igual.
+      | possível ocorrer empates, tanto em um "game", quanto na "match"
+      | caso o número de "games" vencidos seja igual.
     p(class='description')
-      | Concluída a "Match", o placar final sera computado na tabela do torneio,
+      | Concluída a "Match", o placar final será computado na tabela do torneio,
       | onde uma vitória na Match representa 3 pontos, empate 1 ponto e derrota 0
       | pontos. O "game" representará gols, logo uma "Match" finalizada Fulano 8 x 2
-      | Ciclano, irá computar 3 pontos para Fulano, 0 para ciclano. Sendo 8
-      | contabilizados pró Fulano, 2 para Ciclano, conforme tabelas de classificação
-      | de campeonatos de futebol.
+      | Ciclano, sará computado 3 pontos para Fulano e 0 para ciclano.
     p(class='description')
       | O vencedor do torneio será aquele que ao final de todas as partidas jogadas,
-      | estiver com mais pontos. Em caso de igualdade na pontuação, são critérios de
-      | desempate: 1) mais vitórias, 2) melhor saldo de gols, 3) mais gols pró, 4)
-      | confronto direto.
+      | estiver com mais pontos. Em caso de igualdade na pontuação, serão usados
+      | como critérios de desempate conforme a ordem que segue: 1) mais vitórias,
+      | 3) mair número de "games" pró 4) menor número de "games" contra.
     p(class='description')
-      | Em caso de dois ou mais participantes empatarem em todos os critérios, sera
-      | realizado um sorteio para definir o campeão do torneio.
+      | Em caso de dois ou mais participantes empatarem em todos os critérios, será
+      | realizado um sorteio entre os empatados para definir o campeão do torneio.
     p(class='description')
       | Todo participante poderá submeter código múltiplas vezes, no entanto cada
       | submissão irá substituir a anterior. Quando isto é feito, todas as partidas
@@ -48,20 +47,21 @@ section(id='rules' class='section rules')
       | intuito é que o participante possa ao longo do torneio evoluir sua
       | implementação.
     p(class='description')
-      | A organização do tornerio irá averiguar que as submissões sejam honestas e
+      | A organização do torneio irá averiguar se as submissões são honestas e
       | respeitem a esportividade do torneio. Qualquer tentativa de burlar o sistema
-      | do torneio, submissões, classificação ou qualquer outro meio considero
-      | antidesportivo ira acarretar na desclassicação do participanente
-      | respónsavel. Reforçamos o intuito educativo, esportivo do torneio e respeito
-      | aos demais participantes.
+      | do torneio, submissões, classificação ou qualquer outro meio considerado
+      | antidesportivo, a organização se dá o direito de, sem aviso prévio, desclassificar
+      | o participanente respónsavel. Reforçamos o intuito educativo, esportivo
+      | do torneio e respeito aos demais participantes.
     p(class='description')
-      | O torneio aceitará submissões  de código durante parte do tempo da BrazilJS
+      | O torneio aceitará submissões de código durante parte do tempo da BrazilJS
       | 2015, com abertura para submissões dia 21 de Agosto de 2015 ao 12:00 e
       | fechamento no dia 22 de Agosto de 2015 as 16h.
     p(class='description')
-      | Quando do fechamento das submissões, a classificação deixará de aparecer no
-      | stand e no site, para que a organização roda as ultimas partidas, confira os
-      | resultados e possa divulgar o vencedor no encerramento do evento.
+      | Quando do fechamento das submissões, a classificação não será exibida no
+      | stand e no site. Nesse momento a organização realizará a última rodada
+      | das partidas, a conferência da legitimidade dos algoritmos e a divulgação
+      | do vencedor no encerramento do evento.
     p(class='description')
-      | O prêmio ao vencedor é um e-reader  Amazon Kindle Paperwhite, que sera
-      | entregue ao final do evento.
+      | O prêmio ao vencedor é um e-reader Amazon Kindle Paperwhite, que será
+      | entregue após a divulgação do vencedor.

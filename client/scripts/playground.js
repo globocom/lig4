@@ -133,8 +133,8 @@ function playground () {
   playgroundTemplate = [
     '\'use strict\';\n\n',
       'function Algorithm () {\n',
-        '    this.move = function (avaiblePositions) {\n',
-        '        return avaiblePositions[0];\n',
+        '    this.move = function (availablePositions) {\n',
+        '        return availablePositions[0];\n',
       '    }',
     '\n}\n'
   ].join('');
