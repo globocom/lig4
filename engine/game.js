@@ -24,7 +24,7 @@ Game.prototype.run = function () {
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
     var columns = this.board.getAvailableColumns();
-    var currentBoard = this.board.matrix.slice(0);
+    var currentBoard = this.board.cloneBoard();
     var column = currentPlayer.move(columns, currentBoard);
 
     if (columns.indexOf(column) < 0) {
