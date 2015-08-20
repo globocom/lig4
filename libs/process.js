@@ -36,6 +36,7 @@ AsyncPool.prototype.run = function (file, message) {
   if (this.queue.length === 0) {
     setTimeout(function () {
       this.events['finish']();
+      process.exit();
     }.bind(this), this.wait);
   }
   // queue is not empty yet, call run again()
@@ -48,14 +49,18 @@ AsyncPool.prototype.do = function (index, proc) {
 
   console.log('Proc forked: ', proc.file, ' at slot ', index);
 
+  // on timeout, kill child process.
   setTimeout(function () {
     child.kill()
   }, this.timeout)
 
+   // fork and send message!
   child.send(proc.message);
   child.on('message', function (msg) {
     return pm.events['message'](msg);
   });
+
+  // when child exits, remove it from slots at index N.
   child.on('close', function () {
     pm.slots.pop(index);
   });
