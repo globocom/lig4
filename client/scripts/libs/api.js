@@ -23,7 +23,8 @@ function api(path) {
       xhr.addEventListener('load', function() {
         var response = null;
 
-        if (xhr.response) response = JSON.parse(xhr.response).payload
+        if (xhr.status == 401) document.location.reload();
+        if (xhr.response) response = JSON.parse(xhr.response).payload;
 
         callback(response, xhr.status);
       });

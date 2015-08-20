@@ -14,6 +14,7 @@ var testButton;
 var submitButton;
 var resetButtom;
 var closeTestButtom;
+var lastSaveButtom;
 var playgroundEditor;
 var playgroundTextarea;
 var playgroundRunner;
@@ -40,6 +41,13 @@ function RandomAlgorithm () {
 
 function loadPlayerHandler (_player, status) {
   player = _player;
+
+  var expiredCode = localStorage.getItem('lig4-' + player.username);
+
+  if (expiredCode) {
+    localStorage.removeItem('lig4-' + player.username);
+    return playgroundTextarea.value = expiredCode;
+  }
 
   if (!player.code) {
     return playgroundTextarea.value = playgroundTemplate;
@@ -89,6 +97,7 @@ function testAlgorithm (callback, showTestBoard) {
         '</li>'
       ].join('');
 
+
       console.log(play);
     });
   } catch (error) {
@@ -132,7 +141,9 @@ function closeTestHandler (e) {
 function resetHandler (e) {
   e.preventDefault();
 
-  playgroundTextarea.value = playgroundTemplate;
+  if (window.confirm('Carregar o template inicial do algoritmo?')) {
+    playgroundTextarea.value = playgroundTemplate;
+  }
 }
 
 function submitHandler (e) {
@@ -151,19 +162,32 @@ function submitHandler (e) {
       return alert(data);
     }
 
+    if (localStorage) {
+      localStorage.setItem('lig4-' + player.username, playgroundTextarea.value);
+    }
+
     // save player algorithm
     api('/player/' + player.username).put({
       code: playgroundTextarea.value
     }, function () {
       submitButton.innerHTML = 'Salvo c/ sucesso!';
       testButton.disabled = false;
+      localStorage.removeItem('lig4-' + player.username);
 
       setTimeout(function () {
         submitButton.disabled = false;
         submitButton.innerHTML = 'Salvar';
-      }, 2500);
+      }, 1500);
     }, false);
   });
+}
+
+function lastSaveHandler (e) {
+  e.preventDefault();
+
+  if (window.confirm('Carregar o seu último algoritmo salvo?')) {
+    document.location.reload();
+  }
 }
 
 // main function
@@ -172,6 +196,7 @@ function playground () {
   closeTestButtom = document.createElement('button');
   submitButton = document.getElementById('submit-algorithm-button');
   resetButtom = document.getElementById('reset-algorithm-button');
+  lastSaveButtom = document.getElementById('last-save--button');
   playgroundEditor = document.getElementById('playground-editor');
   playgroundWrapper = document.getElementById('playground');
   playgroundTextarea = document.getElementById('playground-textarea');
@@ -193,10 +218,10 @@ function playground () {
     '\'use strict\';\n\n',
 
     '/*\n',
-    ' * Classe Algorithm encapsula \n',
-    ' * a lógica para movimentação. \n',
-    ' * A instância da classe persiste \n',
-    ' * persiste durante todo o \'game\'. \n',
+    ' * A função Algorithm encapsula \n',
+    ' * a lógica das jogadas. \n',
+    ' * A instância do Algorithm \n',
+    ' * persiste durante toda a partida. \n',
     ' */ \n\n',
 
       'function Algorithm () {\n\n',
@@ -208,17 +233,32 @@ function playground () {
         '     * as colunas disponíveis \n',
         '     * do tabuleiro e o estado atual \n',
         '     * do mesmo. \n',
-        '     */\n\n',
+        '     */ \n\n',
 
-        '    this.move = function (availableColumns) {\n\n',
+        '    this.move = function (availableColumns, gameBoard) {\n\n',
 
-    '        /*\n',
-    '         * O retorno do método consiste\n',
-    '         * no índice da coluna onde \n',
-    '         * a peça deverá ser jogada. \n',
-    '         * Este indice deverá estar \n',
-    '         * entre as colunas disponíveis. \n',
-    '         */\n\n',
+        '        /*\n',
+        '         * availableColumns: \n',
+        '         * [0, 1, 2, 3, 4, 5, 6]\n',
+        '         * \n',
+        '         * gameBoard: [\n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null], \n',
+        '         *  [null, null, null, null, null, null] \n',
+        '         * ] \n',
+        '         */ \n\n',
+
+        '        /*\n',
+        '         * O retorno do método \n',
+        '         * deve ser o índice númerico \n',
+        '         * de uma coluna válida, \n',
+        '         * para que a jogada seja \n',
+        '         * realizada com sucesso. \n',
+        '         */\n\n',
 
         '        return availableColumns[0];\n',
       '    }',
@@ -242,6 +282,7 @@ function playground () {
   testButton.addEventListener('click', testHandler);
   submitButton.addEventListener('click', submitHandler);
   resetButtom.addEventListener('click', resetHandler);
+  lastSaveButtom.addEventListener('click', lastSaveHandler);
   closeTestButtom.addEventListener('click', closeTestHandler);
 
   // load player algorithm

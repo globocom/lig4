@@ -8,6 +8,7 @@
   box-sizing: border-box;
   padding: 0 rem(35px);
   z-index: 999;
+  overflow-y: auto;
 
   @media screen and (max-width: 720px) {
     position: initial;
@@ -56,6 +57,7 @@
   border: 0;
   box-sizing: border-box;
   padding: rem(35px);
+  padding-bottom: rem(85px);
   right: 0;
   z-index: 0;
   font-size: rem(18px);
@@ -73,6 +75,7 @@
   }
 }
 
+.playground__last-save-button,
 .playground__reset-button,
 .playground__close-test-button {
   position: fixed;
@@ -84,6 +87,10 @@
   @media screen and (max-width: 720px) {
     position: absolute;
   }
+}
+
+.playground__last-save-button {
+  right: rem(215px);
 }
 
 .playground-editor {
