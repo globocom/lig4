@@ -1,11 +1,11 @@
 'use strict'
 
 var vm = require('vm');
-var engine = require('./engine/match');
+var Match = require('./engine/match');
 
-function onFinish(message) {
-  console.log('Match result: ', message.result.scores)
-  process.send(message);
+function onFinish(result) {
+  console.log('Match result: ', result.scores)
+  process.send(result);
   process.exit();
 }
 
@@ -17,8 +17,6 @@ process.on('message', function (match) {
       timeout: 5000
     }
     var players = {};
-   
-    vm.createContext(gameContext);
 
     for (var player of match.players) {
       var local = {};
@@ -26,25 +24,23 @@ process.on('message', function (match) {
       vm.runInContext(player.code, local, options);
 
       if (local.Algorithm === undefined && local.Player === undefined) {
+        // TODO: player lose in this scenario
         console.log('Invalid code for player: ', player.username)
         process.exit()
       }
 
       players[player.username] = local.Algorithm || local.Player;
-      id = match._id;
     };
 
-    vm.createContext(gameContext);
+    var engine = new Match();
+    for (var username in players) {
+        engine.addPlayer({username: username, klass: players[username]});
+    }
+    engine.run();
+    var result = engine.getResults();
+    result.id = match._id;
 
-    var engine = new Match();                
-    for (var username in players) {          
-        engine.addPlayer({username: username, klass: players[username]});                 
-    }                                        
-    engine.run();                            
-    var result = engine.getResults();        
-
-    vm.runInContext(code, gameContext, options);
-    onFinish(gameContext);
+    onFinish(result);
 
   })(process, module, require);
 });

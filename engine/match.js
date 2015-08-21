@@ -44,12 +44,12 @@ Match.prototype.setWinner = function () {
 
   if (this.scores[player1.username].gamesFor > this.scores[player2.username].gamesFor) {
     this.scores[player1.username].status = 'winner';
-    this.scores[player2.username].status = 'looser';
+    this.scores[player2.username].status = 'loser';
     return;
   }
   if (this.scores[player1.username].gamesFor < this.scores[player2.username].gamesFor) {
     this.scores[player2.username].status = 'winner';
-    this.scores[player1.username].status = 'looser';
+    this.scores[player1.username].status = 'loser';
     return;
   }
 

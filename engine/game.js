@@ -1,8 +1,22 @@
 'use strict';
 
+var vm = require('vm');
 var Board = require('./board');
+var moveTimeout = 1000;
 
 function Game(player1, player2) {
+  this.player1Context = {Player: player1.klass }
+  this.player2Context = {Player: player2.klass }
+
+  vm.createContext(this.player1Context);
+  vm.createContext(this.player2Context);
+
+  vm.runInContext("var player = new Player", this.player1Context);
+  vm.runInContext("var player = new Player", this.player2Context);
+
+  player1.context = this.player1Context;
+  player2.context = this.player2Context;
+
   this.board = new Board();
   this.players = [player1, player2];
   this.playerMoving = null;
@@ -25,11 +39,28 @@ Game.prototype.run = function () {
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
     this.playerMoving = currentPlayer;
-    var columns = this.board.getAvailableColumns();
-    var currentBoard = this.board.cloneBoard();
-    var column = currentPlayer.move(columns.sclice(0), currentBoard);
 
-    if (columns.indexOf(column) < 0) {
+    var columns = this.board.getAvailableColumns();
+
+    var currentBoard = this.board.cloneBoard();
+    var currentColumns = columns.slice(0);
+
+    currentPlayer.context.moveResult = null;
+    currentPlayer.context.board = currentBoard;
+    currentPlayer.context.columns = currentColumns;
+
+    try {
+      vm.runInContext(
+        "var moveResult = player.move(columns, board)",
+        currentPlayer.context,
+        moveTimeout);
+
+      var column = currentPlayer.context.moveResult;
+    }catch(e){
+      var column = null;
+    }
+
+    if (!column || columns.indexOf(column) < 0) {
       result.winner = this.players[(play + 1) % 2];
       result.reason = Game.status.INVALID_MOVE;
       result.invalidMove = column;
@@ -52,7 +83,7 @@ Game.prototype.run = function () {
   };
 
   if (!result.winner) result.reason = Game.status.DRAW;
-
+  result.winner.context = null
   return result;
 };
 
