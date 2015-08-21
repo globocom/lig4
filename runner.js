@@ -16,28 +16,31 @@ var AsyncPool = require('./libs/asyncpool')
 
 function populateRanks(callback) {
 
-     var rank = 0;
-     var length = 0;
-     var leaderboards = [];
+  var rank = 0;
+  var length = 0;
+  var leaderboards = [];
 
-    function saveRank(playerName, rank) {
-        Player
-          .findOne()
-          .where('username')
-          .equals(playerName)
-          .exec(function (err, player) {
-            player.rank = rank + 1;
-            player.save(function(err) {
-                if (err) throw new Error('Player not saved');
-                rank += 1;
-                if (length != rank) {
-                    saveRank(leaderboards[rank].player, rank);
-                } else {
-                    callback();
-                }
-            });
-          })
-    }
+  function saveRank(playerName, rank) {
+    Player
+      .findOne()
+      .where('username')
+      .equals(playerName)
+      .exec(function (err, player) {
+        player.rank = rank + 1;
+        player.save(function (err) {
+          if (err) throw new Error('Player not saved: ', err);
+
+          console.log('Player: ', player.username, ' rank:', player.rank);
+
+          rank += 1;
+          if (length !== rank) {
+            saveRank(leaderboards[rank].player, rank);
+          } else {
+            callback();
+          }
+        });
+      })
+  }
 
   Leaderboard
     .find()
@@ -48,10 +51,10 @@ function populateRanks(callback) {
       gamesAgainst: 1
     })
     .exec(function (err, _leaderboards) {
-        leaderboards = _leaderboards;
-        length = leaderboards.length;
+      leaderboards = _leaderboards;
+      length = leaderboards.length;
 
-        saveRank(leaderboards[rank].player, rank);
+      saveRank(leaderboards[rank].player, rank);
     })
 }
 
@@ -134,7 +137,7 @@ function startRound(callback) {
 
       Leaderboard.collection.remove();
 
-      var pool = new AsyncPool();
+      var pool = new AsyncPool(100000);
 
       pool.on('finish', function () {
         populateRanks(callback);
