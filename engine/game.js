@@ -85,7 +85,8 @@ Game.prototype.run = function () {
   };
 
   if (!result.winner) result.reason = Game.status.DRAW;
-  result.winner.context = null
+  else result.winner.context = null;
+
   return result;
 };
 

@@ -5,7 +5,7 @@
 var api = require('./libs/api');
 var Editor = require('./libs/editor');
 var Algorithm = require('./libs/algorithm');
-var Game = require('../../engine/game');
+var Game = require('../../engine/gameclient');
 var GameBoard = require('./components/gameboard');
 
 // elements and vars
@@ -152,6 +152,14 @@ function submitHandler (e) {
   testButton.disabled = true;
   submitButton.disabled = true;
   submitButton.innerHTML = 'Salvando...';
+
+  if (playgroundTextarea.value.indexOf('console') !== -1) {
+    testButton.disabled = false;
+    submitButton.innerHTML = 'Salvar';
+    submitButton.disabled = false;
+
+    return alert('Para enviar o seu codigo, remova todos os console.log()');
+  }
 
   testAlgorithm(function (err, data) {
     if (err) {
