@@ -7,6 +7,7 @@ var AsyncPool = function (timeout, maxPoolSize) {
   this.slots = [];
   this.wait = 2000;
   this.maxPoolSize = maxPoolSize || 15;
+  this.finalized = false;
   this.events = {
     exit: function () {},
     message: function () {}
@@ -33,11 +34,11 @@ AsyncPool.prototype.run = function (file, message) {
   for (var index in this.slots) {
     this.do(index, this.slots[index]);
   }
-  if (this.queue.length === 0 && this.slots.length === 0) {
+  if (this.queue.length === 0 && this.slots.length === 0 && !this.finalized) {
     // no more procs, neither buffer nor queue.
     setTimeout(function () {
+      this.finalized = true;
       this.events['finish']();
-      process.exit();
     }.bind(this), this.wait);
   }
   // queue is not empty yet, call run again()
