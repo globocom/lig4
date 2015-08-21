@@ -44,6 +44,7 @@ Game.prototype.run = function () {
 
     var currentBoard = this.board.cloneBoard();
     var currentColumns = columns.slice(0);
+    var column = null;
 
     currentPlayer.context.moveResult = null;
     currentPlayer.context.board = currentBoard;
@@ -53,11 +54,11 @@ Game.prototype.run = function () {
       vm.runInContext(
         "var moveResult = player.move(columns, board)",
         currentPlayer.context,
-        moveTimeout);
+        { timeout: moveTimeout });
 
-      var column = currentPlayer.context.moveResult;
+      column = currentPlayer.context.moveResult;
     }catch(e){
-      var column = null;
+      column = null;
     }
 
     if (!column || columns.indexOf(column) < 0) {
