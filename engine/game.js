@@ -2,7 +2,7 @@
 
 var vm = require('vm');
 var Board = require('./board');
-var moveTimeout = 1000;
+var moveTimeout = 100;
 
 function Game(player1, player2) {
   this.player1Context = {Player: player1.klass }
@@ -54,7 +54,7 @@ Game.prototype.run = function () {
       vm.runInContext(
         "var moveResult = player.move(columns, board)",
         currentPlayer.context,
-        { timeout: moveTimeout });
+        { timeout: moveTimeout, displayErrors: false });
 
       column = currentPlayer.context.moveResult;
     }catch(e){
