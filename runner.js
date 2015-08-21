@@ -73,7 +73,7 @@ function updateLeaderboard(resultMatch) {
 
       if (err) return console.error(err);
 
-      match.result = resultMatch.result
+      match.result = resultMatch
       match.save(function (err) {
 
         if (err) return console.error(err);

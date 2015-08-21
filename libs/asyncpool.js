@@ -12,7 +12,7 @@ var AsyncPool = function (timeout, maxPoolSize) {
     exit: function () {},
     message: function () {}
   };
-  this.timeout = timeout || 10000;
+  this.timeout = timeout || ( 60 * 1000);
   setTimeout(this.run.bind(this), this.wait);
 };
 
