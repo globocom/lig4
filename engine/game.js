@@ -58,10 +58,11 @@ Game.prototype.run = function () {
 
       column = currentPlayer.context.moveResult;
     }catch(e){
+      console.log('Error running player:', currentPlayer.username, ', error: ' , e);
       column = null;
     }
 
-    if (!column || columns.indexOf(column) < 0) {
+    if (column === null || columns.indexOf(column) < 0) {
       result.winner = this.players[(play + 1) % 2];
       result.reason = Game.status.INVALID_MOVE;
       result.invalidMove = column;
