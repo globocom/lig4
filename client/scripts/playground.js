@@ -25,6 +25,7 @@ var testBoard;
 var playgroundTestBoard;
 var playgroundTestLogs;
 var player;
+var username;
 
 // functions
 
@@ -35,8 +36,7 @@ function RandomAlgorithm () {
     return availablePositions[index];
   };
 
-  this.char = 'R';
-  this.username = 'aleatório';
+  this.username = this.char = 'aleatório';
 }
 
 function loadPlayerHandler (_player, status) {
@@ -63,7 +63,7 @@ function testAlgorithm (callback, showTestBoard) {
   try {
     player.algorithm = new Algorithm(playgroundTextarea.value);
     player.algorithm.username = player.username;
-    player.algorithm.char = 'P';
+    player.algorithm.char = player.username;
 
     game = new Game(player.algorithm, new RandomAlgorithm);
     result = game.run();
@@ -204,6 +204,7 @@ function playground () {
   playgroundTestBoard = document.createElement('div');
   playgroundTestLogs = document.createElement('ul');
   gameboard = document.createElement('div');
+  username = playgroundTextarea.getAttribute('data-username');
 
   playgroundTestBoard.className = 'playground-test-board';
   playgroundTestLogs.className = 'playground-test-logs';
@@ -238,17 +239,20 @@ function playground () {
         '    this.move = function (availableColumns, gameBoard) {\n\n',
 
         '        /*\n',
+        '         * Exemplo dos argumentos  \n',
+        '         * passados\n',
+        '         * \n',
         '         * availableColumns: \n',
         '         * [0, 1, 2, 3, 4, 5, 6]\n',
         '         * \n',
         '         * gameBoard: [\n',
+        '         *  [\'' + username + '\', null, null, null, null, null], \n',
+        '         *  [\'' + username + '\', null, null, null, null, null], \n',
         '         *  [null, null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null] \n',
+        '         *  [\'' + username + '\', null, null, null, null, null], \n',
+        '         *  [\'aleatório\', null, null, null, null, null], \n',
+        '         *  [\'aleatório\', null, null, null, null, null], \n',
+        '         *  [\'aleatório\', null, null, null, null, null] \n',
         '         * ] \n',
         '         */ \n\n',
 
@@ -286,7 +290,7 @@ function playground () {
   closeTestButtom.addEventListener('click', closeTestHandler);
 
   // load player algorithm
-  api('/player/' + playgroundTextarea.getAttribute('data-username')).get(loadPlayerHandler);
+  api('/player/' + username).get(loadPlayerHandler);
 }
 
 document.addEventListener('DOMContentLoaded', playground);

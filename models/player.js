@@ -20,7 +20,11 @@ var PlayerSchema = new mongoose.Schema({
     index: true
   },
   code: {
-    type: String,
+    type: String
+  },
+  rank: {
+    type: Number,
+    default: 0
   },
 });
 
