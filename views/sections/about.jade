@@ -3,22 +3,30 @@ section(id='about' class='section about')
     h1(class='title') O que é?
 
     p(class='description')
-      | Um torneio de codificação durante a BrazilJS 2015, promovido pela Globo.com.
-      | O jogo de tabuleiro escolhido é o Ligue 4 ou Connect Four(em inglês).
+      | O torneio é uma disputa entre algoritmos que jogam
+      | uma versão virtual do jogo de tabuleiro conhecido como
+      a(href='https://pt.wikipedia.org/wiki/Lig_4' target='_blank')
+        b
+          |  Ligue Quatro - 6x7.
+
+      |  O participante implementa um algoritmo que
+      | disputará partidas contra todos os outros participantes,
+      | este algoritmo retornará a coluna onde a peça será jogada
+      | e esta cai até atingir o topo da pilha ou a última linha.
+      |  A vitória é obtida quando se forma uma sequência de 4 peças alinhadas na horizontal,
+      | vertical ou diagonal.
+
+    p(class='description')
+      |  O torneio ocorrerá durante a BrazilJS 2015 e é promovido pela
+      a(href='//globocom.recruiterbox.com' target='_blank')
+        b
+          |  Globo.com
+      | .
 
     a(class='button block-button' title='Participe através do Github' href='/playground') Participe através do github
 
     p(class='description')
-      | Cada participante submete um código que implementa um jogador virtual que
-      | disputará partidas contra todos os outros participantes.
-
-    p(class='description')
-      | Ao final, usando um sistema similar a campeonatos de futebol, o melhor
-      | classificado irá ganhar um Amazon Kindle Paperwhite, entregue ao final do
-      | evento.
-
-    p(class='description')
       | Veja o regulamento para maiores detalhes do formato da competição, ou converse com
-      | a gente no stand da Globo.com
+      | a gente no stand da Globo.com.
 
     div(id="ranking-game" class="game-board" data-interval=".5" data-rows="6" data-columns="7" data-players="true")

@@ -38,7 +38,7 @@ stop:
 
 # client tasks
 
-build-client: clean-client scripts-client styles-client
+build-client: clean-client scripts-client styles-client images-client
 
 watch-client: build-client
 	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client' 'client/styles/**/*.scss':'make styles-client'
@@ -46,6 +46,9 @@ watch-client: build-client
 clean-client:
 	rm -fr public
 	rm -f npm-debug.log
+
+images-client:
+	cp client/images/thumbnail.png public/thumbnail.png
 
 tree-client:
 	mkdir -p public/scripts
