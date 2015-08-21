@@ -2,13 +2,19 @@
 
 var express = require('express');
 var router = express.Router();
+var Player = require('../models/player');
 
 // GET in /
 router.get('/', function (req, res, next) {
-  if (req.session.user.rank) req.session.user.rank = false;
 
-  // GET user data
-  res.render('playground', { user: req.session.user });
+    Player.findOne()
+        .where('username')
+        .equals(req.session.user.login)
+        .exec(function (err, player) {
+            req.session.user.rank = player.rank;
+            // GET user data
+            res.render('playground', { user: req.session.user });
+        });
 });
 
 module.exports = router;

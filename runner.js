@@ -14,6 +14,47 @@ var Leaderboard = require('./models/leaderboard')
 var Match = require('./models/match')
 var AsyncPool = require('./libs/asyncpool')
 
+function populateRanks(callback) {
+
+     var rank = 0;
+     var length = 0;
+     var leaderboards = [];
+
+    function saveRank(playerName, rank) {
+        Player
+          .findOne()
+          .where('username')
+          .equals(playerName)
+          .exec(function (err, player) {
+            player.rank = rank + 1;
+            player.save(function(err) {
+                if (err) throw new Error('Player not saved');
+                rank += 1;
+                if (length != rank) {
+                    saveRank(leaderboards[rank].player, rank);
+                } else {
+                    callback();
+                }
+            });
+          })
+    }
+
+  Leaderboard
+    .find()
+    .sort({
+      score: -1,
+      win: -1,
+      gamesFor: -1,
+      gamesAgainst: 1
+    })
+    .exec(function (err, _leaderboards) {
+        leaderboards = _leaderboards;
+        length = leaderboards.length;
+
+        saveRank(leaderboards[rank].player, rank);
+    })
+}
+
 /**
  * Update leaderboard after a match.
  * @param {object} resultMatch Match result.
@@ -96,7 +137,7 @@ function startRound(callback) {
       var pool = new AsyncPool();
 
       pool.on('finish', function () {
-        callback();
+        populateRanks(callback);
       });
       pool.on('message', function (resultMatch) {
         updateLeaderboard(resultMatch);
