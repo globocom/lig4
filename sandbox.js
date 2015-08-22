@@ -5,7 +5,11 @@ var Match = require('./engine/match');
 
 function onFinish(result) {
   console.log('Match result: ', result.scores)
-  process.send(result);
+  try {
+    process.send(result);
+	}catch(e){
+	  console.log('error sending result to parent process: ', result)
+	}
   process.exit();
 }
 
