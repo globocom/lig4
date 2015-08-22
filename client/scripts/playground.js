@@ -153,12 +153,13 @@ function submitHandler (e) {
   submitButton.disabled = true;
   submitButton.innerHTML = 'Salvando...';
 
-  if (playgroundTextarea.value.indexOf('console') !== -1) {
+  if (playgroundTextarea.value.indexOf('console') !== -1 ||
+      playgroundTextarea.value.indexOf('const ') !== -1   ) {
     testButton.disabled = false;
     submitButton.innerHTML = 'Salvar';
     submitButton.disabled = false;
 
-    return alert('Para enviar o seu codigo, remova todos os console.log()');
+    return alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), const e funcionalidades do ES6.');
   }
 
   testAlgorithm(function (err, data) {
