@@ -28,6 +28,8 @@ router.get('/:username', function (req, res, next) {
 
 // PUT in /api/player/:username
 router.put('/:username', function (req, res, next) {
+  return Response.send(400, 'BAD_REQUEST',  'Tournament is over', res, next);
+  
   if (req.params.username !== req.session.user.login) {
     return Response.send(400, 'BAD_REQUEST', req.body, res, next);
   }
