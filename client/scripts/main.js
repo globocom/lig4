@@ -27,14 +27,13 @@ function main() {
   for (var i = navigationButtons.length - 1; i >= 0; i--) {
     navigationButtons[i].addEventListener('click', navigationHandler);
   }
-
+  
   // start ranking board
   (function rankingRunner() {
     api('/game')
       .get(function (matchResult, status) {
-        if (!matchResult || status != 200) {
-          setTimeout(rankingRunner, 2500);
-          return rankingGameElement.parentElement.removeChild(rankingGameElement);
+        if (!matchResult || status != 200 || status != 304) {
+          return setTimeout(rankingRunner, 2500);
         }
 
         var randomGame = matchResult.result.games[Math.round(Math.random())];
@@ -50,7 +49,7 @@ function main() {
   (function leaderboard() {
     api('/leaderboard')
       .get(function (lbData, status) {
-        if (status != 200) return setTimeout(leaderboard, 3000);
+        if (status != 200 || status != 304) return setTimeout(leaderboard, 3000);
 
         LeaderBoard(lbData);
 
