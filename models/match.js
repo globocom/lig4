@@ -32,16 +32,23 @@ MatchSchema.statics.random = function (callback) {
 };
 
 MatchSchema.statics.serialize = function (m) {
-  delete m._id;
-  delete m.round;
-  delete m.__v;
-  delete m.ack;
-  delete m.result.scores;
-  for (var p in m.players) {
-    m.players[p] = {
-      username: m.players[p].username
-    };
-  }
+	
+	try {
+	  delete m._id;
+	  delete m.round;
+	  delete m.__v;
+	  delete m.ack;
+	  delete m.result.scores;
+	  for (var p in m.players) {
+	    m.players[p] = {
+	      username: m.players[p].username
+	    };
+	  }
+	} catch (e) {
+		console.log(e);
+		return null;
+	}
+	
   return m
 }
 
