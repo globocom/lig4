@@ -25,12 +25,11 @@ process.on('message', function (match) {
     for (var player of match.players) {
       var local = {};
       vm.createContext(local);
-	  try {
-		  vm.runInContext(player.code, local, options);
-	  }catch(e){
+      try {
+        vm.runInContext(player.code, local, options);
+      } catch (e) {
         console.log('code  with error for player: ', player.username)
-	  }
-
+      }
 
       if (local.Algorithm === undefined && local.Player === undefined) {
         // TODO: player lose in this scenario
@@ -43,7 +42,10 @@ process.on('message', function (match) {
 
     var engine = new Match();
     for (var username in players) {
-        engine.addPlayer({username: username, klass: players[username]});
+      engine.addPlayer({
+        username: username,
+        klass: players[username]
+      });
     }
     engine.run();
     var result = engine.getResults();
