@@ -154,12 +154,13 @@ function submitHandler (e) {
   submitButton.innerHTML = 'Salvando...';
 
   if (playgroundTextarea.value.indexOf('console') !== -1 ||
-      playgroundTextarea.value.indexOf('const ') !== -1   ) {
+      playgroundTextarea.value.indexOf('alert') !== -1 ||
+      playgroundTextarea.value.indexOf('const ') !== -1) {
     testButton.disabled = false;
     submitButton.innerHTML = 'Salvar';
     submitButton.disabled = false;
 
-    return alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), const e funcionalidades do ES6.');
+    return alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.');
   }
 
   testAlgorithm(function (err, data) {
@@ -181,7 +182,7 @@ function submitHandler (e) {
   }, function (res, status) {
 
       if (status >= 400) {
-          alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), const e funcionalidades do ES6.')
+          alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.')
       } else {
           submitButton.innerHTML = 'Salvo c/ sucesso!';
           localStorage.removeItem('lig4-' + player.username);
