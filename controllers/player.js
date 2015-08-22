@@ -43,6 +43,12 @@ router.put('/:username', function (req, res, next) {
       if (!player) player = new Player(req.body); // first access
       if (err) return Response.send(500, 'ERROR', err, res, next);
 
+      if (req.body.code &&
+        req.body.code.indexOf('alert') > -1 ||
+        req.body.code.indexOf('console.') > -1) {
+        return Response.send(400, 'INVALID_ES5_CODE', {}, res, next);
+      }
+
       try {
         var testContext = {};
         vm.createContext(testContext);
