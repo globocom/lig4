@@ -30,9 +30,9 @@ function main() {
   
   // start ranking board
   (function rankingRunner() {
-    api('/game')
+    api('/game?' + Math.random())
       .get(function (matchResult, status) {
-        if (!matchResult || status != 200 || status != 304) {
+        if (status != 200) {
           return setTimeout(rankingRunner, 2500);
         }
 
@@ -47,9 +47,9 @@ function main() {
   })();
 
   (function leaderboard() {
-    api('/leaderboard')
+    api('/leaderboard?' + Math.random())
       .get(function (lbData, status) {
-        if (status != 200 || status != 304) return setTimeout(leaderboard, 3000);
+        if (status != 200) return setTimeout(leaderboard, 3000);
 
         LeaderBoard(lbData);
 
