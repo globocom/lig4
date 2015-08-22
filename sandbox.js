@@ -21,7 +21,12 @@ process.on('message', function (match) {
     for (var player of match.players) {
       var local = {};
       vm.createContext(local);
-      vm.runInContext(player.code, local, options);
+	  try {
+		  vm.runInContext(player.code, local, options);
+	  }catch(e){
+        console.log('code  with error for player: ', player.username)
+	  }
+
 
       if (local.Algorithm === undefined && local.Player === undefined) {
         // TODO: player lose in this scenario
