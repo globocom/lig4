@@ -8,6 +8,7 @@ function onFinish(result) {
   try {
     process.send(result);
 	}catch(e){
+    console.log(e);
 	  console.log('error sending result to parent process: ', result)
 	}
   process.exit();
@@ -18,7 +19,7 @@ process.on('message', function (match) {
   (function (process, module, require) {
 
     var options = {
-      timeout: 5000
+      timeout: 10000
     }
     var players = {};
 
