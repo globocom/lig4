@@ -34,7 +34,11 @@ function populateRanks(callback) {
 
           rank += 1;
           if (length !== rank) {
-            saveRank(leaderboards[rank].player, rank);
+            try {
+              saveRank(leaderboards[rank].player, rank);
+            } catch (e) {
+              console.log("ERR !!!! ", rank, leaderboards.lenght)
+            }
           } else {
             callback();
           }
@@ -75,9 +79,7 @@ function updateLeaderboard(resultMatch) {
 
       match.result = resultMatch
       match.save(function (err) {
-
-        if (err) return console.error(err);
-
+     
         for (var player of match.players) {
           var playerScore = match.result.scores[player.username];
 
@@ -137,7 +139,7 @@ function startRound(callback) {
 
       Leaderboard.collection.remove();
 
-      var pool = new AsyncPool(100000);
+      var pool = new AsyncPool(100000, 10);
 
       pool.on('finish', function () {
         populateRanks(callback);
