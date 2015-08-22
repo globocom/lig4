@@ -32,7 +32,8 @@ function main() {
   (function rankingRunner() {
     api('/game')
       .get(function (matchResult, status) {
-        if (!matchResult) {
+        if (!matchResult || status !== 200) {
+          setTimeout(rankingRunner, 2500);
           return rankingGameElement.parentElement.removeChild(rankingGameElement);
         }
 
@@ -49,9 +50,11 @@ function main() {
   (function leaderboard() {
     api('/leaderboard')
       .get(function (lbData, status) {
-        if (status === 200) {
-          LeaderBoard(lbData);
-        }
+        if (status != 200) return setTimeout(leaderboard, 3000);
+
+        LeaderBoard(lbData);
+
+        setTimeout(leaderboard, 3000);
       });
   })();
 }
