@@ -38,7 +38,9 @@ function main() {
 
         var randomGame = matchResult.result.games[Math.round(Math.random())];
         randomGame.players = matchResult.players;
-
+		
+		if (randomGame.moves.length == 0) return setTimeout(rankingRunner, 2500);
+		
         rankingGame.load(randomGame)
           .play(function () {
             setTimeout(rankingRunner, 2500);
