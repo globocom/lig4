@@ -32,7 +32,7 @@ function main() {
   (function rankingRunner() {
     api('/game')
       .get(function (matchResult, status) {
-        if (!matchResult || status !== 200) {
+        if (!matchResult || status != 200) {
           setTimeout(rankingRunner, 2500);
           return rankingGameElement.parentElement.removeChild(rankingGameElement);
         }

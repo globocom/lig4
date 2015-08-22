@@ -4,6 +4,11 @@ function LeaderBoard(data) {
   var container = document.getElementById('ranking').firstChild;
   var table = document.createElement('table');
   var size = data.length > 10 ? 10 : data.length;
+  var _table = document.getElementsByClassName('leader-board')[0]
+  
+  if (_table) {
+	  container.removeChild(_table);
+  }
 
   table.className = 'leader-board';
 
