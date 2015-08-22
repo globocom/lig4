@@ -2,7 +2,7 @@
 
 var vm = require('vm');
 var Board = require('./board');
-var moveTimeout = 100;
+var moveTimeout = 500;
 
 function Game(player1, player2) {
   this.player1Context = {Player: player1.klass }
@@ -63,7 +63,7 @@ Game.prototype.run = function () {
     }
 
     if (column === null || columns.indexOf(column) < 0) {
-      result.winner = this.players[(play + 1) % 2];
+      result.winner = { username: this.players[(play + 1) % 2].username } ;
       result.reason = Game.status.INVALID_MOVE;
       result.invalidMove = column;
       break;
@@ -77,15 +77,16 @@ Game.prototype.run = function () {
 
     var matchSequence = this.matchAnalyzer();
     if (matchSequence) {
-      result.winner = currentPlayer;
+      result.winner = { username: currentPlayer.username } ;
       result.reason = Game.status.LIG4;
       result.sequence = matchSequence;
       break;
     }
   };
 
-  if (!result.winner) result.reason = Game.status.DRAW;
-  else result.winner.context = null;
+  if (!result.winner) {
+    result.reason = Game.status.DRAW;
+  }
 
   return result;
 };
