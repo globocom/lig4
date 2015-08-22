@@ -6,7 +6,7 @@ var AsyncPool = function (timeout, maxPoolSize) {
   this.queue = [];
   this.slots = [];
   this.wait = 2000;
-  this.maxPoolSize = maxPoolSize || 15;
+  this.maxPoolSize = maxPoolSize || 4;
   this.finalized = false;
   this.events = {
     exit: function () {},
