@@ -1,5 +1,6 @@
 'use strict'
 
+var vm = require('vm');
 var express = require('express');
 var router = express.Router();
 
@@ -39,6 +40,16 @@ router.put('/:username', function (req, res, next) {
 
       if (!player) player = new Player(req.body); // first access
       if (err) return Response.send(500, 'ERROR', err, res, next);
+
+      try {
+        var testContext = {};
+        vm.createContext(testContext);
+        vm.runInContext(req.body.code, testContext, {
+          timeout: 1000
+        });
+      } catch (e) {
+        return Response.send(400, 'INVALID_ES5_CODE', e, res, next);
+      }
 
       player.code = req.body.code;
 

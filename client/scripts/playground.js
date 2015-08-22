@@ -178,10 +178,15 @@ function submitHandler (e) {
     // save player algorithm
     api('/player/' + player.username).put({
       code: playgroundTextarea.value
-    }, function () {
-      submitButton.innerHTML = 'Salvo c/ sucesso!';
+  }, function (res, status) {
+
+      if (status >= 400) {
+          alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), const e funcionalidades do ES6.')
+      } else {
+          submitButton.innerHTML = 'Salvo c/ sucesso!';
+          localStorage.removeItem('lig4-' + player.username);
+      }
       testButton.disabled = false;
-      localStorage.removeItem('lig4-' + player.username);
 
       setTimeout(function () {
         submitButton.disabled = false;
