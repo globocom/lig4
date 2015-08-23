@@ -22,6 +22,9 @@ worker: scheduler runner
 scheduler:
 	$(NODE) scheduler.js
 
+uplead:
+	$(NODE) uplead.js
+
 runner:
 	$(NODE) runner.js --use_strict
 
