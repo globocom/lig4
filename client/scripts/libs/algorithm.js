@@ -17,7 +17,7 @@ function Algorithm(algorithmSource) {
     throw new Error('You need to have a \'Algorithm\' function;');
   }
 
-  this.constructor = (new Function('window', algorithmSource + ' ;return Algorithm;')).call({});
+  this.constructor = (new Function('window', 'document', algorithmSource + ' ;return Algorithm;')).call({}, {}, {});
 
   if (!this.constructor || typeof this.constructor !== 'function') {
     throw new Error('Invalid return statement;');
