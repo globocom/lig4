@@ -28,9 +28,18 @@ html
     link(href='styles/main.css', rel='stylesheet')
 
   body
-    include sections/intro.jade
-    include sections/about.jade
-    include sections/rank.jade
-    include sections/rules.jade
+    aside(class="aside")
+        include blocks/aside
+
+    section(class='section')
+        div(class='section-wrapper')
+            h3(class="subtitle subtitle--divisor") Últimos jogos
+            div(id="game-board" class="game-board")
+            table(id='leader-board' class='leader-board')
+
+    div(id="rules-content" style='display:none;')
+        include blocks/rules
+    div(id="reward-content" style='display:none;')
+        include blocks/reward
 
     script(src='scripts/main.js')

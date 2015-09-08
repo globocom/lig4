@@ -1,1 +1,465 @@
-!function(e){function t(o){if(n[o])return n[o].exports;var a=n[o]={exports:{},id:o,loaded:!1};return e[o].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function o(e){var t=e.currentTarget,n=t.getAttribute("data-section"),o=document.getElementById(n);r(o,500)}function a(){for(var e=document.getElementsByClassName("navigation-button"),t=document.getElementById("ranking-game"),n=new s(t),a=e.length-1;a>=0;a--)e[a].addEventListener("click",o);!function r(){m("/game?"+Math.random()).get(function(e,t){if(200!=t)return setTimeout(r,2500);var o=e.result.games[Math.round(Math.random())];return o.players=e.players,0==o.moves.length?setTimeout(r,2500):void n.load(o).play(function(){setTimeout(r,2500)})})}(),function l(){m("/leaderboard?"+Math.random()).get(function(e,t){return 200!=t?setTimeout(l,3e3):(i(e),void setTimeout(l,3e3))})}()}var s=n(1),i=n(2),r=n(4),m=n(3);document.addEventListener("DOMContentLoaded",a)},function(e,t){"use strict";function n(e){var t=this.container=e,n=this.options={},o=this.board={},a=this.board.players={},s=this;t.className+=" game-board",n.rows=Number(e.getAttribute("data-rows"))||6,n.columns=Number(e.getAttribute("data-columns"))||7,n.interval=1e3*Number(e.getAttribute("data-interval"))||1e3,n.players=Boolean(e.getAttribute("data-score"))||!0,n.players&&(a.element=document.createElement("div"),a.element.className="game-board__players",a.guestElement=document.createElement("div"),a.guestName=document.createElement("span"),a.homeElement=document.createElement("div"),a.homeName=document.createElement("span"),a.guestElement.className="game-board__guest-player",a.homeElement.className="game-board__home-player",a.homeName.className="game-board__player-name",a.guestName.className="game-board__player-name",a.homeElement.appendChild(a.homeName),a.guestElement.appendChild(a.guestName),a.element.appendChild(a.homeElement),a.element.appendChild(a.guestElement),t.appendChild(a.element)),o.size=n.rows*n.columns,o.element=document.createElement("ul"),o.element.className="game-board__positions",o.positions=[];for(var i=0;i<o.size;i++)o.positions[i]=document.createElement("li"),o.positions[i].className="game-board__position",o.element.appendChild(o.positions[i]);return t.appendChild(o.element),{board:s.board,options:s.options,load:s.load.bind(s),play:s.play.bind(s)}}n.prototype.load=function(e){var t=this.board.positions,n=this.container,o=this.board.players;this.homePlayer=e.players[0],this.guestPlayer=e.players[1],this.move=0,this.moves=e.moves,this.sequence=e.sequence,o.homeName.innerHTML=this.homePlayer.username,o.guestName.innerHTML=this.guestPlayer.username,n.className=n.className.replace("game-board--finished","");for(var a=t.length-1;a>=0;a--)t[a].className="game-board__position";return this},n.prototype.play=function(e,t){var n=this.moves[this.move],o=n.username===this.homePlayer.username?"home-play":"guest-play",a=n.move[0],s=n.move[1];return this.timer&&clearTimeout(this.timer),t&&(this.onMove=t),e&&(this.onFinish=e),this.applyPosition(o,a,s),this.move++,this.onMove&&this.onMove(n),this.moves[this.move]?this.timer=setTimeout(this.play.bind(this),this.options.interval):(this.highlightSequence(this.sequence||[]),this.container.className+=" game-board--finished",void(this.onFinish&&this.onFinish(this)))},n.prototype.highlightSequence=function(e){var t=this.board.positions;for(var n in e){for(var o=0,a=e[n],s=-1;s<a[1];s++)o+=this.options.columns;o-=this.options.columns-a[0],t[o].className+=" game-board__position--sequence"}},n.prototype.applyPosition=function(e,t,n){for(var o=this.board.positions,a=0,s=(o.length,"game-board__position "+e),i=-1;n>i;i++)a+=this.options.columns;a-=this.options.columns-t,o[a].className=s},e.exports=n},function(e,t){"use strict";function n(e){var t=document.getElementById("ranking").firstChild,n=document.createElement("table"),o=e.length>10?10:e.length,a=document.getElementsByClassName("leader-board")[0];a&&t.removeChild(a),n.className="leader-board";for(var s=0;o>s;s++){var i=e[s],r=document.createElement("tr"),m=document.createElement("td"),l=document.createElement("td"),d=document.createElement("td");m.className="leader-board__position",l.className="leader-board__player",d.className="leader-board__score",m.innerHTML="#"+String(s+1),l.innerHTML=i.player,d.innerHTML=i.score,r.appendChild(m),r.appendChild(l),r.appendChild(d);var u=["Vitórias: ",i.win," | ","Empates: ",i.draw," | ","Derrotas: ",i.lost," | ","Games Pró: ",i.gamesFor," | ","Games contra: ",i.gamesAgainst,""].join("");r.setAttribute("title",u),n.appendChild(r)}t.appendChild(n)}e.exports=n},function(e,t){function n(e){var t=new XMLHttpRequest;return{get:function(n){t.open("GET",o+e),t.setRequestHeader("Content-Type","application/json; charset=UTF-8"),t.addEventListener("load",function(){var e=null;t.response&&(e=JSON.parse(t.response).payload),n(e,t.status)}),t.send()},put:function(n,a){t.open("PUT",o+e),t.setRequestHeader("Content-Type","application/json; charset=UTF-8"),t.addEventListener("load",function(){var e=null;401==t.status&&document.location.reload(),t.response&&(e=JSON.parse(t.response).payload),a(e,t.status)}),t.send(JSON.stringify(n))}}}var o="//"+document.location.host+"/api";e.exports=n},function(e,t){"use strict";function n(e){return.5>e?4*e*e*e:(e-1)*(2*e-2)*(2*e-2)+1}function o(e,t,o,a){return o>a?t:e+(t-e)*n(o/a)}function a(e){return e.getBoundingClientRect().top+window.pageYOffset}function s(e,t){function n(){var e=Date.now()-m,a=o(s,r,e,t);window.scrollTo(0,a),t>e&&i(n)}var s=(window.pageYOffset||document.body.scrollTop)-(document.body.clientTop||0),r=a(e),m=Date.now();return void 0===t||0===t?window.scrollTo(0,r):void n()}var i=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||function(e){window.setTimeout(e,15)};e.exports=s}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// imports
+	var Dialog = __webpack_require__(1);
+	var GameBoard = __webpack_require__(2);
+	var LeaderBoard = __webpack_require__(3);
+	var api = __webpack_require__(4);
+
+	// main function
+	function main() {
+	  var gameBoardElement = document.getElementById('game-board');
+	  var leaderBoardElement = document.getElementById('leader-board');
+	  var rulesLinkElement = document.getElementById('rules-link');
+	  var rewardLinkElement = document.getElementById('reward-link');
+
+	  // create boards and dialog
+	  var dialog = new Dialog();
+	  var gameboard = new GameBoard(gameBoardElement);
+	  var leaderboard = new LeaderBoard(leaderBoardElement);
+
+	  function openDialog (e) {
+	    e.preventDefault();
+
+	    var contentId = e.currentTarget.getAttribute('data-content');
+	    var content = document.getElementById(contentId).innerHTML;
+
+	    dialog.show(content);
+	  }
+
+	  rulesLinkElement.addEventListener('click', openDialog);
+	  rewardLinkElement.addEventListener('click', openDialog);
+
+	  // load game board
+	  (function loadGameboard() {
+	    api('/game?' + Date.now())
+	      .get(function (data, status) {
+	        if (status != 200) return setTimeout(loadGameboard, 2500);
+
+	        var game = data.result.games[0];
+	        game.players = data.players;
+
+	        gameboard.load(game)
+	          .play(function () {
+	            setTimeout(loadGameboard, 2500);
+	          });
+	      });
+	  })();
+
+	  (function loadLeaderboard() {
+	    api('/leaderboard?' + Date.now())
+	      .get(function (data, status) {
+	        if (status != 200) return setTimeout(loadLeaderboard, 3000);
+
+	        leaderboard.load(data);
+
+	        setTimeout(loadLeaderboard, 3000);
+	      });
+	  })();
+	}
+
+	document.addEventListener('DOMContentLoaded', main);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function Dialog() {
+	  var container = this.container = document.createElement('div');
+	  var wrapper = this.wrapper = document.createElement('div');
+	  var closeButton = this.closeButton = document.createElement('button');
+	  var self = this;
+
+	  // set classes and content
+	  container.className = 'dialog';
+	  wrapper.className = 'dialog__wrapper';
+	  closeButton.className = 'dialog__close-button';
+	  closeButton.innerHTML = '×';
+
+	  closeButton.addEventListener('click', function (e) {
+	    e.preventDefault();
+
+	    document.body.removeChild(container);
+	  });
+
+	  // insert elements
+	  container.appendChild(wrapper);
+	  container.appendChild(closeButton);
+
+	  return {
+	    show: self.show.bind(self),
+	  };
+	}
+
+	Dialog.prototype.show = function (content) {
+	  this.wrapper.innerHTML = content;
+
+	  document.body.appendChild(this.container);
+	}
+
+	module.exports = Dialog;
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function GameBoard(element) {
+	  var container = this.container = element;
+	  var options = this.options = {}
+	  var board = this.board = {};
+	  var players = this.board.players = {};
+	  var self = this;
+
+	  // set container
+	  container.className += ' game-board';
+
+	  // set options
+	  options.rows = 6;
+	  options.columns = 7;
+	  options.interval = 1000;
+
+	  // set players html
+	  players.element = document.createElement('div');
+	  players.element.className = 'game-board__players';
+
+	  players.guestElement = document.createElement('div');
+	  players.guestName = document.createElement('span');
+
+	  players.homeElement = document.createElement('div');
+	  players.homeName = document.createElement('span');
+
+	  players.guestElement.className = 'game-board__guest-player';
+	  players.homeElement.className = 'game-board__home-player';
+
+	  players.homeName.className = 'game-board__player-name';
+	  players.guestName.className = 'game-board__player-name';
+
+	  players.homeElement.appendChild(players.homeName);
+
+	  players.guestElement.appendChild(players.guestName);
+
+	  players.element.appendChild(players.homeElement);
+	  players.element.appendChild(players.guestElement);
+
+	  // set board html and positions
+	  board.size = options.rows * options.columns;
+	  board.element = document.createElement('ul');
+	  board.element.className = 'game-board__positions';
+	  board.positions = [];
+
+	  // generate positions
+	  for (var i = 0; i < board.size; i++) {
+	    board.positions[i] = document.createElement('li');
+	    board.positions[i].className = 'game-board__position';
+
+	    // insert position into board
+	    board.element.appendChild(board.positions[i]);
+	  }
+
+	  // insert elements into container
+	  container.appendChild(players.element);
+	  container.appendChild(board.element);
+
+	  return {
+	    board: self.board,
+	    options: self.options,
+	    load: self.load.bind(self),
+	    play: self.play.bind(self),
+	  };
+	}
+
+	GameBoard.prototype.load = function (gameResult) {
+	  var positions = this.board.positions;
+	  var container = this.container;
+	  var players = this.board.players;
+	  var options = this.options;
+	  this.homePlayer = gameResult.players[0];
+	  this.guestPlayer = gameResult.players[1];
+
+	  // set game data
+	  this.move = 0;
+	  this.moves = gameResult.moves;
+	  this.sequence = gameResult.sequence;
+
+	  // set players html
+	  players.homeName.innerHTML = this.homePlayer.username;
+	  players.guestName.innerHTML = this.guestPlayer.username;
+
+	  // reset container
+	  container.className = container.className.replace('game-board--finished', '');
+
+	  // reset position
+	  for (var i = positions.length - 1; i >= 0; i--) {
+	    positions[i].className = 'game-board__position';
+	  }
+
+	  return this;
+	}
+
+	GameBoard.prototype.play = function (onFinish, onMove) {
+	  var currentMove = this.moves[this.move];
+	  var player = currentMove.username === this.homePlayer.username ? 'home-play' : 'guest-play';
+	  var column = currentMove.move[0];
+	  var row = currentMove.move[1];
+
+	  // clear timer if already exist
+	  if (this.timer) clearTimeout(this.timer);
+	  // set onMove at first move
+	  if (onMove) this.onMove = onMove;
+	  // set onFinish at first move
+	  if (onFinish) this.onFinish = onFinish;
+
+	  // apply current move
+	  this.applyPosition(player, column, row);
+
+	  // increase move
+	  this.move++;
+
+	  // execute onMove
+	  if (this.onMove) this.onMove(currentMove);
+
+	  // if it's not last: play
+	  if (this.moves[this.move])
+	    return this.timer = setTimeout(this.play.bind(this), this.options.interval);
+
+	  // after last move ...
+	  this.highlightSequence(this.sequence || []);
+
+	  // show sequence
+	  this.container.className += ' game-board--finished';
+
+	  // execute onFinish
+	  if (this.onFinish) this.onFinish(this);
+	}
+
+
+	GameBoard.prototype.highlightSequence = function (sequence) {
+	  var positions = this.board.positions;
+
+	  // foreach x and y, search for this item and apply a new css class.
+	  for (var index in sequence) {
+	    var position = 0;
+	    var item = sequence[index];
+
+	    // calculate row position
+	    for (var i = -1; i < item[1]; i++) {
+	      position += this.options.columns;
+	    }
+
+	    // find column position
+	    position = position - (this.options.columns - item[0]);
+
+	    // apply class
+	    positions[position].className += ' game-board__position--sequence';
+	  }
+	}
+
+	GameBoard.prototype.applyPosition = function (player, column, row) {
+	  var positions = this.board.positions;
+	  var position = 0;
+	  var length = positions.length;
+	  var className = 'game-board__position ' + player;
+
+	  // calculate row position
+	  for (var i = -1; i < row; i++) {
+	    position += this.options.columns;
+	  }
+
+	  // find column position
+	  position = position - (this.options.columns - column);
+	  // apply position
+	  positions[position].className = className;
+	}
+
+	module.exports = GameBoard;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function LeaderBoard(element) {
+	  var container = this.container = element;
+	  var tableHead = this.tableHead = document.createElement('thead');
+	  var tableBody = this.tableBody = document.createElement('tbody');
+	  var self = this;
+
+	  var headRow = document.createElement('tr');
+	  var headColPosition = document.createElement('td');
+	  var headColWins = document.createElement('td');
+	  var headColDraws = document.createElement('td');
+	  var headColLosses = document.createElement('td');
+	  var headColScore = document.createElement('td');
+
+	  container.className = 'leader-board';
+	  headColPosition.className = 'leader-board__position';
+	  headColWins.className = 'leader-board__wins';
+	  headColDraws.className = 'leader-board__draws';
+	  headColLosses.className = 'leader-board__losses';
+	  headColScore.className = 'leader-board__score';
+
+	  headColPosition.innerHTML = 'Melhores jogadores';
+	  headColWins.innerHTML = 'V';
+	  headColDraws.innerHTML = 'E';
+	  headColLosses.innerHTML = 'D';
+
+	  headColWins.title = 'Vitórias';
+	  headColDraws.title = 'Empates';
+	  headColLosses.title = 'Derrotas';
+
+	  container.innerHTML = '';
+
+	  headRow.appendChild(headColPosition);
+	  headRow.appendChild(headColWins);
+	  headRow.appendChild(headColDraws);
+	  headRow.appendChild(headColLosses);
+	  tableHead.appendChild(headRow);
+
+	  container.appendChild(tableHead);
+	  container.appendChild(tableBody);
+
+	  return {
+	    load: self.load.bind(self),
+	  }
+	}
+
+	LeaderBoard.prototype.load = function (data) {
+	  var tableBody = this.tableBody;
+	  var size = data.length;
+
+	  // clean old board
+	  tableBody.innerHTML = '';
+
+	  // generate positions
+	  for (var i = 0; i < size; i++) {
+	    var position = data[i];
+	    var row = document.createElement('tr');
+	    var colPosition = document.createElement('td');
+	    var colWins = document.createElement('td');
+	    var colDraws = document.createElement('td');
+	    var colLosses = document.createElement('td');
+	    var colScore = document.createElement('td');
+
+	    row.className = 'leader-board__player';
+	    colPosition.className = 'leader-board__position';
+	    colWins.className = 'leader-board__wins';
+	    colDraws.className = 'leader-board__draws';
+	    colLosses.className = 'leader-board__losses';
+
+	    colPosition.innerHTML = ['<b>#' + (i + 1) + '</b>', position.player + ',', position.score, 'pt\'s'].join(' ');
+	    colWins.innerHTML = position.win;
+	    colDraws.innerHTML = position.draw;
+	    colLosses.innerHTML = position.lost;
+
+	    colWins.title = position.win + ' vitórias';
+	    colDraws.title = position.draw + ' empates';
+	    colLosses.title = position.lost + ' derrotas';
+
+	    row.appendChild(colPosition);
+	    row.appendChild(colWins);
+	    row.appendChild(colDraws);
+	    row.appendChild(colLosses);
+	    tableBody.appendChild(row);
+	  }
+	}
+
+	module.exports = LeaderBoard;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	var url = '//' + document.location.host + '/api';
+
+	function api(path) {
+	  var xhr = new XMLHttpRequest();
+
+	  return {
+	    get: function(callback) {
+	      xhr.open('GET', url + path);
+	      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	      xhr.addEventListener('load', function() {
+	        var response = null;
+
+	        if (xhr.response) response = JSON.parse(xhr.response).payload
+
+	        callback(response, xhr.status);
+	      });
+	      xhr.send();
+	    },
+
+	    put: function(data, callback) {
+	      xhr.open('PUT', url + path);
+	      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	      xhr.addEventListener('load', function() {
+	        var response = null;
+
+	        if (xhr.status == 401) document.location.reload();
+	        if (xhr.response) response = JSON.parse(xhr.response).payload;
+
+	        callback(response, xhr.status);
+	      });
+	      xhr.send(JSON.stringify(data));
+	    },
+	  }
+	}
+
+	module.exports = api;
+
+/***/ }
+/******/ ]);

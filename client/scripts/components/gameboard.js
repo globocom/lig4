@@ -2,7 +2,7 @@
 
 function GameBoard(element) {
   var container = this.container = element;
-  var options = this.options = {};
+  var options = this.options = {}
   var board = this.board = {};
   var players = this.board.players = {};
   var self = this;
@@ -11,37 +11,32 @@ function GameBoard(element) {
   container.className += ' game-board';
 
   // set options
-  options.rows = Number(element.getAttribute('data-rows')) || 6;
-  options.columns = Number(element.getAttribute('data-columns')) || 7;
-  options.interval = Number(element.getAttribute('data-interval')) * 1000 || 1000;
-  options.players = Boolean(element.getAttribute('data-score')) || true;
+  options.rows = 6;
+  options.columns = 7;
+  options.interval = 1000;
 
   // set players html
-  if (options.players) {
-    players.element = document.createElement('div');
-    players.element.className = 'game-board__players';
+  players.element = document.createElement('div');
+  players.element.className = 'game-board__players';
 
-    players.guestElement = document.createElement('div');
-    players.guestName = document.createElement('span');
+  players.guestElement = document.createElement('div');
+  players.guestName = document.createElement('span');
 
-    players.homeElement = document.createElement('div');
-    players.homeName = document.createElement('span');
+  players.homeElement = document.createElement('div');
+  players.homeName = document.createElement('span');
 
-    players.guestElement.className = 'game-board__guest-player';
-    players.homeElement.className = 'game-board__home-player';
+  players.guestElement.className = 'game-board__guest-player';
+  players.homeElement.className = 'game-board__home-player';
 
-    players.homeName.className = 'game-board__player-name';
-    players.guestName.className = 'game-board__player-name';
+  players.homeName.className = 'game-board__player-name';
+  players.guestName.className = 'game-board__player-name';
 
-    players.homeElement.appendChild(players.homeName);
+  players.homeElement.appendChild(players.homeName);
 
-    players.guestElement.appendChild(players.guestName);
+  players.guestElement.appendChild(players.guestName);
 
-    players.element.appendChild(players.homeElement);
-    players.element.appendChild(players.guestElement);
-
-    container.appendChild(players.element);
-  }
+  players.element.appendChild(players.homeElement);
+  players.element.appendChild(players.guestElement);
 
   // set board html and positions
   board.size = options.rows * options.columns;
@@ -58,7 +53,8 @@ function GameBoard(element) {
     board.element.appendChild(board.positions[i]);
   }
 
-  // insert board into container
+  // insert elements into container
+  container.appendChild(players.element);
   container.appendChild(board.element);
 
   return {
@@ -73,6 +69,7 @@ GameBoard.prototype.load = function (gameResult) {
   var positions = this.board.positions;
   var container = this.container;
   var players = this.board.players;
+  var options = this.options;
   this.homePlayer = gameResult.players[0];
   this.guestPlayer = gameResult.players[1];
 

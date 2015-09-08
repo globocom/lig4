@@ -1,1 +1,1539 @@
-!function(e){function t(r){if(n[r])return n[r].exports;var a=n[r]={exports:{},id:r,loaded:!1};return e[r].call(a.exports,a,a.exports,t),a.loaded=!0,a.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(){this.move=function(e){var t=Math.round((e.length-1)*Math.random());return e[t]},this.username=this["char"]="aleatório"}function a(e,t){S=e;var n=localStorage.getItem("lig4-"+S.username);return n?(localStorage.removeItem("lig4-"+S.username),b.value=n):S.code?void(b.value=S.code):b.value=x}function o(e,t){var n=null,a=null;try{if(S.algorithm=new N(b.value),S.algorithm.username=S.username,S.algorithm["char"]=S.username,n=new C(S.algorithm,new r),a=n.run(),a.players=[{username:S.username},{username:"aleatório"}],"INVALID_MOVE"==a.reason)throw new Error("The Algorithm returned a invalid column: "+a.invalidMove+";");if(!t)return e(!1,a);T.innerHTML="",E.style.overflow="hidden",g.appendChild(M),w.load(a).play(function(){console.log("Ganhou: "+a.winner.username),console.log("Movimentos:",a.moves),console.log("Sequencia:",a.sequence),e(!1,a)},function(e){T.innerHTML+=["<li>","<b>",e.username,"</b> jogou na coluna <b>",e.move[0],"</b>;","</li>"].join(""),console.log(e)})}catch(o){throw e(!0,o),o}}function i(e){e.preventDefault(),m.innerHTML="Testando...",m.disabled=!0,o(function(e,t){return e?(m.innerHTML="Testar",m.disabled=!1,alert(t)):(m.innerHTML="Testar",void(m.disabled=!1))},!0)}function s(e){e.preventDefault(),T.innerHTML="",E.style.overflow="initial",g.removeChild(M),m.innerHTML="Testar",m.disabled=!1}function l(e){e.preventDefault(),window.confirm("Carregar o template inicial do algoritmo?")&&(b.value=x)}function u(e){return e.preventDefault(),m.disabled=!0,h.disabled=!0,h.innerHTML="Salvando...",-1!==b.value.indexOf("console")||-1!==b.value.indexOf("alert")||-1!==b.value.indexOf("const ")?(m.disabled=!1,h.innerHTML="Salvar",h.disabled=!1,alert("Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.")):void o(function(e,t){return e?(m.disabled=!1,h.innerHTML="Salvar",h.disabled=!1,alert(t)):(localStorage&&localStorage.setItem("lig4-"+S.username,b.value),void A("/player/"+S.username).put({code:b.value},function(e,t){t>=400?alert("Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6."):(h.innerHTML="Salvo c/ sucesso!",localStorage.removeItem("lig4-"+S.username)),m.disabled=!1,setTimeout(function(){h.disabled=!1,h.innerHTML="Salvar"},1500)},!1))})}function c(e){e.preventDefault(),window.confirm("Carregar o seu último algoritmo salvo?")&&document.location.reload()}function d(){m=document.getElementById("test-algorithm-button"),f=document.createElement("button"),h=document.getElementById("submit-algorithm-button"),p=document.getElementById("reset-algorithm-button"),v=document.getElementById("last-save--button"),g=document.getElementById("playground-editor"),E=document.getElementById("playground"),b=document.getElementById("playground-textarea"),y=document.getElementById("playground-runner"),M=document.createElement("div"),T=document.createElement("ul"),k=document.createElement("div"),L=b.getAttribute("data-username"),M.className="playground-test-board",T.className="playground-test-logs",k.className="game-board",f.className="button playground__close-test-button",f.innerHTML="Fechar",new _({textarea:b}),x=["'use strict';\n\n","/*\n"," * A função Algorithm encapsula \n"," * a lógica das jogadas. \n"," * A instância do Algorithm \n"," * persiste durante toda a partida. \n"," */ \n\n","function Algorithm () {\n\n","    /*\n","     * Cada chamada de 'move' \n","     * corresponde a uma peça jogada. \n","     * Esse método recebe \n","     * as colunas disponíveis \n","     * do tabuleiro e o estado atual \n","     * do mesmo. \n","     */ \n\n","    this.move = function (availableColumns, gameBoard) {\n\n","        /*\n","         * Exemplo dos argumentos  \n","         * passados\n","         * \n","         * availableColumns: \n","         * [0, 1, 2, 3, 4, 5, 6]\n","         * \n","         * gameBoard: [\n","         *  ['"+L+"', null, null, null, null, null], \n","         *  ['"+L+"', null, null, null, null, null], \n","         *  [null, null, null, null, null, null], \n","         *  ['"+L+"', null, null, null, null, null], \n","         *  ['aleatório', null, null, null, null, null], \n","         *  ['aleatório', null, null, null, null, null], \n","         *  ['aleatório', null, null, null, null, null] \n","         * ] \n","         */ \n\n","        /*\n","         * O retorno do método \n","         * deve ser o índice númerico \n","         * de uma coluna válida, \n","         * para que a jogada seja \n","         * realizada com sucesso. \n","         */\n\n","        return availableColumns[0];\n","    }","\n}\n"].join(""),k.setAttribute("data-interval",.5),k.setAttribute("data-rows",6),k.setAttribute("data-columns",7),k.setAttribute("data-players",!0),w=new H(k),k.appendChild(T),k.appendChild(f),M.appendChild(k),m.addEventListener("click",i),h.addEventListener("click",u),p.addEventListener("click",l),v.addEventListener("click",c),f.addEventListener("click",s),A("/player/"+L).get(a)}var m,h,p,f,v,g,b,y,x,E,k,w,M,T,S,L,A=n(3),_=n(4),N=n(2),C=n(6),H=n(1);document.addEventListener("DOMContentLoaded",d)},function(e,t){"use strict";function n(e){var t=this.container=e,n=this.options={},r=this.board={},a=this.board.players={},o=this;t.className+=" game-board",n.rows=Number(e.getAttribute("data-rows"))||6,n.columns=Number(e.getAttribute("data-columns"))||7,n.interval=1e3*Number(e.getAttribute("data-interval"))||1e3,n.players=Boolean(e.getAttribute("data-score"))||!0,n.players&&(a.element=document.createElement("div"),a.element.className="game-board__players",a.guestElement=document.createElement("div"),a.guestName=document.createElement("span"),a.homeElement=document.createElement("div"),a.homeName=document.createElement("span"),a.guestElement.className="game-board__guest-player",a.homeElement.className="game-board__home-player",a.homeName.className="game-board__player-name",a.guestName.className="game-board__player-name",a.homeElement.appendChild(a.homeName),a.guestElement.appendChild(a.guestName),a.element.appendChild(a.homeElement),a.element.appendChild(a.guestElement),t.appendChild(a.element)),r.size=n.rows*n.columns,r.element=document.createElement("ul"),r.element.className="game-board__positions",r.positions=[];for(var i=0;i<r.size;i++)r.positions[i]=document.createElement("li"),r.positions[i].className="game-board__position",r.element.appendChild(r.positions[i]);return t.appendChild(r.element),{board:o.board,options:o.options,load:o.load.bind(o),play:o.play.bind(o)}}n.prototype.load=function(e){var t=this.board.positions,n=this.container,r=this.board.players;this.homePlayer=e.players[0],this.guestPlayer=e.players[1],this.move=0,this.moves=e.moves,this.sequence=e.sequence,r.homeName.innerHTML=this.homePlayer.username,r.guestName.innerHTML=this.guestPlayer.username,n.className=n.className.replace("game-board--finished","");for(var a=t.length-1;a>=0;a--)t[a].className="game-board__position";return this},n.prototype.play=function(e,t){var n=this.moves[this.move],r=n.username===this.homePlayer.username?"home-play":"guest-play",a=n.move[0],o=n.move[1];return this.timer&&clearTimeout(this.timer),t&&(this.onMove=t),e&&(this.onFinish=e),this.applyPosition(r,a,o),this.move++,this.onMove&&this.onMove(n),this.moves[this.move]?this.timer=setTimeout(this.play.bind(this),this.options.interval):(this.highlightSequence(this.sequence||[]),this.container.className+=" game-board--finished",void(this.onFinish&&this.onFinish(this)))},n.prototype.highlightSequence=function(e){var t=this.board.positions;for(var n in e){for(var r=0,a=e[n],o=-1;o<a[1];o++)r+=this.options.columns;r-=this.options.columns-a[0],t[r].className+=" game-board__position--sequence"}},n.prototype.applyPosition=function(e,t,n){for(var r=this.board.positions,a=0,o=(r.length,"game-board__position "+e),i=-1;n>i;i++)a+=this.options.columns;a-=this.options.columns-t,r[a].className=o},e.exports=n},function(e,t){"use strict";function n(e){if(-1==e.indexOf("function")||-1==e.indexOf("Algorithm"))throw new Error("You need to have a 'Algorithm' function;");if(this.constructor=new Function("window",e+" ;return Algorithm;")({}),!this.constructor||"function"!=typeof this.constructor)throw new Error("Invalid return statement;");if(this.instance=new this.constructor,!this.instance.move||"function"!=typeof this.instance.move)throw new Error("The Algorithm need to have a move method to make the plays;");if("number"!=typeof this.instance.move(r,a))throw new Error("The Algorithm move method should return a number;");return new this.constructor}var r=[0,1,2,3,4,5,6],a=[[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]];e.exports=n},function(e,t){function n(e){var t=new XMLHttpRequest;return{get:function(n){t.open("GET",r+e),t.setRequestHeader("Content-Type","application/json; charset=UTF-8"),t.addEventListener("load",function(){var e=null;t.response&&(e=JSON.parse(t.response).payload),n(e,t.status)}),t.send()},put:function(n,a){t.open("PUT",r+e),t.setRequestHeader("Content-Type","application/json; charset=UTF-8"),t.addEventListener("load",function(){var e=null;401==t.status&&document.location.reload(),t.response&&(e=JSON.parse(t.response).payload),a(e,t.status)}),t.send(JSON.stringify(n))}}}var r="//"+document.location.host+"/api";e.exports=n},function(e,t,n){var r,a,o=o||function(){var e={};return{add:function(t,n){if("object"==typeof t){var r;for(r=0;r<t.length;r++){var a=t[r];e[a]||(e[a]=[]),e[a].push(n)}}else e[t]||(e[t]=[]),e[t].push(n)},get:function(t){return e[t]?e[t]:void 0}}}(),i=i||function(e){"function"!=typeof String.prototype.repeat&&(String.prototype.repeat=function(e){if(1>e)return"";if(e%2)return this.repeat(e-1)+this;var t=this.repeat(e/2);return t+t}),"function"!=typeof Array.prototype.filter&&(Array.prototype.filter=function(e){if(null===this)throw new TypeError;var t=Object(this),n=t.length>>>0;if("function"!=typeof e)throw new TypeError;for(var r=[],a=arguments[1],o=0;n>o;o++)if(o in t){var i=t[o];e.call(a,i,o,t)&&r.push(i)}return r});var t,n,r={textarea:null,replaceTab:!0,softTabs:!0,tabSize:4,autoOpen:!0,overwrite:!0,autoStrip:!0,autoIndent:!0,fence:!1},a={keyMap:[{open:'"',close:'"',canBreak:!1},{open:"'",close:"'",canBreak:!1},{open:"(",close:")",canBreak:!1},{open:"[",close:"]",canBreak:!0},{open:"{",close:"}",canBreak:!0}]},i={_callHook:function(e,t){var n=o.get(e);if(t="boolean"==typeof t&&t===!1?!1:!0,n)if(t){var a,s=r.textarea,l=s.value,u=i.cursor.get();for(a=0;a<n.length;a++)n[a].call(void 0,{editor:{element:s,text:l,levelsDeep:i.levelsDeep()},caret:{pos:u},lines:{current:i.cursor.getLine(l,u),total:i.editor.getLines(l)}})}else for(a=0;a<n.length;a++)n[a].call(void 0)},defineNewLine:function(){var e=document.createElement("textarea");e.value="\n",n=2==e.value.length?"\r\n":"\n"},defineTabSize:function(e){return"undefined"!=typeof r.textarea.style.OTabSize?void(r.textarea.style.OTabSize=e):"undefined"!=typeof r.textarea.style.MozTabSize?void(r.textarea.style.MozTabSize=e):"undefined"!=typeof r.textarea.style.tabSize?void(r.textarea.style.tabSize=e):void 0},cursor:{getLine:function(e,t){return e.substring(0,t).split("\n").length},get:function(){if("number"==typeof document.createElement("textarea").selectionStart)return r.textarea.selectionStart;if(document.selection){var e=0,t=r.textarea.createTextRange(),n=document.selection.createRange().duplicate(),a=n.getBookmark();for(t.moveToBookmark(a);0!==t.moveStart("character",-1);)e++;return e}},set:function(e,t){if(t||(t=e),r.textarea.setSelectionRange)r.textarea.focus(),r.textarea.setSelectionRange(e,t);else if(r.textarea.createTextRange){var n=r.textarea.createTextRange();n.collapse(!0),n.moveEnd("character",t),n.moveStart("character",e),n.select()}},selection:function(){var e,t,a,o,s,l=r.textarea,u=0,c=0;return"number"==typeof l.selectionStart&&"number"==typeof l.selectionEnd?(u=l.selectionStart,c=l.selectionEnd):(t=document.selection.createRange(),t&&t.parentElement()==l&&(e=i.editor.get(),o=e.length,a=l.createTextRange(),a.moveToBookmark(t.getBookmark()),s=l.createTextRange(),s.collapse(!1),a.compareEndPoints("StartToEnd",s)>-1?u=c=o:(u=-a.moveStart("character",-o),u+=e.slice(0,u).split(n).length-1,a.compareEndPoints("EndToEnd",s)>-1?c=o:(c=-a.moveEnd("character",-o),c+=e.slice(0,c).split(n).length-1)))),u==c?!1:{start:u,end:c}}},editor:{getLines:function(e){return e.split("\n").length},get:function(){return r.textarea.value.replace(/\r/g,"")},set:function(e){r.textarea.value=e}},fenceRange:function(){if("string"==typeof r.fence){for(var e=i.editor.get(),t=i.cursor.get(),n=0,a=e.indexOf(r.fence),o=0;a>=0&&(o++,!(a+n>t));)n+=a+r.fence.length,e=e.substring(a+r.fence.length),a=e.indexOf(r.fence);return t>n&&a+n>t&&o%2===0?!0:!1}return!0},isEven:function(e,t){return t%2},levelsDeep:function(){var e,t,n=i.cursor.get(),r=i.editor.get(),o=r.substring(0,n),s=0;for(e=0;e<o.length;e++)for(t=0;t<a.keyMap.length;t++)a.keyMap[t].canBreak&&(a.keyMap[t].open==o.charAt(e)&&s++,a.keyMap[t].close==o.charAt(e)&&s--);var l=0,u=["'",'"'];for(e=0;e<a.keyMap.length;e++)if(a.keyMap[e].canBreak)for(t in u)l+=o.split(u[t]).filter(i.isEven).join("").split(a.keyMap[e].open).length-1;var c=s-l;return c>=0?c:0},deepExtend:function(e,t){for(var n in t)t[n]&&t[n].constructor&&t[n].constructor===Object?(e[n]=e[n]||{},i.deepExtend(e[n],t[n])):e[n]=t[n];return e},addEvent:function(e,t,n){e.addEventListener?e.addEventListener(t,n,!1):e.attachEvent&&e.attachEvent("on"+t,n)},removeEvent:function(e,t,n){e.addEventListener?e.removeEventListener(t,n,!1):e.attachEvent&&e.detachEvent("on"+t,n)},preventDefaultEvent:function(e){e.preventDefault?e.preventDefault():e.returnValue=!1}},s={tabKey:function(e){if(i.fenceRange()){if(9==e.keyCode){i.preventDefaultEvent(e);var n=!0;i._callHook("tab:before");var r=i.cursor.selection(),a=i.cursor.get(),o=i.editor.get();if(r){for(var s=r.start;s--;)if("\n"==o.charAt(s)){r.start=s+1;break}var l,u=o.substring(r.start,r.end),c=u.split("\n");if(e.shiftKey){for(l=0;l<c.length;l++)c[l].substring(0,t.length)==t&&(c[l]=c[l].substring(t.length));u=c.join("\n"),i.editor.set(o.substring(0,r.start)+u+o.substring(r.end)),i.cursor.set(r.start,r.start+u.length)}else{for(l in c)c[l]=t+c[l];u=c.join("\n"),i.editor.set(o.substring(0,r.start)+u+o.substring(r.end)),i.cursor.set(r.start,r.start+u.length)}}else{var d=o.substring(0,a),m=o.substring(a),h=d+t+m;e.shiftKey?o.substring(a-t.length,a)==t&&(h=o.substring(0,a-t.length)+m,i.editor.set(h),i.cursor.set(a-t.length)):(i.editor.set(h),i.cursor.set(a+t.length),n=!1)}i._callHook("tab:after")}return n}},enterKey:function(e){if(i.fenceRange()&&13==e.keyCode){i.preventDefaultEvent(e),i._callHook("enter:before");var r,o,s=i.cursor.get(),l=i.editor.get(),u=l.substring(0,s),c=l.substring(s),d=u.charAt(u.length-1),m=c.charAt(0),h=i.levelsDeep(),p="",f="";if(h){for(;h--;)p+=t;for(p=p,r=p.length+1,o=0;o<a.keyMap.length;o++)a.keyMap[o].open==d&&a.keyMap[o].close==m&&(f=n)}else r=1;var v=u+n+p+f+p.substring(0,p.length-t.length)+c;i.editor.set(v),i.cursor.set(s+r),i._callHook("enter:after")}},deleteKey:function(e){if(i.fenceRange()&&8==e.keyCode){i.preventDefaultEvent(e),i._callHook("delete:before");var t,n=i.cursor.get(),r=i.editor.get(),o=r.substring(0,n),s=r.substring(n),l=o.charAt(o.length-1),u=s.charAt(0);if(i.cursor.selection()===!1){for(t=0;t<a.keyMap.length;t++)if(a.keyMap[t].open==l&&a.keyMap[t].close==u){var c=r.substring(0,n-1)+r.substring(n+1);return i.editor.set(c),void i.cursor.set(n-1)}var c=r.substring(0,n-1)+r.substring(n);i.editor.set(c),i.cursor.set(n-1)}else{var d=i.cursor.selection(),c=r.substring(0,d.start)+r.substring(d.end);i.editor.set(c),i.cursor.set(n)}i._callHook("delete:after")}}},l={openedChar:function(e,t){i.preventDefaultEvent(t),i._callHook("openChar:before");var n=i.cursor.get(),a=i.editor.get(),o=a.substring(0,n),s=a.substring(n),l=o+e.open+e.close+s;r.textarea.value=l,i.cursor.set(n+1),i._callHook("openChar:after")},closedChar:function(e,t){var n=i.cursor.get(),r=i.editor.get(),a=r.substring(n,n+1);return a==e.close?(i.preventDefaultEvent(t),i._callHook("closeChar:before"),i.cursor.set(i.cursor.get()+1),i._callHook("closeChar:after"),!0):!1}},u={filter:function(e){if(i.fenceRange()){var t=e.which||e.keyCode;if(39!=t&&(40!=t||0!==e.which)){var n,o=String.fromCharCode(t);for(n=0;n<a.keyMap.length;n++)if(a.keyMap[n].close==o){var s=r.overwrite&&l.closedChar(a.keyMap[n],e);!s&&a.keyMap[n].open==o&&r.autoOpen&&l.openedChar(a.keyMap[n],e)}else a.keyMap[n].open==o&&r.autoOpen&&l.openedChar(a.keyMap[n],e)}}},listen:function(){r.replaceTab&&i.addEvent(r.textarea,"keydown",s.tabKey),r.autoIndent&&i.addEvent(r.textarea,"keydown",s.enterKey),r.autoStrip&&i.addEvent(r.textarea,"keydown",s.deleteKey),i.addEvent(r.textarea,"keypress",u.filter),i.addEvent(r.textarea,"keydown",function(){i._callHook("keydown")}),i.addEvent(r.textarea,"keyup",function(){i._callHook("keyup")})}},c=function(e){e.textarea&&(i._callHook("init:before",!1),i.deepExtend(r,e),i.defineNewLine(),r.softTabs?t=" ".repeat(r.tabSize):(t="	",i.defineTabSize(r.tabSize)),u.listen(),i._callHook("init:after",!1))};this.destroy=function(){i.removeEvent(r.textarea,"keydown",s.tabKey),i.removeEvent(r.textarea,"keydown",s.enterKey),i.removeEvent(r.textarea,"keydown",s.deleteKey),i.removeEvent(r.textarea,"keypress",u.filter)},c(e)};"undefined"!=typeof e&&e.exports&&(e.exports=i),"undefined"==typeof ender&&(this.Behave=i,this.BehaveHooks=o),r=[],a=function(){return i}.apply(t,r),!(void 0!==a&&(e.exports=a))},function(e,t,n){(function(t){function n(){this.width=7,this.height=6,this.maxMoves=this.width*this.height,this.matrix=this.buildMatrix()}n.prototype.push=function(e,t){var n=this.matrix[t].lastIndexOf(null);return 0>n?!1:(this.matrix[t][n]=e["char"],[t,n])},n.prototype.cloneBoard=function(){var e=[];for(var t in this.matrix)e.push(this.matrix[t].slice(0));return e},n.prototype.buildMatrix=function(){for(var e=[],t=0;t<this.width;t++){e[t]=[];for(var n=0;n<this.height;n++)e[t][n]=null}return e},n.prototype.getAvailableColumns=function(){var e=[];for(var t in this.matrix)this.matrix[t].lastIndexOf(null)>=0&&e.push(parseInt(t));return e},n.prototype.draw=function(){for(var e=0;e<this.height;e++){for(var n=0;n<this.width;n++){var r=this.matrix[n][e]||" ";t.stdout.write("| "+r+" ")}t.stdout.write("\n")}},e.exports=n}).call(t,n(7))},function(e,t,n){"use strict";function r(e,t){this.board=new a,this.players=[e,t]}var a=n(5);r.status={INVALID_MOVE:"INVALID_MOVE",LIG4:"LIG4",DRAW:"DRAW"},r.prototype.run=function(){for(var e={winner:null,reason:null,moves:[],sequence:[]},t=0;t<this.board.maxMoves;t++){var n=this.players[t%2],a=this.board.getAvailableColumns(),o=this.board.cloneBoard(),i=n.move(a,o);if(a.indexOf(i)<0){e.winner=this.players[(t+1)%2],e.reason=r.status.INVALID_MOVE,e.invalidMove=i;break}var s=this.board.push(n,i);e.moves.push({username:n.username,move:s});var l=this.matchAnalyzer();if(l){e.winner=n,e.reason=r.status.LIG4,e.sequence=l;break}}return e.winner||(e.reason=r.status.DRAW),e},r.prototype.matchAnalyzer=function(){for(var e=null,t=0;t<this.board.width;t++){var n=this.board.matrix[t];if(e)break;for(var r=0;r<this.board.height;r++){var a=n[r];if(null!=a){if(n[r+1]==a&&n[r+2]==a&&n[r+3]==a){e=[[t,r],[t,r+1],[t,r+2],[t,r+3]];break}if(this.board.matrix[t]&&this.board.matrix[t+3]&&this.board.matrix[t+1][r]==a&&this.board.matrix[t+2][r]==a&&this.board.matrix[t+3][r]==a){e=[[t,r],[t+1,r],[t+2,r],[t+3,r]];break}if(this.board.matrix[t]&&this.board.matrix[t+3]&&this.board.matrix[t+1][r+1]==a&&this.board.matrix[t+2][r+2]==a&&this.board.matrix[t+3][r+3]==a){e=[[t,r],[t+1,r+1],[t+2,r+2],[t+3,r+3]];break}if(this.board.matrix[t]&&this.board.matrix[t+3]&&this.board.matrix[t+1][r-1]==a&&this.board.matrix[t+2][r-2]==a&&this.board.matrix[t+3][r-3]==a){e=[[t,r],[t+1,r-1],[t+2,r-2],[t+3,r-3]];break}}}}return e},e.exports=r},function(e,t){function n(){u=!1,i.length?l=i.concat(l):c=-1,l.length&&r()}function r(){if(!u){var e=setTimeout(n);u=!0;for(var t=l.length;t;){for(i=l,l=[];++c<t;)i[c].run();c=-1,t=l.length}i=null,u=!1,clearTimeout(e)}}function a(e,t){this.fun=e,this.array=t}function o(){}var i,s=e.exports={},l=[],u=!1,c=-1;s.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];l.push(new a(e,t)),1!==l.length||u||setTimeout(r,0)},a.prototype.run=function(){this.fun.apply(null,this.array)},s.title="browser",s.browser=!0,s.env={},s.argv=[],s.version="",s.versions={},s.on=o,s.addListener=o,s.once=o,s.off=o,s.removeListener=o,s.removeAllListeners=o,s.emit=o,s.binding=function(e){throw new Error("process.binding is not supported")},s.cwd=function(){return"/"},s.chdir=function(e){throw new Error("process.chdir is not supported")},s.umask=function(){return 0}}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// imports
+
+	var api = __webpack_require__(1);
+	var Editor = __webpack_require__(2);
+	var Algorithm = __webpack_require__(3);
+	var Game = __webpack_require__(4);
+	var GameBoard = __webpack_require__(7);
+
+	// elements and vars
+
+	var testButton;
+	var submitButton;
+	var resetButtom;
+	var closeTestButtom;
+	var lastSaveButtom;
+	var playgroundEditor;
+	var playgroundTextarea;
+	var playgroundRunner;
+	var playgroundTemplate;
+	var playgroundWrapper;
+	var gameboard;
+	var testBoard;
+	var playgroundTestBoard;
+	var playgroundTestLogs;
+	var player;
+	var username;
+
+	// functions
+
+	function RandomAlgorithm () {
+	  this.move = function(availablePositions) {
+	    var index = Math.round((availablePositions.length - 1) * Math.random());
+
+	    return availablePositions[index];
+	  };
+
+	  this.username = this.char = 'aleatório';
+	}
+
+	function loadPlayerHandler (_player, status) {
+	  player = _player;
+
+	  var expiredCode = localStorage.getItem('lig4-' + player.username);
+
+	  if (expiredCode) {
+	    localStorage.removeItem('lig4-' + player.username);
+	    return playgroundTextarea.value = expiredCode;
+	  }
+
+	  if (!player.code) {
+	    return playgroundTextarea.value = playgroundTemplate;
+	  }
+
+	  playgroundTextarea.value = player.code;
+	}
+
+	function testAlgorithm (callback, showTestBoard) {
+	  var game = null;
+	  var result = null;
+
+	  try {
+	    player.algorithm = new Algorithm(playgroundTextarea.value);
+	    player.algorithm.username = player.username;
+	    player.algorithm.char = player.username;
+
+	    game = new Game(player.algorithm, new RandomAlgorithm);
+	    result = game.run();
+	    result.players = [{
+	      username: player.username
+	    }, {
+	      username: 'aleatório'
+	    }];
+
+	    if (result.reason == 'INVALID_MOVE') {
+	      throw new Error('The Algorithm returned a invalid column: ' + result.invalidMove + ';');
+	    }
+
+	    if (!showTestBoard) return callback(false, result);
+
+	    // show test game
+	    playgroundTestLogs.innerHTML = '';
+	    playgroundWrapper.style.overflow = 'hidden';
+	    playgroundEditor.appendChild(playgroundTestBoard);
+
+	    testBoard.load(result).play(function () {
+	      console.log('Ganhou: ' + result.winner.username);
+	      console.log('Movimentos:', result.moves);
+	      console.log('Sequencia:', result.sequence);
+
+	      callback(false, result);
+	    }, function (play) {
+	      playgroundTestLogs.innerHTML += [
+	        '<li>',
+	          '<b>', play.username, '</b> jogou na coluna <b>', play.move[0], '</b>;',
+	        '</li>'
+	      ].join('');
+
+
+	      console.log(play);
+	    });
+	  } catch (error) {
+	    callback(true, error);
+
+	    throw error;
+	  }
+	}
+
+	function testHandler (e) {
+	  e.preventDefault();
+
+	  testButton.innerHTML = 'Testando...'
+	  testButton.disabled = true;
+
+	  testAlgorithm(function (err, data) {
+	    if (err) {
+	      testButton.innerHTML = 'Testar';
+	      testButton.disabled = false;
+
+	      return alert(data);
+	    }
+
+	    // show gameboard render
+	    testButton.innerHTML = 'Testar';
+	    testButton.disabled = false;
+	  }, true);
+	}
+
+	function closeTestHandler (e) {
+	  e.preventDefault();
+
+	  playgroundTestLogs.innerHTML = '';
+	  playgroundWrapper.style.overflow = 'initial';
+	  playgroundEditor.removeChild(playgroundTestBoard);
+
+	  testButton.innerHTML = 'Testar';
+	  testButton.disabled = false;
+	}
+
+	function resetHandler (e) {
+	  e.preventDefault();
+
+	  if (window.confirm('Carregar o template inicial do algoritmo?')) {
+	    playgroundTextarea.value = playgroundTemplate;
+	  }
+	}
+
+	function submitHandler (e) {
+	  e.preventDefault();
+
+	  testButton.disabled = true;
+	  submitButton.disabled = true;
+	  submitButton.innerHTML = 'Salvando...';
+
+	  if (playgroundTextarea.value.indexOf('console') !== -1 ||
+	      playgroundTextarea.value.indexOf('alert') !== -1 ||
+	      playgroundTextarea.value.indexOf('const ') !== -1) {
+	    testButton.disabled = false;
+	    submitButton.innerHTML = 'Salvar';
+	    submitButton.disabled = false;
+
+	    return alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.');
+	  }
+
+	  testAlgorithm(function (err, data) {
+	    if (err) {
+	      testButton.disabled = false;
+	      submitButton.innerHTML = 'Salvar';
+	      submitButton.disabled = false;
+
+	      return alert(data);
+	    }
+
+	    if (localStorage) {
+	      localStorage.setItem('lig4-' + player.username, playgroundTextarea.value);
+	    }
+
+	    // save player algorithm
+	    api('/player/' + player.username).put({
+	      code: playgroundTextarea.value
+	  }, function (res, status) {
+
+	      if (status >= 400) {
+	          alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.')
+	      } else {
+	          submitButton.innerHTML = 'Salvo c/ sucesso!';
+	          localStorage.removeItem('lig4-' + player.username);
+	      }
+	      testButton.disabled = false;
+
+	      setTimeout(function () {
+	        submitButton.disabled = false;
+	        submitButton.innerHTML = 'Salvar';
+	      }, 1500);
+	    }, false);
+	  });
+	}
+
+	function lastSaveHandler (e) {
+	  e.preventDefault();
+
+	  if (window.confirm('Carregar o seu último algoritmo salvo?')) {
+	    document.location.reload();
+	  }
+	}
+
+	// main function
+	function playground () {
+	  testButton = document.getElementById('test-algorithm-button');
+	  closeTestButtom = document.createElement('button');
+	  submitButton = document.getElementById('submit-algorithm-button');
+	  resetButtom = document.getElementById('reset-algorithm-button');
+	  lastSaveButtom = document.getElementById('last-save--button');
+	  playgroundEditor = document.getElementById('playground-editor');
+	  playgroundWrapper = document.getElementById('playground');
+	  playgroundTextarea = document.getElementById('playground-textarea');
+	  playgroundRunner = document.getElementById('playground-runner');
+	  playgroundTestBoard = document.createElement('div');
+	  playgroundTestLogs = document.createElement('ul');
+	  gameboard = document.createElement('div');
+	  username = playgroundTextarea.getAttribute('data-username');
+
+	  playgroundTestBoard.className = 'playground-test-board';
+	  playgroundTestLogs.className = 'playground-test-logs';
+	  gameboard.className = 'game-board';
+	  closeTestButtom.className = 'button playground__close-test-button';
+	  closeTestButtom.innerHTML = 'Fechar';
+
+	  new Editor({ textarea: playgroundTextarea });
+
+	  playgroundTemplate = [
+
+	    '\'use strict\';\n\n',
+
+	    '/*\n',
+	    ' * A função Algorithm encapsula \n',
+	    ' * a lógica das jogadas. \n',
+	    ' * A instância do Algorithm \n',
+	    ' * persiste durante toda a partida. \n',
+	    ' */ \n\n',
+
+	      'function Algorithm () {\n\n',
+
+	        '    /*\n',
+	        '     * Cada chamada de \'move\' \n',
+	        '     * corresponde a uma peça jogada. \n',
+	        '     * Esse método recebe \n',
+	        '     * as colunas disponíveis \n',
+	        '     * do tabuleiro e o estado atual \n',
+	        '     * do mesmo. \n',
+	        '     */ \n\n',
+
+	        '    this.move = function (availableColumns, gameBoard) {\n\n',
+
+	        '        /*\n',
+	        '         * Exemplo dos argumentos  \n',
+	        '         * passados\n',
+	        '         * \n',
+	        '         * availableColumns: \n',
+	        '         * [0, 1, 2, 3, 4, 5, 6]\n',
+	        '         * \n',
+	        '         * gameBoard: [\n',
+	        '         *  [\'' + username + '\', null, null, null, null, null], \n',
+	        '         *  [\'' + username + '\', null, null, null, null, null], \n',
+	        '         *  [null, null, null, null, null, null], \n',
+	        '         *  [\'' + username + '\', null, null, null, null, null], \n',
+	        '         *  [\'aleatório\', null, null, null, null, null], \n',
+	        '         *  [\'aleatório\', null, null, null, null, null], \n',
+	        '         *  [\'aleatório\', null, null, null, null, null] \n',
+	        '         * ] \n',
+	        '         */ \n\n',
+
+	        '        /*\n',
+	        '         * O retorno do método \n',
+	        '         * deve ser o índice númerico \n',
+	        '         * de uma coluna válida, \n',
+	        '         * para que a jogada seja \n',
+	        '         * realizada com sucesso. \n',
+	        '         */\n\n',
+
+	        '        return availableColumns[0];\n',
+	      '    }',
+	    '\n}\n'
+
+	  ].join('');
+
+	  // set game board attrs
+	  gameboard.setAttribute('data-interval', .5);
+	  gameboard.setAttribute('data-rows', 6);
+	  gameboard.setAttribute('data-columns', 7);
+	  gameboard.setAttribute('data-players', true);
+
+	  // create test board
+	  testBoard = new GameBoard(gameboard);
+	  gameboard.appendChild(playgroundTestLogs);
+	  gameboard.appendChild(closeTestButtom);
+	  playgroundTestBoard.appendChild(gameboard);
+
+	  // set listeners
+	  testButton.addEventListener('click', testHandler);
+	  submitButton.addEventListener('click', submitHandler);
+	  resetButtom.addEventListener('click', resetHandler);
+	  lastSaveButtom.addEventListener('click', lastSaveHandler);
+	  closeTestButtom.addEventListener('click', closeTestHandler);
+
+	  // load player algorithm
+	  api('/player/' + username).get(loadPlayerHandler);
+	}
+
+	document.addEventListener('DOMContentLoaded', playground);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	var url = '//' + document.location.host + '/api';
+
+	function api(path) {
+	  var xhr = new XMLHttpRequest();
+
+	  return {
+	    get: function(callback) {
+	      xhr.open('GET', url + path);
+	      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	      xhr.addEventListener('load', function() {
+	        var response = null;
+
+	        if (xhr.response) response = JSON.parse(xhr.response).payload
+
+	        callback(response, xhr.status);
+	      });
+	      xhr.send();
+	    },
+
+	    put: function(data, callback) {
+	      xhr.open('PUT', url + path);
+	      xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	      xhr.addEventListener('load', function() {
+	        var response = null;
+
+	        if (xhr.status == 401) document.location.reload();
+	        if (xhr.response) response = JSON.parse(xhr.response).payload;
+
+	        callback(response, xhr.status);
+	      });
+	      xhr.send(JSON.stringify(data));
+	    },
+	  }
+	}
+
+	module.exports = api;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	var BehaveHooks = BehaveHooks || (function(){
+	    var hooks = {};
+
+	    return {
+	        add: function(hookName, fn){
+	            if(typeof hookName == "object"){
+	                var i;
+	                for(i=0; i<hookName.length; i++){
+	                    var theHook = hookName[i];
+	                    if(!hooks[theHook]){
+	                        hooks[theHook] = [];
+	                    }
+	                    hooks[theHook].push(fn);
+	                }
+	            } else {
+	                if(!hooks[hookName]){
+	                    hooks[hookName] = [];
+	                }
+	                hooks[hookName].push(fn);
+	            }
+	        },
+	        get: function(hookName){
+	            if(hooks[hookName]){
+	                return hooks[hookName];
+	            }
+	        }
+	    };
+
+	})(),
+	Behave = Behave || function (userOpts) {
+
+	    if (typeof String.prototype.repeat !== 'function') {
+	        String.prototype.repeat = function(times) {
+	            if(times < 1){
+	                return '';
+	            }
+	            if(times % 2){
+	                return this.repeat(times - 1) + this;
+	            }
+	            var half = this.repeat(times / 2);
+	            return half + half;
+	        };
+	    }
+
+	    if (typeof Array.prototype.filter !== 'function') {
+	        Array.prototype.filter = function(func /*, thisp */) {
+	            if (this === null) {
+	                throw new TypeError();
+	            }
+
+	            var t = Object(this),
+	                len = t.length >>> 0;
+	            if (typeof func != "function"){
+	                throw new TypeError();
+	            }
+	            var res = [],
+	                thisp = arguments[1];
+	            for (var i = 0; i < len; i++) {
+	                if (i in t) {
+	                    var val = t[i];
+	                    if (func.call(thisp, val, i, t)) {
+	                        res.push(val);
+	                    }
+	                }
+	            }
+	            return res;
+	        };
+	    }
+
+	    var defaults = {
+	        textarea: null,
+	        replaceTab: true,
+	        softTabs: true,
+	        tabSize: 4,
+	        autoOpen: true,
+	        overwrite: true,
+	        autoStrip: true,
+	        autoIndent: true,
+	        fence: false
+	    },
+	    tab,
+	    newLine,
+	    charSettings = {
+
+	        keyMap: [
+	            { open: "\"", close: "\"", canBreak: false },
+	            { open: "'", close: "'", canBreak: false },
+	            { open: "(", close: ")", canBreak: false },
+	            { open: "[", close: "]", canBreak: true },
+	            { open: "{", close: "}", canBreak: true }
+	        ]
+
+	    },
+	    utils = {
+
+	        _callHook: function(hookName, passData){
+	            var hooks = BehaveHooks.get(hookName);
+	            passData = typeof passData=="boolean" && passData === false ? false : true;
+
+	            if(hooks){
+	                if(passData){
+	                    var theEditor = defaults.textarea,
+	                        textVal = theEditor.value,
+	                        caretPos = utils.cursor.get(),
+	                        i;
+
+	                    for(i=0; i<hooks.length; i++){
+	                        hooks[i].call(undefined, {
+	                            editor: {
+	                                element: theEditor,
+	                                text: textVal,
+	                                levelsDeep: utils.levelsDeep()
+	                            },
+	                            caret: {
+	                                pos: caretPos
+	                            },
+	                            lines: {
+	                                current: utils.cursor.getLine(textVal, caretPos),
+	                                total: utils.editor.getLines(textVal)
+	                            }
+	                        });
+	                    }
+	                } else {
+	                    for(i=0; i<hooks.length; i++){
+	                        hooks[i].call(undefined);
+	                    }
+	                }
+	            }
+	        },
+
+	        defineNewLine: function(){
+	            var ta = document.createElement('textarea');
+	            ta.value = "\n";
+
+	            if(ta.value.length==2){
+	                newLine = "\r\n";
+	            } else {
+	                newLine = "\n";
+	            }
+	        },
+	        defineTabSize: function(tabSize){
+	            if(typeof defaults.textarea.style.OTabSize != "undefined"){
+	                defaults.textarea.style.OTabSize = tabSize; return;
+	            }
+	            if(typeof defaults.textarea.style.MozTabSize != "undefined"){
+	                defaults.textarea.style.MozTabSize = tabSize; return;
+	            }
+	            if(typeof defaults.textarea.style.tabSize != "undefined"){
+	                defaults.textarea.style.tabSize = tabSize; return;
+	            }
+	        },
+	        cursor: {
+	            getLine: function(textVal, pos){
+	                return ((textVal.substring(0,pos)).split("\n")).length;
+	            },
+	            get: function() {
+
+	                if (typeof document.createElement('textarea').selectionStart==="number") {
+	                    return defaults.textarea.selectionStart;
+	                } else if (document.selection) {
+	                    var caretPos = 0,
+	                        range = defaults.textarea.createTextRange(),
+	                        rangeDupe = document.selection.createRange().duplicate(),
+	                        rangeDupeBookmark = rangeDupe.getBookmark();
+	                    range.moveToBookmark(rangeDupeBookmark);
+
+	                    while (range.moveStart('character' , -1) !== 0) {
+	                        caretPos++;
+	                    }
+	                    return caretPos;
+	                }
+	            },
+	            set: function (start, end) {
+	                if(!end){
+	                    end = start;
+	                }
+	                if (defaults.textarea.setSelectionRange) {
+	                    defaults.textarea.focus();
+	                    defaults.textarea.setSelectionRange(start, end);
+	                } else if (defaults.textarea.createTextRange) {
+	                    var range = defaults.textarea.createTextRange();
+	                    range.collapse(true);
+	                    range.moveEnd('character', end);
+	                    range.moveStart('character', start);
+	                    range.select();
+	                }
+	            },
+	            selection: function(){
+	                var textAreaElement = defaults.textarea,
+	                    start = 0,
+	                    end = 0,
+	                    normalizedValue,
+	                    range,
+	                    textInputRange,
+	                    len,
+	                    endRange;
+
+	                if (typeof textAreaElement.selectionStart == "number" && typeof textAreaElement.selectionEnd == "number") {
+	                    start = textAreaElement.selectionStart;
+	                    end = textAreaElement.selectionEnd;
+	                } else {
+	                    range = document.selection.createRange();
+
+	                    if (range && range.parentElement() == textAreaElement) {
+
+	                        normalizedValue = utils.editor.get();
+	                        len = normalizedValue.length;
+
+	                        textInputRange = textAreaElement.createTextRange();
+	                        textInputRange.moveToBookmark(range.getBookmark());
+
+	                        endRange = textAreaElement.createTextRange();
+	                        endRange.collapse(false);
+
+	                        if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
+	                            start = end = len;
+	                        } else {
+	                            start = -textInputRange.moveStart("character", -len);
+	                            start += normalizedValue.slice(0, start).split(newLine).length - 1;
+
+	                            if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
+	                                end = len;
+	                            } else {
+	                                end = -textInputRange.moveEnd("character", -len);
+	                                end += normalizedValue.slice(0, end).split(newLine).length - 1;
+	                            }
+	                        }
+	                    }
+	                }
+
+	                return start==end ? false : {
+	                    start: start,
+	                    end: end
+	                };
+	            }
+	        },
+	        editor: {
+	            getLines: function(textVal){
+	                return (textVal).split("\n").length;
+	            },
+	            get: function(){
+	                return defaults.textarea.value.replace(/\r/g,'');
+	            },
+	            set: function(data){
+	                defaults.textarea.value = data;
+	            }
+	        },
+	        fenceRange: function(){
+	            if(typeof defaults.fence == "string"){
+
+	                var data = utils.editor.get(),
+	                    pos = utils.cursor.get(),
+	                    hacked = 0,
+	                    matchedFence = data.indexOf(defaults.fence),
+	                    matchCase = 0;
+
+	                while(matchedFence>=0){
+	                    matchCase++;
+	                    if( pos < (matchedFence+hacked) ){
+	                        break;
+	                    }
+
+	                    hacked += matchedFence+defaults.fence.length;
+	                    data = data.substring(matchedFence+defaults.fence.length);
+	                    matchedFence = data.indexOf(defaults.fence);
+
+	                }
+
+	                if( (hacked) < pos && ( (matchedFence+hacked) > pos ) && matchCase%2===0){
+	                    return true;
+	                }
+	                return false;
+	            } else {
+	                return true;
+	            }
+	        },
+	        isEven: function(_this,i){
+	            return i%2;
+	        },
+	        levelsDeep: function(){
+	            var pos = utils.cursor.get(),
+	                val = utils.editor.get();
+
+	            var left = val.substring(0, pos),
+	                levels = 0,
+	                i, j;
+
+	            for(i=0; i<left.length; i++){
+	                for (j=0; j<charSettings.keyMap.length; j++) {
+	                    if(charSettings.keyMap[j].canBreak){
+	                        if(charSettings.keyMap[j].open == left.charAt(i)){
+	                            levels++;
+	                        }
+
+	                        if(charSettings.keyMap[j].close == left.charAt(i)){
+	                            levels--;
+	                        }
+	                    }
+	                }
+	            }
+
+	            var toDecrement = 0,
+	                quoteMap = ["'", "\""];
+	            for(i=0; i<charSettings.keyMap.length; i++) {
+	                if(charSettings.keyMap[i].canBreak){
+	                    for(j in quoteMap){
+	                        toDecrement += left.split(quoteMap[j]).filter(utils.isEven).join('').split(charSettings.keyMap[i].open).length - 1;
+	                    }
+	                }
+	            }
+
+	            var finalLevels = levels - toDecrement;
+
+	            return finalLevels >=0 ? finalLevels : 0;
+	        },
+	        deepExtend: function(destination, source) {
+	            for (var property in source) {
+	                if (source[property] && source[property].constructor &&
+	                    source[property].constructor === Object) {
+	                    destination[property] = destination[property] || {};
+	                    utils.deepExtend(destination[property], source[property]);
+	                } else {
+	                    destination[property] = source[property];
+	                }
+	            }
+	            return destination;
+	        },
+	        addEvent: function addEvent(element, eventName, func) {
+	            if (element.addEventListener){
+	                element.addEventListener(eventName,func,false);
+	            } else if (element.attachEvent) {
+	                element.attachEvent("on"+eventName, func);
+	            }
+	        },
+	        removeEvent: function addEvent(element, eventName, func){
+	            if (element.addEventListener){
+	                element.removeEventListener(eventName,func,false);
+	            } else if (element.attachEvent) {
+	                element.detachEvent("on"+eventName, func);
+	            }
+	        },
+
+	        preventDefaultEvent: function(e){
+	            if(e.preventDefault){
+	                e.preventDefault();
+	            } else {
+	                e.returnValue = false;
+	            }
+	        }
+	    },
+	    intercept = {
+	        tabKey: function (e) {
+
+	            if(!utils.fenceRange()){ return; }
+
+	            if (e.keyCode == 9) {
+	                utils.preventDefaultEvent(e);
+
+	                var toReturn = true;
+	                utils._callHook('tab:before');
+
+	                var selection = utils.cursor.selection(),
+	                    pos = utils.cursor.get(),
+	                    val = utils.editor.get();
+
+	                if(selection){
+
+	                    var tempStart = selection.start;
+	                    while(tempStart--){
+	                        if(val.charAt(tempStart)=="\n"){
+	                            selection.start = tempStart + 1;
+	                            break;
+	                        }
+	                    }
+
+	                    var toIndent = val.substring(selection.start, selection.end),
+	                        lines = toIndent.split("\n"),
+	                        i;
+
+	                    if(e.shiftKey){
+	                        for(i = 0; i<lines.length; i++){
+	                            if(lines[i].substring(0,tab.length) == tab){
+	                                lines[i] = lines[i].substring(tab.length);
+	                            }
+	                        }
+	                        toIndent = lines.join("\n");
+
+	                        utils.editor.set( val.substring(0,selection.start) + toIndent + val.substring(selection.end) );
+	                        utils.cursor.set(selection.start, selection.start+toIndent.length);
+
+	                    } else {
+	                        for(i in lines){
+	                            lines[i] = tab + lines[i];
+	                        }
+	                        toIndent = lines.join("\n");
+
+	                        utils.editor.set( val.substring(0,selection.start) + toIndent + val.substring(selection.end) );
+	                        utils.cursor.set(selection.start, selection.start+toIndent.length);
+	                    }
+	                } else {
+	                    var left = val.substring(0, pos),
+	                        right = val.substring(pos),
+	                        edited = left + tab + right;
+
+	                    if(e.shiftKey){
+	                        if(val.substring(pos-tab.length, pos) == tab){
+	                            edited = val.substring(0, pos-tab.length) + right;
+	                            utils.editor.set(edited);
+	                            utils.cursor.set(pos-tab.length);
+	                        }
+	                    } else {
+	                        utils.editor.set(edited);
+	                        utils.cursor.set(pos + tab.length);
+	                        toReturn = false;
+	                    }
+	                }
+	                utils._callHook('tab:after');
+	            }
+	            return toReturn;
+	        },
+	        enterKey: function (e) {
+
+	            if(!utils.fenceRange()){ return; }
+
+	            if (e.keyCode == 13) {
+
+	                utils.preventDefaultEvent(e);
+	                utils._callHook('enter:before');
+
+	                var pos = utils.cursor.get(),
+	                    val = utils.editor.get(),
+	                    left = val.substring(0, pos),
+	                    right = val.substring(pos),
+	                    leftChar = left.charAt(left.length - 1),
+	                    rightChar = right.charAt(0),
+	                    numTabs = utils.levelsDeep(),
+	                    ourIndent = "",
+	                    closingBreak = "",
+	                    finalCursorPos,
+	                    i;
+	                if(!numTabs){
+	                    finalCursorPos = 1;
+	                } else {
+	                    while(numTabs--){
+	                        ourIndent+=tab;
+	                    }
+	                    ourIndent = ourIndent;
+	                    finalCursorPos = ourIndent.length + 1;
+
+	                    for(i=0; i<charSettings.keyMap.length; i++) {
+	                        if (charSettings.keyMap[i].open == leftChar && charSettings.keyMap[i].close == rightChar){
+	                            closingBreak = newLine;
+	                        }
+	                    }
+
+	                }
+
+	                var edited = left + newLine + ourIndent + closingBreak + (ourIndent.substring(0, ourIndent.length-tab.length) ) + right;
+	                utils.editor.set(edited);
+	                utils.cursor.set(pos + finalCursorPos);
+	                utils._callHook('enter:after');
+	            }
+	        },
+	        deleteKey: function (e) {
+
+	            if(!utils.fenceRange()){ return; }
+
+	            if(e.keyCode == 8){
+	                utils.preventDefaultEvent(e);
+
+	                utils._callHook('delete:before');
+
+	                var pos = utils.cursor.get(),
+	                    val = utils.editor.get(),
+	                    left = val.substring(0, pos),
+	                    right = val.substring(pos),
+	                    leftChar = left.charAt(left.length - 1),
+	                    rightChar = right.charAt(0),
+	                    i;
+
+	                if( utils.cursor.selection() === false ){
+	                    for(i=0; i<charSettings.keyMap.length; i++) {
+	                        if (charSettings.keyMap[i].open == leftChar && charSettings.keyMap[i].close == rightChar) {
+	                            var edited = val.substring(0,pos-1) + val.substring(pos+1);
+	                            utils.editor.set(edited);
+	                            utils.cursor.set(pos - 1);
+	                            return;
+	                        }
+	                    }
+	                    var edited = val.substring(0,pos-1) + val.substring(pos);
+	                    utils.editor.set(edited);
+	                    utils.cursor.set(pos - 1);
+	                } else {
+	                    var sel = utils.cursor.selection(),
+	                        edited = val.substring(0,sel.start) + val.substring(sel.end);
+	                    utils.editor.set(edited);
+	                    utils.cursor.set(pos);
+	                }
+
+	                utils._callHook('delete:after');
+
+	            }
+	        }
+	    },
+	    charFuncs = {
+	        openedChar: function (_char, e) {
+	            utils.preventDefaultEvent(e);
+	            utils._callHook('openChar:before');
+	            var pos = utils.cursor.get(),
+	                val = utils.editor.get(),
+	                left = val.substring(0, pos),
+	                right = val.substring(pos),
+	                edited = left + _char.open + _char.close + right;
+
+	            defaults.textarea.value = edited;
+	            utils.cursor.set(pos + 1);
+	            utils._callHook('openChar:after');
+	        },
+	        closedChar: function (_char, e) {
+	            var pos = utils.cursor.get(),
+	                val = utils.editor.get(),
+	                toOverwrite = val.substring(pos, pos + 1);
+	            if (toOverwrite == _char.close) {
+	                utils.preventDefaultEvent(e);
+	                utils._callHook('closeChar:before');
+	                utils.cursor.set(utils.cursor.get() + 1);
+	                utils._callHook('closeChar:after');
+	                return true;
+	            }
+	            return false;
+	        }
+	    },
+	    action = {
+	        filter: function (e) {
+
+	            if(!utils.fenceRange()){ return; }
+
+	            var theCode = e.which || e.keyCode;
+
+	            if(theCode == 39 || theCode == 40 && e.which===0){ return; }
+
+	            var _char = String.fromCharCode(theCode),
+	                i;
+
+	            for(i=0; i<charSettings.keyMap.length; i++) {
+
+	                if (charSettings.keyMap[i].close == _char) {
+	                    var didClose = defaults.overwrite && charFuncs.closedChar(charSettings.keyMap[i], e);
+
+	                    if (!didClose && charSettings.keyMap[i].open == _char && defaults.autoOpen) {
+	                        charFuncs.openedChar(charSettings.keyMap[i], e);
+	                    }
+	                } else if (charSettings.keyMap[i].open == _char && defaults.autoOpen) {
+	                    charFuncs.openedChar(charSettings.keyMap[i], e);
+	                }
+	            }
+	        },
+	        listen: function () {
+
+	            if(defaults.replaceTab){ utils.addEvent(defaults.textarea, 'keydown', intercept.tabKey); }
+	            if(defaults.autoIndent){ utils.addEvent(defaults.textarea, 'keydown', intercept.enterKey); }
+	            if(defaults.autoStrip){ utils.addEvent(defaults.textarea, 'keydown', intercept.deleteKey); }
+
+	            utils.addEvent(defaults.textarea, 'keypress', action.filter);
+
+	            utils.addEvent(defaults.textarea, 'keydown', function(){ utils._callHook('keydown'); });
+	            utils.addEvent(defaults.textarea, 'keyup', function(){ utils._callHook('keyup'); });
+	        }
+	    },
+	    init = function (opts) {
+
+	        if(opts.textarea){
+	            utils._callHook('init:before', false);
+	            utils.deepExtend(defaults, opts);
+	            utils.defineNewLine();
+
+	            if (defaults.softTabs) {
+	                tab = " ".repeat(defaults.tabSize);
+	            } else {
+	                tab = "\t";
+
+	                utils.defineTabSize(defaults.tabSize);
+	            }
+
+	            action.listen();
+	            utils._callHook('init:after', false);
+	        }
+
+	    };
+
+	    this.destroy = function(){
+	        utils.removeEvent(defaults.textarea, 'keydown', intercept.tabKey);
+	        utils.removeEvent(defaults.textarea, 'keydown', intercept.enterKey);
+	        utils.removeEvent(defaults.textarea, 'keydown', intercept.deleteKey);
+	        utils.removeEvent(defaults.textarea, 'keypress', action.filter);
+	    };
+
+	    init(userOpts);
+
+	};
+
+	if (typeof module !== 'undefined' && module.exports) {
+	    module.exports = Behave;
+	}
+
+	if (typeof ender === 'undefined') {
+	    this.Behave = Behave;
+	    this.BehaveHooks = BehaveHooks;
+	}
+
+	if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	        return Behave;
+	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var availableColumnsMock = [0, 1, 2, 3, 4, 5, 6];
+	var availableBoardMock = [
+	    [null, null, null, null, null, null],
+	    [null, null, null, null, null, null],
+	    [null, null, null, null, null, null],
+	    [null, null, null, null, null, null],
+	    [null, null, null, null, null, null],
+	    [null, null, null, null, null, null],
+	    [null, null, null, null, null, null]
+	];
+
+	function Algorithm(algorithmSource) {
+	  if (algorithmSource.indexOf('function') == -1 ||
+	    algorithmSource.indexOf('Algorithm') == -1) {
+	    throw new Error('You need to have a \'Algorithm\' function;');
+	  }
+
+	  this.constructor = (new Function('window', 'document', algorithmSource + ' ;return Algorithm;')).call({}, {}, {});
+
+	  if (!this.constructor || typeof this.constructor !== 'function') {
+	    throw new Error('Invalid return statement;');
+	  }
+
+	  this.instance = new this.constructor();
+
+	  if (!this.instance.move || typeof this.instance.move !== 'function') {
+	    throw new Error('The Algorithm need to have a move method to make the plays;');
+	  }
+
+	  if (typeof this.instance.move(availableColumnsMock, availableBoardMock) !== 'number') {
+	    throw new Error('The Algorithm move method should return a number;');
+	  }
+
+	  return new this.constructor();
+	}
+
+	module.exports = Algorithm;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Board = __webpack_require__(5);
+
+	function Game(player1, player2) {
+	  this.board = new Board();
+	  this.players = [player1, player2];
+	}
+
+	Game.status = {
+	  INVALID_MOVE: 'INVALID_MOVE',
+	  LIG4: 'LIG4',
+	  DRAW: 'DRAW'
+	};
+
+	Game.prototype.run = function () {
+	  var result = {
+	    winner: null,
+	    reason: null,
+	    moves: [],
+	    sequence: []
+	  };
+
+	  for (var play = 0; play < this.board.maxMoves; play++) {
+	    var currentPlayer = this.players[play % 2];
+	    var columns = this.board.getAvailableColumns();
+	    var currentBoard = this.board.cloneBoard();
+	    var column = currentPlayer.move(columns, currentBoard);
+
+	    if (columns.indexOf(column) < 0) {
+	      result.winner = this.players[(play + 1) % 2];
+	      result.reason = Game.status.INVALID_MOVE;
+	      result.invalidMove = column;
+	      break;
+	    };
+
+	    var move = this.board.push(currentPlayer, column);
+	    result.moves.push({
+	      username: currentPlayer.username,
+	      move: move
+	    });
+
+	    var matchSequence = this.matchAnalyzer();
+	    if (matchSequence) {
+	      result.winner = currentPlayer;
+	      result.reason = Game.status.LIG4;
+	      result.sequence = matchSequence;
+	      break;
+	    }
+	  };
+
+	  if (!result.winner) result.reason = Game.status.DRAW;
+
+	  return result;
+	};
+
+	Game.prototype.matchAnalyzer = function () {
+	  var match = null;
+
+	  for (var column = 0; column < this.board.width; column++) {
+	    var columns = this.board.matrix[column];
+
+	    if (match) {
+	      break;
+	    }
+
+	    for (var row = 0; row < this.board.height; row++) {
+	      var position = columns[row];
+
+	      if (position == null) {
+	        continue;
+	      }
+
+	      // vertical
+	      if (columns[row + 1] == position &&
+	        columns[row + 2] == position &&
+	        columns[row + 3] == position) {
+	        match = [[column, row], [column, row + 1],
+	                 [column, row + 2], [column, row + 3]]
+	        break;
+	      }
+
+	      // horizontal
+	      if (this.board.matrix[column] &&
+	        this.board.matrix[column + 3] &&
+	        this.board.matrix[column + 1][row] == position &&
+	        this.board.matrix[column + 2][row] == position &&
+	        this.board.matrix[column + 3][row] == position) {
+	        match = [[column, row], [column + 1, row],
+	                 [column + 2, row], [column + 3, row]]
+	        break;
+	      }
+
+	      // diagonal right
+	      if (this.board.matrix[column] &&
+	        this.board.matrix[column + 3] &&
+	        this.board.matrix[column + 1][row + 1] == position &&
+	        this.board.matrix[column + 2][row + 2] == position &&
+	        this.board.matrix[column + 3][row + 3] == position) {
+	        match = [[column, row], [column + 1, row + 1],
+	                 [column + 2, row + 2], [column + 3, row + 3]]
+	        break;
+	      }
+	      // diagonal left
+	      if (this.board.matrix[column] &&
+	        this.board.matrix[column + 3] &&
+	        this.board.matrix[column + 1][row - 1] == position &&
+	        this.board.matrix[column + 2][row - 2] == position &&
+	        this.board.matrix[column + 3][row - 3] == position) {
+	        match = [[column, row], [column + 1, row - 1],
+	                 [column + 2, row - 2], [column + 3, row - 3]]
+	        break;
+	      }
+
+
+	    };
+	  };
+
+	  return match;
+	};
+
+
+	module.exports = Game;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {function Board() {
+	  this.width = 7;
+	  this.height = 6;
+	  this.maxMoves = this.width * this.height;
+	  this.matrix = this.buildMatrix();
+	}
+
+	Board.prototype.push = function (player, column) {
+	  var row = this.matrix[column].lastIndexOf(null);
+
+	  if (row < 0) return false;
+
+	  this.matrix[column][row] = player.char;
+
+	  return [column, row];
+	};
+
+	Board.prototype.cloneBoard = function () {
+
+	  var clone = [];
+	  for (var column in this.matrix) {
+	    clone.push(this.matrix[column].slice(0))
+	  }
+	  return clone;
+	};
+
+	Board.prototype.buildMatrix = function () {
+	  var matrix = [];
+
+	  for (var i = 0; i < this.width; i++) { // columns
+	    matrix[i] = []
+	    for (var j = 0; j < this.height; j++) { // rows
+	      matrix[i][j] = null;
+	    }
+	  }
+
+	  return matrix
+	};
+
+	Board.prototype.getAvailableColumns = function () {
+	  var positions = [];
+
+	  for (var column in this.matrix) {
+	    if (this.matrix[column].lastIndexOf(null) >= 0)
+	      positions.push(parseInt(column));
+	  }
+
+	  return positions;
+	}
+
+	Board.prototype.draw = function () {
+	  for (var row = 0; row < this.height; row++) {
+	    for (var column = 0; column < this.width; column++) {
+	      var cell = this.matrix[column][row] || ' ';
+	      process.stdout.write("| " + cell + " ");
+	    }
+	    process.stdout.write("\n");
+	  }
+	};
+
+	module.exports = Board;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+
+	var process = module.exports = {};
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = setTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            currentQueue[queueIndex].run();
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    clearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        setTimeout(drainQueue, 0);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	// TODO(shtylman)
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function GameBoard(element) {
+	  var container = this.container = element;
+	  var options = this.options = {}
+	  var board = this.board = {};
+	  var players = this.board.players = {};
+	  var self = this;
+
+	  // set container
+	  container.className += ' game-board';
+
+	  // set options
+	  options.rows = 6;
+	  options.columns = 7;
+	  options.interval = 1000;
+
+	  // set players html
+	  players.element = document.createElement('div');
+	  players.element.className = 'game-board__players';
+
+	  players.guestElement = document.createElement('div');
+	  players.guestName = document.createElement('span');
+
+	  players.homeElement = document.createElement('div');
+	  players.homeName = document.createElement('span');
+
+	  players.guestElement.className = 'game-board__guest-player';
+	  players.homeElement.className = 'game-board__home-player';
+
+	  players.homeName.className = 'game-board__player-name';
+	  players.guestName.className = 'game-board__player-name';
+
+	  players.homeElement.appendChild(players.homeName);
+
+	  players.guestElement.appendChild(players.guestName);
+
+	  players.element.appendChild(players.homeElement);
+	  players.element.appendChild(players.guestElement);
+
+	  // set board html and positions
+	  board.size = options.rows * options.columns;
+	  board.element = document.createElement('ul');
+	  board.element.className = 'game-board__positions';
+	  board.positions = [];
+
+	  // generate positions
+	  for (var i = 0; i < board.size; i++) {
+	    board.positions[i] = document.createElement('li');
+	    board.positions[i].className = 'game-board__position';
+
+	    // insert position into board
+	    board.element.appendChild(board.positions[i]);
+	  }
+
+	  // insert elements into container
+	  container.appendChild(players.element);
+	  container.appendChild(board.element);
+
+	  return {
+	    board: self.board,
+	    options: self.options,
+	    load: self.load.bind(self),
+	    play: self.play.bind(self),
+	  };
+	}
+
+	GameBoard.prototype.load = function (gameResult) {
+	  var positions = this.board.positions;
+	  var container = this.container;
+	  var players = this.board.players;
+	  var options = this.options;
+	  this.homePlayer = gameResult.players[0];
+	  this.guestPlayer = gameResult.players[1];
+
+	  // set game data
+	  this.move = 0;
+	  this.moves = gameResult.moves;
+	  this.sequence = gameResult.sequence;
+
+	  // set players html
+	  players.homeName.innerHTML = this.homePlayer.username;
+	  players.guestName.innerHTML = this.guestPlayer.username;
+
+	  // reset container
+	  container.className = container.className.replace('game-board--finished', '');
+
+	  // reset position
+	  for (var i = positions.length - 1; i >= 0; i--) {
+	    positions[i].className = 'game-board__position';
+	  }
+
+	  return this;
+	}
+
+	GameBoard.prototype.play = function (onFinish, onMove) {
+	  var currentMove = this.moves[this.move];
+	  var player = currentMove.username === this.homePlayer.username ? 'home-play' : 'guest-play';
+	  var column = currentMove.move[0];
+	  var row = currentMove.move[1];
+
+	  // clear timer if already exist
+	  if (this.timer) clearTimeout(this.timer);
+	  // set onMove at first move
+	  if (onMove) this.onMove = onMove;
+	  // set onFinish at first move
+	  if (onFinish) this.onFinish = onFinish;
+
+	  // apply current move
+	  this.applyPosition(player, column, row);
+
+	  // increase move
+	  this.move++;
+
+	  // execute onMove
+	  if (this.onMove) this.onMove(currentMove);
+
+	  // if it's not last: play
+	  if (this.moves[this.move])
+	    return this.timer = setTimeout(this.play.bind(this), this.options.interval);
+
+	  // after last move ...
+	  this.highlightSequence(this.sequence || []);
+
+	  // show sequence
+	  this.container.className += ' game-board--finished';
+
+	  // execute onFinish
+	  if (this.onFinish) this.onFinish(this);
+	}
+
+
+	GameBoard.prototype.highlightSequence = function (sequence) {
+	  var positions = this.board.positions;
+
+	  // foreach x and y, search for this item and apply a new css class.
+	  for (var index in sequence) {
+	    var position = 0;
+	    var item = sequence[index];
+
+	    // calculate row position
+	    for (var i = -1; i < item[1]; i++) {
+	      position += this.options.columns;
+	    }
+
+	    // find column position
+	    position = position - (this.options.columns - item[0]);
+
+	    // apply class
+	    positions[position].className += ' game-board__position--sequence';
+	  }
+	}
+
+	GameBoard.prototype.applyPosition = function (player, column, row) {
+	  var positions = this.board.positions;
+	  var position = 0;
+	  var length = positions.length;
+	  var className = 'game-board__position ' + player;
+
+	  // calculate row position
+	  for (var i = -1; i < row; i++) {
+	    position += this.options.columns;
+	  }
+
+	  // find column position
+	  position = position - (this.options.columns - column);
+	  // apply position
+	  positions[position].className = className;
+	}
+
+	module.exports = GameBoard;
+
+
+/***/ }
+/******/ ]);

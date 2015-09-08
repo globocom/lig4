@@ -44,7 +44,7 @@ stop:
 build-client: clean-client scripts-client styles-client images-client
 
 watch-client: build-client
-	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client' 'client/styles/**/*.scss':'make styles-client'
+	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client-dev' 'client/styles/**/*.scss':'make styles-client'
 
 clean-client:
 	rm -fr public
@@ -60,6 +60,10 @@ tree-client:
 scripts-client: tree-client
 	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js
 	$(WEBPACK) --bail -p client/scripts/playground.js public/scripts/playground.js
+
+scripts-client-dev: tree-client
+	$(WEBPACK) --bail client/scripts/main.js public/scripts/main.js
+	$(WEBPACK) --bail client/scripts/playground.js public/scripts/playground.js
 
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css

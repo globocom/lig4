@@ -1,0 +1,39 @@
+.dialog {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: white;
+  z-index: 999;
+  overflow-y: auto;
+
+  @include animation(fadeIn .5s);
+}
+
+.dialog__wrapper {
+  box-sizing: border-box;
+  padding: rem(20px) rem(80px);
+  margin: 0 auto;
+  max-width: 780px;
+}
+
+.dialog__close-button {
+  position: fixed;
+  top: 0;
+  right: 0;
+  font-size: rem(75px);
+  line-height: rem(75px);
+  padding: 0;
+  width: rem(100px);
+  height: rem(75px);
+  border: 0;
+  outline: none;
+  color: $black;
+
+  @include transition(color .25s);
+}
+
+.dialog__close-button:hover {
+  color: $orange;
+}
