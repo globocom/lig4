@@ -11,6 +11,10 @@
   @include animation(fadeIn .5s);
 }
 
+.dialog__content {
+  display: none;
+}
+
 .dialog__wrapper {
   box-sizing: border-box;
   padding: rem(20px) rem(80px);

@@ -20,11 +20,7 @@ function main() {
 
   function openDialog (e) {
     e.preventDefault();
-
-    var contentId = e.currentTarget.getAttribute('data-content');
-    var content = document.getElementById(contentId).innerHTML;
-
-    dialog.show(content);
+    dialog.show(e.currentTarget.getAttribute('data-content-id'));
   }
 
   rulesLinkElement.addEventListener('click', openDialog);

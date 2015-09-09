@@ -37,9 +37,9 @@ html
             div(id="game-board" class="game-board")
             table(id='leader-board' class='leader-board')
 
-    div(id="rules-content" style='display:none;')
+    div(id="rules-content" class='dialog__content')
         include blocks/rules
-    div(id="reward-content" style='display:none;')
+    div(id="reward-content" class='dialog__content')
         include blocks/reward
 
     script(src='scripts/main.js')
