@@ -28,10 +28,15 @@ router.get('/:username', function (req, res, next) {
 
 // PUT in /api/player/:username
 router.put('/:username', function (req, res, next) {
-  return Response.send(400, 'BAD_REQUEST',  'Tournament is over', res, next);
-  
+
   if (req.params.username !== req.session.user.login) {
-    return Response.send(400, 'BAD_REQUEST', req.body, res, next);
+      return Response.send(400, 'BAD_REQUEST', req.body, res, next);
+  }
+
+  if (req.body.code &&
+      req.body.code.indexOf('alert') > -1 ||
+      req.body.code.indexOf('console') > -1) {
+      return Response.send(400, 'INVALID_ES5_CODE', {}, res, next);
   }
 
   Player
@@ -42,12 +47,6 @@ router.put('/:username', function (req, res, next) {
 
       if (!player) player = new Player(req.body); // first access
       if (err) return Response.send(500, 'ERROR', err, res, next);
-
-      if (req.body.code &&
-        req.body.code.indexOf('alert') > -1 ||
-        req.body.code.indexOf('console.') > -1) {
-        return Response.send(400, 'INVALID_ES5_CODE', {}, res, next);
-      }
 
       try {
         var testContext = {};
