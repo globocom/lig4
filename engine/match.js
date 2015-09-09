@@ -25,10 +25,10 @@ Match.prototype.run = function () {
   for (var gameNum = 0; gameNum < 10; gameNum++) {
     homePlayer = this.players[gameNum % 2];
     awayPlayer = this.players[Math.abs(gameNum % 2 - 1)]
-
-    game = new Game(homePlayer, awayPlayer);
-    result = game.run();
-
+    try{
+        game = new Game(homePlayer, awayPlayer);
+        result = game.run();
+    } catch (e){ console.error(e)}
     this.games.push(result);
   }
 

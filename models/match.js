@@ -25,6 +25,8 @@ MatchSchema.statics.random = function (callback) {
     }
     var rand = Math.floor(Math.random() * count);
     this.findOne()
+      .where('result')
+      .ne(null)
       .skip(rand)
       .populate('players')
       .exec(callback);
@@ -32,24 +34,20 @@ MatchSchema.statics.random = function (callback) {
 };
 
 MatchSchema.statics.serialize = function (m) {
-	
-	try {
-	  delete m._id;
-	  delete m.round;
-	  delete m.__v;
-	  delete m.ack;
-	  delete m.result.scores;
-	  for (var p in m.players) {
-	    m.players[p] = {
-	      username: m.players[p].username
-	    };
-	  }
-	} catch (e) {
-		console.log(e);
-		return null;
-	}
-	
-  return m
+
+  delete m._id;
+  delete m.round;
+  delete m.__v;
+  delete m.ack;
+  delete m.result.scores;
+
+  for (var p in m.players) {
+    m.players[p] = {
+      username: m.players[p].username
+    };
+  }
+
+  return m;
 }
 
 module.exports = mongoose.model('Match', MatchSchema);
