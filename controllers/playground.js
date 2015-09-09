@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
         .exec(function (err, player) {
             req.session.user.rank = player.rank;
             // GET user data
-            res.render('end', { user: req.session.user });
+            res.render('playground', { user: req.session.user });
         });
 });
 
