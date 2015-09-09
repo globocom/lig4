@@ -12,6 +12,11 @@ var MatchSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  tournament: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tournament',
+    required: true
+  },
   result: {
     type: mongoose.Schema.Types.Mixed,
     default: null

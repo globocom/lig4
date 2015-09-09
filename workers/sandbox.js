@@ -35,7 +35,7 @@ process.on('message', function (match) {
       if (local.Algorithm === undefined && local.Player === undefined) {
         // TODO: player lose in this scenario
         console.log('Invalid code for player: ', player.username)
-        process.exit()
+        process.exit(-1);
       }
 
       players[player.username] = local.Algorithm || local.Player;
