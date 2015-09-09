@@ -41,8 +41,6 @@ function startRound(callback) {
       if (err) process.exit(err);
       if (matches.length === 0) return callback();
 
-      Leaderboard.collection.remove();
-
       var pool = new AsyncPool(100000);
 
       pool.on('finish', function () {
