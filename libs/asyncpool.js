@@ -1,12 +1,13 @@
 'use strict';
 
+var os = require('os');
 var cp = require('child_process');
 
 var AsyncPool = function (timeout, maxPoolSize) {
   this.queue = [];
   this.slots = [];
   this.wait = 2000;
-  this.maxPoolSize = maxPoolSize || 4;
+  this.maxPoolSize = maxPoolSize || os.cpus().length;
   this.finalized = false;
   this.events = {
     exit: function () {},
@@ -26,7 +27,7 @@ AsyncPool.prototype.add = function (file, message) {
 }
 
 AsyncPool.prototype.run = function (file, message) {
-  while (this.slots.length <= this.maxPoolSize && this.queue.length > 0) {
+  while (this.slots.length < this.maxPoolSize && this.queue.length > 0) {
     // add to buffer
     this.slots.push(this.queue.pop());
   }
