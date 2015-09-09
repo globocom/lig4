@@ -11,7 +11,7 @@ process.env.GITHUB_SECRET = 'dummy';
 // imports
 var mongoose = require('mongoose')
 var assert = require('assert')
-var scheduler = require('./../scheduler')
+var scheduler = require('./../workers/scheduler')
 
 // import models
 var Player = require('./../models/player')

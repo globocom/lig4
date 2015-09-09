@@ -5,8 +5,14 @@ var assert = require('assert'),
 describe('Match', function () {
   it('should return null after a draw', function () {
     var match = new Match;
-    match.addPlayer(new SequentialPlayer("Player1"));
-    match.addPlayer(new SequentialPlayer("Player2"));
+    match.addPlayer({
+        username: 'Player1',
+        klass: SequentialPlayer
+      });
+    match.addPlayer({
+      username: 'Player2',
+      klass: SequentialPlayer
+    });
     match.run();
     var matchResult = match.getResults();
     assert.equal(matchResult.winner, null);
