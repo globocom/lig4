@@ -3,11 +3,12 @@
 process.env.DBAAS_MONGODB_ENDPOINT = require('../config/dev.json')
   .apps[0].env.DBAAS_MONGODB_ENDPOINT;
 
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 // models
-var Match = require('../models/match')
-var Player = require('../models/player')
+var Match = require('../models/match');
+var Player = require('../models/player');
+var Tournament = require('../models/tournament');
 
 /**
  * Load all players from DB.
@@ -30,21 +31,6 @@ function loadPlayers(callback) {
 }
 
 /**
- * Randomly sort an array.
- * @param {array} Array to sort.
- */
-function shuffleArray(array) {
-  console.log('Raffling games...')
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1))
-    var temp = array[i]
-    array[i] = array[j]
-    array[j] = temp
-  }
-  return array
-}
-
-/**
  * Given a player list, it creates a NxN match list.
  * @param {array} List of players.
  * @param {function} Function to be called at end.
@@ -60,20 +46,7 @@ function createMatches(players, callback) {
       matches.push([player1, player2])
     }
   }
-  matches = shuffleArray(matches)
   callback(matches)
-}
-
-/**
- * Gets an identifier for this round.
- * @return {date} Returns a 10-minute truncated Date object.
- */
-function currentRound() {
-  // http://stackoverflow.com/questions/10789384
-  var coeff = 1000 * 60 * 10
-  var date = new Date()
-  var rounded = new Date(Math.floor(date.getTime() / coeff) * coeff)
-  return rounded
 }
 
 /**
@@ -82,23 +55,43 @@ function currentRound() {
  * @param {function} callback Function to be called at end.
  */
 function saveMatches(matches, callback) {
-  console.log('Saving matches...')
-  var bulk = []
-  for (var m of matches) {
-    var match = new Match()
-    var p1 = Player(m[0])
-    var p2 = Player(m[1])
-    match.players.push(p1)
-    match.players.push(p2)
-    match.round = currentRound()
-    bulk.push(match)
-  }
 
-  Match.create(bulk, function (err) {
-    if (err) process.exit(err)
-    console.log('Total of ' + bulk.length + ' matches have been defined!')
-    callback()
-  })
+  Tournament
+    .findOne()
+    .where('active')
+    .equals(true)
+    .exec(function (err, tournament) {
+
+      if (err) {
+        console.log(err)
+        process.exit(-1);
+      }
+
+      if (!tournament) {
+        console.log('At least one tournament should be active and open.')
+        process.exit(-1);
+      }
+      console.log('Saving matches...');
+
+      var round = Date.now();
+      var bulk = []
+      for (var m of matches) {
+        var match = new Match()
+        var p1 = Player(m[0])
+        var p2 = Player(m[1])
+        match.players.push(p1)
+        match.players.push(p2)
+        match.round = round;
+        match.tournament = tournament;
+        bulk.push(match)
+      }
+
+      Match.create(bulk, function (err) {
+        if (err) process.exit(err)
+        console.log('Total of ' + bulk.length + ' matches have been defined!')
+        callback();
+      });
+    });
 }
 
 /**
@@ -121,7 +114,7 @@ function newRound(callback) {
  * @param {function} done Optional function to be called at end.
  */
 function scheduler(done) {
-  console.log('Scheduler started!')
+  console.log('Scheduler started!');
   mongoose.connect(process.env.MONGODB_URI, function (err) {
     Match.collection.remove(function () {
       newRound(function () {
