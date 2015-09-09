@@ -1,16 +1,13 @@
 'use strict'
 
-if (!process.env.DBAAS_MONGODB_ENDPOINT) {
-  process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json')
-    .apps[0].env.DBAAS_MONGODB_ENDPOINT;
-}
+process.env.DBAAS_MONGODB_ENDPOINT = require('../config/dev.json')
+  .apps[0].env.DBAAS_MONGODB_ENDPOINT;
 
-// imports
 var mongoose = require('mongoose')
 
 // models
-var Match = require('./models/match')
-var Player = require('./models/player')
+var Match = require('../models/match')
+var Player = require('../models/player')
 
 /**
  * Load all players from DB.
@@ -128,7 +125,7 @@ function scheduler(done) {
   mongoose.connect(process.env.MONGODB_URI, function (err) {
     Match.collection.remove(function () {
       newRound(function () {
-        console.log('See you in 10 minutes. zzz ZZZ zzz...')
+        console.log('Scheduler finished.')
         if (done) done()
         else mongoose.disconnect() // cant send disconnect as callback
         process.exit();
@@ -139,6 +136,4 @@ function scheduler(done) {
 
 // runnnig
 if (!module.parent) scheduler()
-
-// export main fnc
 module.exports = scheduler
