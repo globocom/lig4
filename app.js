@@ -5,6 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
 var session = require('./libs/session');
+var tournament = require('./libs/tournament');
 
 // controllers
 var indexController = require('./controllers/index');
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session.setup(app));
 app.use(session.validate());
+app.use(tournament.initialize(app));
 
 // set controllers && handlers
 app.use('/', indexController);

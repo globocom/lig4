@@ -1,16 +1,15 @@
 'use strict'
 
 var vm = require('vm');
-var Match = require('./engine/match');
+var Match = require('../engine/match');
 
 function onFinish(result) {
-  console.log('Match result: ', result.scores)
   try {
     process.send(result);
-	}catch(e){
+  } catch (e) {
     console.log(e);
-	  console.log('error sending result to parent process: ', result)
-	}
+    console.log('error sending result to parent process: ', result)
+  }
   process.exit();
 }
 
@@ -29,13 +28,14 @@ process.on('message', function (match) {
       try {
         vm.runInContext(player.code, local, options);
       } catch (e) {
-        console.log('code  with error for player: ', player.username)
+        console.log('Invalid Algorithm for user: ', player.username);
+        console.log('Reason: ', e)
       }
 
       if (local.Algorithm === undefined && local.Player === undefined) {
         // TODO: player lose in this scenario
         console.log('Invalid code for player: ', player.username)
-        process.exit()
+        process.exit(-1);
       }
 
       players[player.username] = local.Algorithm || local.Player;
