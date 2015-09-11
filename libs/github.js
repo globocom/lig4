@@ -30,7 +30,7 @@ Github.prototype.token = function (code, session, callback) {
   request.post(Endpoints.ACCESS_TOKEN_URL, data, function (error, response, body) {
     session.access_token = body.access_token;
     if (body.error) {
-      console.log('Github token: ', error, null, body)
+      console.log('Github token: ', error);
       error = body;
     }
     callback(error, session.access_token);

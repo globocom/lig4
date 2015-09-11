@@ -10,6 +10,13 @@ function Match() {
 }
 
 Match.prototype.addPlayer = function (obj) {
+
+  if (typeof obj.klass !== 'function')
+     throw 'Invalid player class.';
+
+  if (!obj.username || obj.username.length < 1)
+     throw 'Invalid player username.';
+
   obj.char = obj.username;
   this.players.push(obj);
   this.scores[obj.username] = {
@@ -28,10 +35,8 @@ Match.prototype.run = function () {
 
     game = new Game(homePlayer, awayPlayer);
     result = game.run();
-
     this.games.push(result);
   }
-
   this.checkResult();
   this.setWinner();
   this.ran = true;

@@ -8,11 +8,12 @@ process.env.SESSION_SECRET = 'dummy';
 process.env.GITHUB_ID = 'dummy';
 process.env.GITHUB_SECRET = 'dummy';
 
-// imports
 var supertest = require('supertest');
 var mongoose = require('../libs/mongoose');
 var assert = require('assert');
 var nock = require('nock');
+
+var Tournament = require('../models/tournament')
 
 var app, request;
 
@@ -21,10 +22,21 @@ describe('API routes testing', function () {
     username: 'api_username_1',
     github: 'https://dummy.uri/api_username_1',
     email: 'dummy@dummies.net',
-    code: 'console.log();'
+    code: 'var Player = function (){ this.move = function () { return 0; }};'
   };
 
+  // add a fake Tournament
+  Tournament({
+      name: 'test_lig4_championship_1999',
+      active: true,
+      slug: 'conf_1999',
+      texts: { title :  'Conference 1999'}
+    })
+    .save();
+
+
   before(function (done) {
+
     // mock github service
     nock('https://github.com')
       .post('/login/oauth/access_token')
@@ -32,7 +44,10 @@ describe('API routes testing', function () {
 
     nock('https://api.github.com')
       .get('/user')
-      .reply(200, { 'login': 'api_username_1' });
+      .reply(200, {
+        login: player.username,
+        email: player.email
+      });
 
     // starts api server
     app = require('../app');
@@ -42,9 +57,6 @@ describe('API routes testing', function () {
     request
       .get('/auth/callback')
       .expect(302, done);
-
-    // cleans collections
-    mongoose.connection.db.dropDatabase();
   });
 
   it('should return ok after inserting a new player.', function (done) {
@@ -53,6 +65,29 @@ describe('API routes testing', function () {
       .send(player)
       .expect(200, done);
   });
+
+  it('should return BAD_REQUEST when user code contains console or alert.', function (done) {
+
+    var p = JSON.parse(JSON.stringify(player)); // js clone
+    p.code = 'var c = console; c.log(1); alert(2)';
+
+    request
+      .put('/api/player/' + player.username)
+      .send(p)
+      .expect(400, done);
+  });
+
+  it('should return BAD_REQUEST when user code takes a long time to compile.', function (done) {
+
+    var p = JSON.parse(JSON.stringify(player)); // js clone
+    p.code = 'while (true) {}';
+
+    request
+      .put('/api/player/' + player.username)
+      .send(p)
+      .expect(400, done);
+  });
+
 
   it('should return the player inserted', function (done) {
     request
@@ -63,6 +98,7 @@ describe('API routes testing', function () {
 
         delete _player.__v;
         delete _player._id;
+        delete _player.rank;
 
         assert.equal(JSON.stringify(player), JSON.stringify(_player))
       })

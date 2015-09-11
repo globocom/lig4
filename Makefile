@@ -17,16 +17,16 @@ tsuru-publish: build-client
 
 # scheduler & runner tasks
 
-worker: scheduler runner
+worker: scheduler runner leaderboard
 
 scheduler:
-	$(NODE) scheduler.js
+	$(NODE) workers/scheduler.js
 
-uplead:
-	$(NODE) uplead.js
+leaderboard:
+	$(NODE) workers/leaderboard.js
 
 runner:
-	$(NODE) runner.js --use_strict
+	$(NODE) workers/runner.js --use_strict
 
 # app tasks
 
