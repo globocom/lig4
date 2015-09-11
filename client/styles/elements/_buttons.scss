@@ -12,9 +12,15 @@
   padding: rem(20px) rem(25px);
   border-radius: rem(5px);
   box-sizing: border-box;
-  margin: rem(35px) 0;
+  margin: rem(20px) 0;
 
   @include transition(background-color .4s ease-in-out, opacity .4s);
+
+  &--black {
+    background-color: $black;
+    border-color: $black;
+    color: white;
+  }
 }
 
 .button:hover {
