@@ -8,7 +8,7 @@ WEBPACK=node_modules/webpack/bin/webpack.js
 PM2=node_modules/pm2/bin/pm2
 GIT=git
 
-.PHONY: run stop logs monit test worker runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
+.PHONY: run stop logs monit test worker runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client
 
 # tsuru tasks
 
@@ -68,6 +68,3 @@ scripts-client-dev: tree-client
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/playground.scss public/styles/playground.css
-
-test-client:
-	$(KARMA) start client/test/config.js
