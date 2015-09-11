@@ -70,6 +70,8 @@ GameBoard.prototype.load = function (gameResult) {
   var container = this.container;
   var players = this.board.players;
   var options = this.options;
+
+  this.result = gameResult;
   this.homePlayer = gameResult.players[0];
   this.guestPlayer = gameResult.players[1];
 
@@ -126,7 +128,7 @@ GameBoard.prototype.play = function (onFinish, onMove) {
   this.container.className += ' game-board--finished';
 
   // execute onFinish
-  if (this.onFinish) this.onFinish(this);
+  if (this.onFinish) this.onFinish(this.result);
 }
 
 

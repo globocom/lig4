@@ -4,7 +4,7 @@
 var Dialog = require('./components/dialog');
 var GameBoard = require('./components/gameboard');
 var LeaderBoard = require('./components/leaderboard');
-var api = require('./libs/api');
+var Api = require('./libs/api');
 
 // main function
 function main() {
@@ -28,7 +28,7 @@ function main() {
 
   // load game board
   (function loadGameboard() {
-    api('/game?' + Date.now())
+    Api('/game?' + Date.now())
       .get(function (data, status) {
         if (status != 200) return setTimeout(loadGameboard, 2500);
 
@@ -43,7 +43,7 @@ function main() {
   })();
 
   (function loadLeaderboard() {
-    api('/leaderboard?' + Date.now())
+    Api('/leaderboard?' + Date.now())
       .get(function (data, status) {
         if (status != 200) return setTimeout(loadLeaderboard, 3000);
 
