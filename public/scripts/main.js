@@ -50,7 +50,7 @@
 	var Dialog = __webpack_require__(1);
 	var GameBoard = __webpack_require__(2);
 	var LeaderBoard = __webpack_require__(3);
-	var api = __webpack_require__(4);
+	var Api = __webpack_require__(4);
 
 	// main function
 	function main() {
@@ -74,7 +74,7 @@
 
 	  // load game board
 	  (function loadGameboard() {
-	    api('/game?' + Date.now())
+	    Api('/game?' + Date.now())
 	      .get(function (data, status) {
 	        if (status != 200) return setTimeout(loadGameboard, 2500);
 
@@ -89,7 +89,7 @@
 	  })();
 
 	  (function loadLeaderboard() {
-	    api('/leaderboard?' + Date.now())
+	    Api('/leaderboard?' + Date.now())
 	      .get(function (data, status) {
 	        if (status != 200) return setTimeout(loadLeaderboard, 3000);
 
@@ -231,6 +231,8 @@
 	  var container = this.container;
 	  var players = this.board.players;
 	  var options = this.options;
+
+	  this.result = gameResult;
 	  this.homePlayer = gameResult.players[0];
 	  this.guestPlayer = gameResult.players[1];
 
@@ -287,7 +289,7 @@
 	  this.container.className += ' game-board--finished';
 
 	  // execute onFinish
-	  if (this.onFinish) this.onFinish(this);
+	  if (this.onFinish) this.onFinish(this.result);
 	}
 
 
