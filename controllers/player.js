@@ -57,12 +57,6 @@ router.put('/:username', function (req, res, next) {
       return Response.send(400, 'BAD_REQUEST', req.body, res, next);
   }
 
-  if (req.body.code &&
-      req.body.code.indexOf('alert') > -1 ||
-      req.body.code.indexOf('console') > -1) {
-      return Response.send(400, 'INVALID_ES5_CODE', {}, res, next);
-  }
-
   Player
     .findOne()
     .where('username')
@@ -79,7 +73,7 @@ router.put('/:username', function (req, res, next) {
           timeout: 1000
         });
       } catch (e) {
-        return Response.send(400, 'INVALID_ES5_CODE', e, res, next);
+        return Response.send(400, 'INVALID_ES5_CODE', e.toString(), res, next);
       }
 
       player.code = req.body.code;

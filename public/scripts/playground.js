@@ -555,8 +555,7 @@
 	  var positions = [];
 
 	  for (var column in this.matrix) {
-	    if (this.matrix[column].lastIndexOf(null) >= 0)
-	      positions.push(parseInt(column));
+	    if (this.matrix[column].lastIndexOf(null) !== -1) positions.push(parseInt(column));
 	  }
 
 	  return positions;
