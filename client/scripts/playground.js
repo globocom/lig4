@@ -58,8 +58,8 @@ function savePlayerHandler () {
       new Algorithm(editor.getValue());
 
       // save draft
-      Api('/player/' + player.username).put({
-        code: editor.getValue()
+      Api('/player/draft/' + player.username).put({
+        draft: editor.getValue()
       }, function (res, status) {
         if (status !== 200) alert('Error: ' + res.message);
       });
@@ -71,13 +71,13 @@ function savePlayerHandler () {
 
 function loadPlayerHandler (data) {
   // data.draft
-  editor.setValue(data.code, -1);
+  editor.setValue(data.draft, -1);
 }
 
 function resetPlayerHandler (e) {
   e.preventDefault();
 
-  if (!window.confirm('Deseja carregar o último algoritmo submetido?')) return;
+  if (!window.confirm('Deseja carregar o template inicial?')) return;
 
   editor.setValue(template, -1);
 }
@@ -85,7 +85,7 @@ function resetPlayerHandler (e) {
 function restorePlayerHandler (e) {
   e.preventDefault();
 
-  if (window.confirm('Deseja carregar o template inicial?')) return;
+  if (!window.confirm('Deseja carregar o último algoritmo submetido?')) return;
 
   Api('/player/' + player.username).get(function (data) {
     editor.setValue(data.code, -1);

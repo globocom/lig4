@@ -23,7 +23,8 @@ function addUser() {
       username: user,
       github: 'https://dummy.uri/' + user,
       email: user + '@mail.me',
-      code: code
+      code: code,
+      draft: code,
     })
     .save(function (err, player) {
       console.log(user + ' created.');

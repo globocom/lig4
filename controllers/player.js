@@ -27,6 +27,31 @@ router.get('/:username', function (req, res, next) {
 });
 
 // PUT in /api/player/:username
+router.put('/draft/:username', function (req, res, next) {
+  if (req.params.username !== req.session.user.login) {
+      return Response.send(400, 'BAD_REQUEST', req.body, res, next);
+  }
+
+  Player
+    .findOne()
+    .where('username')
+    .equals(req.session.user.login)
+    .exec(function (err, player) {
+
+      if (!player) player = new Player(req.body); // first access
+      if (err) return Response.send(500, 'ERROR', err, res, next);
+
+      player.draft = req.body.draft;
+
+      player.save(function (err) {
+        if (err) return Response.send(500, 'ERROR', err, res, next);
+
+        return Response.send(200, 'OK', player, res, next);
+      });
+    });
+});
+
+// PUT in /api/player/:username
 router.put('/:username', function (req, res, next) {
   if (req.params.username !== req.session.user.login) {
       return Response.send(400, 'BAD_REQUEST', req.body, res, next);
