@@ -83,7 +83,7 @@
 	    Api('/player/' + player.username).put({
 	      code: editor.getValue()
 	    }, function (res, status) {
-	      if (status !== 200) alert('Error: ' + res.message);
+	      if (status !== 200) alert('Error: ' + res);
 
 	      // unset state
 	      setTimeout(function () {
