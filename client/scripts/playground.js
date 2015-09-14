@@ -23,6 +23,8 @@ var restoreButtom;
 function submitPlayerHandler (e) {
   e.preventDefault();
 
+  if (!window.confirm('Deseja submeter o algoritmo atual para o desafio?')) return;
+
   // set state
   submitButton.disabled = true;
   submitButton.innerHTML = 'Enviando...';
@@ -53,19 +55,12 @@ function savePlayerHandler () {
 
   // debounce
   timeout = setTimeout(function () {
-    try {
-      // test algorithm
-      new Algorithm(editor.getValue());
-
-      // save draft
-      Api('/player/draft/' + player.username).put({
-        draft: editor.getValue()
-      }, function (res, status) {
-        if (status !== 200) alert('Error: ' + res.message);
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
+    // save draft
+    Api('/player/draft/' + player.username).put({
+      draft: editor.getValue()
+    }, function (res, status) {
+      if (status !== 200) alert('Error: ' + res.message);
+    });
   }, 500);
 }
 
