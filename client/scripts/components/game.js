@@ -46,6 +46,8 @@ Game.prototype.run = function () {
       result.winner = this.players[(play + 1) % 2];
       result.reason = Game.status.INVALID_MOVE;
       result.invalidMove = column;
+
+      throw new Error('The Algorithm returned a invalid move: ' + column);
       break;
     };
 
