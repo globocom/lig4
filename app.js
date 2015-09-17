@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session.setup(app));
 app.use(session.validate());
-app.use(tournament.initialize(app));
+app.use(tournament.initialize());
 
 // set controllers && handlers
 app.use('/', indexController);
