@@ -2,23 +2,21 @@
 
 var Tournament = require('./../models/tournament');
 
-function initialize(app) {
+function initialize () {
   return function (req, res, next) {
+    if (req.app.get('tournament')) return next();
+
     Tournament
       .findOne()
       .where('active')
       .equals(true)
       .exec(function (err, tournament) {
         if (err) return res.sendStatus(500);
-        if (!tournament) {
-            console.log('At least one tournament should be configured.');
-            return res.sendStatus(404);
-        };
-        if (!tournament.isOpen) {
-            console.log('Tournament is over');
-            return res.sendStatus(403);
-        };
-        app.set('tournament', tournament);
+        if (!tournament) return res.sendStatus(404);
+        if (!tournament.isOpen) return res.sendStatus(403);
+
+        req.app.set('tournament', tournament);
+
         next();
       });
   }
