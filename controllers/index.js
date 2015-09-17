@@ -9,4 +9,14 @@ router.get('/', function(req, res, next) {
   res.render('index', { tournament: tournament });
 });
 
+// GET in /:slug
+router.get('/:slug', function(req, res, next) {
+  var slug = req.app.get('tournament').slug;
+  var _slug = req.params.slug;
+
+  if (slug == _slug) return res.redirect('/');
+
+  next();
+});
+
 module.exports = router;
