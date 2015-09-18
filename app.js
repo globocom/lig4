@@ -29,16 +29,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session.setup(app));
 app.use(session.validate());
-app.use(tournament.initialize(app));
+app.use(tournament.init());
 
 // set controllers && handlers
-app.use('/', indexController);
 app.use('/auth', authController);
 app.use('/playground', playgroundController);
 
 app.use('/api/game', gameController);
 app.use('/api/player', playerController);
 app.use('/api/leaderboard', leaderboardController);
+
+app.use('/', indexController);
 
 // run app
 module.exports = app.listen(process.env.PORT, function () {
