@@ -65,7 +65,7 @@ case 'tournament':
   addTournament();
   break
 default:
-  console.log('Inavlid option')
+  console.log('Invalid option')
   process.exit();
 
 }

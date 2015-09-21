@@ -2,8 +2,9 @@
 
 var Tournament = require('./../models/tournament');
 
-function initialize () {
+function init() {
   return function (req, res, next) {
+
     if (req.app.get('tournament')) return next();
 
     Tournament
@@ -12,14 +13,18 @@ function initialize () {
       .equals(true)
       .exec(function (err, tournament) {
         if (err) return res.sendStatus(500);
-        if (!tournament) return res.sendStatus(404);
-        if (!tournament.isOpen) return res.sendStatus(403);
-
+        if (!tournament) {
+            console.log('At least one tournament should be configured.');
+            return res.sendStatus(404);
+        };
+        if (!tournament.isOpen) {
+            console.log('Tournament is over');
+            return res.sendStatus(403);
+        };
         req.app.set('tournament', tournament);
-
         next();
       });
   }
 }
 
-module.exports.initialize = initialize;
+module.exports.init = init;
