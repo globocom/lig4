@@ -1,10 +1,19 @@
 'use strict';
 
 var Board = require('./board');
+var RandomAlgorithm = function () {
+  this.move = function(availablePositions) {
+    var index = Math.round((availablePositions.length - 1) * Math.random());
 
-function Game(player1, player2) {
+    return availablePositions[index];
+  };
+
+  this.username = this.char = 'aleatório';
+}
+
+function Game(player) {
   this.board = new Board();
-  this.players = [player1, player2];
+  this.players = [player, new RandomAlgorithm];
 }
 
 Game.status = {
@@ -14,11 +23,17 @@ Game.status = {
 };
 
 Game.prototype.run = function () {
+  var players = this.players;
   var result = {
     winner: null,
     reason: null,
     moves: [],
-    sequence: []
+    sequence: [],
+    players: [{
+      username: players[0].username,
+    },{
+      username: players[1].username,
+    }]
   };
 
   for (var play = 0; play < this.board.maxMoves; play++) {
@@ -31,6 +46,8 @@ Game.prototype.run = function () {
       result.winner = this.players[(play + 1) % 2];
       result.reason = Game.status.INVALID_MOVE;
       result.invalidMove = column;
+
+      throw new Error('The Algorithm returned a invalid move: ' + column);
       break;
     };
 

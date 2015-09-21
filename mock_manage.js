@@ -1,7 +1,6 @@
 'use strict';
 
-process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json')
-  .apps[0].env.DBAAS_MONGODB_ENDPOINT;
+process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json').apps[0].env.DBAAS_MONGODB_ENDPOINT;
 
 
 var slugify = require('slugify');
@@ -24,7 +23,8 @@ function addUser() {
       username: user,
       github: 'https://dummy.uri/' + user,
       email: user + '@mail.me',
-      code: code
+      code: code,
+      draft: code,
     })
     .save(function (err, player) {
       console.log(user + ' created.');
@@ -65,7 +65,7 @@ case 'tournament':
   addTournament();
   break
 default:
-  console.log('Inavlid option')
+  console.log('Invalid option')
   process.exit();
 
 }

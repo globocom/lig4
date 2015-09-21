@@ -1,61 +1,55 @@
 'use strict';
 
 // imports
+var Dialog = require('./components/dialog');
 var GameBoard = require('./components/gameboard');
 var LeaderBoard = require('./components/leaderboard');
-var scrollToSection = require('./libs/scroll');
-var api = require('./libs/api');
-
-// functions
-function navigationHandler(e) {
-  var button = e.currentTarget;
-  var sectionName = button.getAttribute('data-section');
-  var sectionElement = document.getElementById(sectionName);
-
-  scrollToSection(sectionElement, 500);
-}
+var Api = require('./libs/api');
 
 // main function
 function main() {
-  var navigationButtons = document.getElementsByClassName('navigation-button');
-  var rankingGameElement = document.getElementById('ranking-game');
+  var gameBoardElement = document.getElementById('game-board');
+  var leaderBoardElement = document.getElementById('leader-board');
+  var rulesLinkElement = document.getElementById('rules-link');
+  var rewardLinkElement = document.getElementById('reward-link');
 
-  // create boards
-  var rankingGame = new GameBoard(rankingGameElement);
+  // create boards and dialog
+  var dialog = new Dialog();
+  var gameboard = new GameBoard(gameBoardElement);
+  var leaderboard = new LeaderBoard(leaderBoardElement);
 
-  // set navigations listeners
-  for (var i = navigationButtons.length - 1; i >= 0; i--) {
-    navigationButtons[i].addEventListener('click', navigationHandler);
+  function openDialog (e) {
+    e.preventDefault();
+    dialog.show(e.currentTarget.getAttribute('data-content-id'));
   }
-  
-  // start ranking board
-  (function rankingRunner() {
-    api('/game?' + Math.random())
-      .get(function (matchResult, status) {
-        if (status != 200) {
-          return setTimeout(rankingRunner, 2500);
-        }
 
-        var randomGame = matchResult.result.games[Math.round(Math.random())];
-        randomGame.players = matchResult.players;
-		
-		if (randomGame.moves.length == 0) return setTimeout(rankingRunner, 2500);
-		
-        rankingGame.load(randomGame)
+  rulesLinkElement.addEventListener('click', openDialog);
+  rewardLinkElement.addEventListener('click', openDialog);
+
+  // load game board
+  (function loadGameboard() {
+    Api('/game?' + Date.now())
+      .get(function (data, status) {
+        if (status != 200) return setTimeout(loadGameboard, 2500);
+
+        var game = data.result.games[0];
+        game.players = data.players;
+
+        gameboard.load(game)
           .play(function () {
-            setTimeout(rankingRunner, 2500);
+            setTimeout(loadGameboard, 2500);
           });
       });
   })();
 
-  (function leaderboard() {
-    api('/leaderboard?' + Math.random())
-      .get(function (lbData, status) {
-        if (status != 200) return setTimeout(leaderboard, 3000);
+  (function loadLeaderboard() {
+    Api('/leaderboard?' + Date.now())
+      .get(function (data, status) {
+        if (status != 200) return setTimeout(loadLeaderboard, 3000);
 
-        LeaderBoard(lbData);
+        leaderboard.load(data);
 
-        setTimeout(leaderboard, 3000);
+        setTimeout(loadLeaderboard, 3000);
       });
   })();
 }

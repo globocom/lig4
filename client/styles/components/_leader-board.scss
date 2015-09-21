@@ -1,6 +1,6 @@
 .leader-board {
   width: 100%;
-  margin: rem(35px) 0;
+  margin: rem(20px) 0;
   color: $black;
   font-size: rem(22px);
 
@@ -13,26 +13,36 @@
   }
 }
 
-.leader-board tr:first-child td {
-  font-size: rem(30px);
+.leader-board thead {
   font-weight: 700;
+  color: $gray-strong;
 }
 
-.leader-board tr:hover td {
-  color: white;
-  font-weight: 700;
+.leader-board__player:hover td {
+  color: $orange;
 }
 
 .leader-board__position {
-  width: 40px;
-  text-align: left;
+  width: 350px;
 }
 
-.leader-board__player {
-  text-align: center;
-}
-
+.leader-board__wins,
+.leader-board__draws,
+.leader-board__losses,
 .leader-board__score {
-  width: 100px;
   text-align: right;
+  width: 25px;
+  font-weight: 700;
+}
+
+.leader-board thead td {
+  color: $gray-strong;
+  text-transform: uppercase;
+  font-size: rem(22px);
+  font-weight: 300;
+  line-height: rem(20px);
+  letter-spacing: rem(2px);
+  margin: rem(20px) 0;
+  padding-bottom: rem(20px);
+  border-bottom: 1px dotted $gray-strong;
 }

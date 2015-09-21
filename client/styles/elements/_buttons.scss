@@ -1,48 +1,37 @@
 .button {
   border: 1px solid $black;
+  display: block;
+  width: 100%;
   color: $black;
   text-align: center;
   text-transform: uppercase;
-  font-size: rem(16px);
+  font-size: rem(18px);
   font-weight: 400;
-  line-height: rem(16px);
+  line-height: rem(18px);
   letter-spacing: rem(2px);
-  padding: rem(15px) rem(25px);
+  padding: rem(20px) rem(25px);
   border-radius: rem(5px);
-  margin: 0 rem(15px);
   box-sizing: border-box;
+  margin: rem(20px) 0;
 
-  @include transition(background-color .5s ease-in-out, opacity .5s);
+  @include transition(background-color .4s ease-in-out, opacity .4s);
 
-  @media screen and (max-width: 420px) {
-    margin: rem(10px);
+  &--black {
+    background-color: $black;
+    border-color: $black;
+    color: white;
   }
 }
 
-.button:hover, .button--black {
+.button:hover {
   color: white;
-  background-color: $black;
+  background-color: $orange;
+  border-color: $orange;
 }
 
 .button:disabled {
-  opacity: .65;
   color: white;
-  background-color: $black;
-}
-
-.block-button {
-  width: 100%;
-  margin: rem(35px) 0;
-  display: block;
-  border: 1px solid $black;
-  background-color: $black;
-  color: $gray-strong;
-  text-decoration: none;
-  line-height: rem(18px);
-
-  @include transition(color .25s ease-in-out);
-}
-
-.block-button:hover {
-  color: white;
+  background-color: $orange;
+  border-color: $orange;
+  cursor: no-drop;
 }

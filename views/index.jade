@@ -28,9 +28,25 @@ html
     link(href='styles/main.css', rel='stylesheet')
 
   body
-    include sections/intro.jade
-    include sections/about.jade
-    include sections/rank.jade
-    include sections/rules.jade
+    aside(class="aside")
+        include blocks/aside
+
+    section(class='section')
+        div(class='section-wrapper')
+            h3(class="subtitle subtitle--divisor") Últimos jogos
+            div(id="game-board" class="game-board")
+            table(id='leader-board' class='leader-board')
+
+    div(id="rules-content" class='dialog__content')
+        include blocks/rules
+    div(id="reward-content" class='dialog__content')
+        include blocks/reward
 
     script(src='scripts/main.js')
+    script
+        | (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        | (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        | m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        | })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        | ga('create', 'UA-67497230-1', 'auto');
+        | ga('send', 'pageview');

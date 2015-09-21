@@ -27,8 +27,32 @@ router.get('/:username', function (req, res, next) {
 });
 
 // PUT in /api/player/:username
-router.put('/:username', function (req, res, next) {
+router.put('/draft/:username', function (req, res, next) {
+  if (req.params.username !== req.session.user.login) {
+      return Response.send(400, 'BAD_REQUEST', req.body, res, next);
+  }
 
+  Player
+    .findOne()
+    .where('username')
+    .equals(req.session.user.login)
+    .exec(function (err, player) {
+
+      if (!player) player = new Player(req.body); // first access
+      if (err) return Response.send(500, 'ERROR', err, res, next);
+
+      player.draft = req.body.draft;
+
+      player.save(function (err) {
+        if (err) return Response.send(500, 'ERROR', err, res, next);
+
+        return Response.send(200, 'OK', player, res, next);
+      });
+    });
+});
+
+// PUT in /api/player/:username
+router.put('/:username', function (req, res, next) {
   if (req.params.username !== req.session.user.login) {
       return Response.send(400, 'BAD_REQUEST', req.body, res, next);
   }
@@ -36,7 +60,7 @@ router.put('/:username', function (req, res, next) {
   if (req.body.code &&
       req.body.code.indexOf('alert') > -1 ||
       req.body.code.indexOf('console') > -1) {
-      return Response.send(400, 'INVALID_ES5_CODE', {}, res, next);
+      return Response.send(400, 'INVALID_CODE', 'Seu código roda em um ambiente NodeJS, remova todos os console.log(), alert, const e funcionalidades do ES6.', res, next);
   }
 
   Player
@@ -55,7 +79,7 @@ router.put('/:username', function (req, res, next) {
           timeout: 1000
         });
       } catch (e) {
-        return Response.send(400, 'INVALID_ES5_CODE', e, res, next);
+        return Response.send(400, 'INVALID_ES5_CODE', e.toString(), res, next);
       }
 
       player.code = req.body.code;
