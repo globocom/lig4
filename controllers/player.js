@@ -57,6 +57,12 @@ router.put('/:username', function (req, res, next) {
       return Response.send(400, 'BAD_REQUEST', req.body, res, next);
   }
 
+  if (req.body.code &&
+      req.body.code.indexOf('alert') > -1 ||
+      req.body.code.indexOf('console') > -1) {
+      return Response.send(400, 'INVALID_CODE', 'Seu código roda em um ambiente NodeJS, remova todos os console.log(), alert, const e funcionalidades do ES6.', res, next);
+  }
+
   Player
     .findOne()
     .where('username')
