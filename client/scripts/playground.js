@@ -37,15 +37,24 @@ function submitPlayerHandler (e) {
     Api('/player/' + player.username).put({
       code: editor.getValue()
     }, function (res, status) {
-      if (status !== 200) alert('Error: ' + res);
+      var timer = 1000;
+
+      if (status !== 200) {
+        timer = 0;
+        alert('Error: ' + res);
+      }
 
       // unset state
       setTimeout(function () {
         submitButton.disabled = false;
         submitButton.innerHTML = 'Submeter algoritmo';
-      }, 1000);
+      }, timer);
     });
   } catch (error) {
+    // unset state
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Submeter algoritmo';
+
     alert(error.message);
   }
 }
