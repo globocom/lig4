@@ -40,6 +40,7 @@ MatchSchema.statics.random = function (callback) {
 
 MatchSchema.statics.serialize = function (m) {
 
+  var m = JSON.parse(JSON.stringify(m)); // clone
   delete m._id;
   delete m.round;
   delete m.__v;
