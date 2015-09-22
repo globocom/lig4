@@ -128,6 +128,7 @@ function playground () {
   editor = ace.edit('editor');
   editor.setTheme('ace/theme/monokai');
   editor.getSession().setMode('ace/mode/javascript');
+  editor.getSession().setUseWorker(false);
   editor.getSession().on('change', savePlayerHandler);
   editor.$blockScrolling = Infinity;
   editor.setOptions({

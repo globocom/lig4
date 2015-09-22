@@ -13,7 +13,7 @@ function GameBoard(element) {
   // set options
   options.rows = 6;
   options.columns = 7;
-  options.interval = 1000;
+  options.interval = 500;
 
   // set players html
   players.element = document.createElement('div');
