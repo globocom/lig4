@@ -11,6 +11,8 @@ router.get('/', function (req, res, next) {
         .where('username')
         .equals(req.session.user.login)
         .exec(function (err, player) {
+            if (!player) return res.redirect("/auth/logout"); // Invalid user.
+
             req.session.user.rank = player.rank;
             // GET user data
             res.render('playground', { user: req.session.user });
