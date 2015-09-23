@@ -35,6 +35,7 @@ plan.local(function(local) {
 // run commands on the target's remote hosts
 plan.remote(function(remote) {
   remote.log('backup latest deploy');
+  remote.exec('rm -rf  ~/latest', {user: 'puppet'});
   remote.exec('mkdir -p ~/current ', {user: 'puppet'});
   remote.exec('mv ~/current ~/latest', {user: 'puppet'});
   remote.log('Move folder to home dir');
