@@ -1,4 +1,4 @@
-NODE=node
+NODE=/usr/local/bin/node
 MOCHA=node_modules/mocha/bin/mocha
 KARMA=node_modules/karma/bin/karma
 BOURBON=node_modules/bourbon/app/assets/stylesheets
