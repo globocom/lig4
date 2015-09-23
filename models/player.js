@@ -22,6 +22,9 @@ var PlayerSchema = new mongoose.Schema({
   code: {
     type: String
   },
+  draft: {
+    type: String
+  },
   rank: {
     type: Number,
     default: 0
@@ -32,6 +35,7 @@ PlayerSchema.statics.serialize = function (p) {
   delete p._id;
   delete p.__v;
   delete p.code;
+  delete p.draft;
   return p
 }
 

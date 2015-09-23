@@ -43,10 +43,10 @@ function updateLeaderboard(username, wins, score, draw, lost, gf, ga) {
 function start(callback) {
 
   Match
-    .find({})
+    .find()
     .where('result')
     .ne(null)
-    .exec({}, function (err, matches) {
+    .exec(function (err, matches) {
 
       updateResuts.total = matches.length * 2; // two players per match.
 
@@ -78,14 +78,14 @@ function start(callback) {
 function main(done) {
   console.log('Leaderboard update started!')
   mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
-
-    start(function () {
-      if (done) done()
-      else mongoose.disconnect() //cant send disconnect as callback
-      console.log('Leaderboard update finished!');
-      process.exit();
-    })
-
+    Leaderboard.collection.remove(function () {
+      start(function () {
+        if (done) done()
+        else mongoose.disconnect() //cant send disconnect as callback
+        console.log('Leaderboard update finished!');
+        process.exit();
+      });
+    });
   })
 };
 

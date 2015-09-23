@@ -1,32 +1,50 @@
 .section {
-  position: relative;
-  width: 100%;
-  min-height: 100%;
-  background-color: $yellow;
+  position: fixed;
+  width: 70%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  background: $gray;
+  overflow-y: auto;
 
   @include animation(fadeIn 2s);
+
+  @media (max-width: 720px) {
+    position: initial;
+    overflow-y: initial;
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.wrapper {
+.section-wrapper {
   box-sizing: border-box;
-  padding: 5% rem(35px);
-  box-sizing: border-box;
+  padding: 0 5%;
   margin: 0 auto;
-  width: 100%;
-  max-width: rem(780px);
-  min-width: rem(320px);
+  max-width: 780px;
+
+  @media (max-width: 720px) {
+    padding: 5%;
+  }
 }
 
-.navigation {
-  text-align: center;
-  margin: rem(40px) 0 rem(35px) 0;
-}
+.aside {
+  position: fixed;
+  width: 30%;
+  height: 100%;
+  top: 0;
+  left: 70%;
+  box-sizing: border-box;
+  padding: 0 2.5%;
+  overflow-y: auto;
+  max-width: 380px;
 
-.code {
-  margin: rem(35px) 0;
-  padding: rem(35px) 0;
-  border: 1px solid $gray;
-  border-left: 0;
-  border-right: 0;
-  overflow-x: auto;
+  @media (max-width: 720px) {
+    position: initial;
+    overflow-y: initial;
+    max-width: initial;
+    width: 100%;
+    height: initial;
+  }
 }

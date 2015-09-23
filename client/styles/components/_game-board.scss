@@ -1,13 +1,10 @@
 .game-board {
   width: 100%;
-  margin: rem(35px) 0;
-  padding: rem(35px) 0 0 0;
-  border-top: 1px solid $black;
 }
 
 .game-board__players {
-  display: block;
-  margin-bottom: rem(20px);
+  margin: rem(35px) 0;
+  height: rem(22px);
   *zoom: 1;
 
   &::before, &::after {
@@ -30,9 +27,9 @@
     position: absolute;
     left: 0;
     top: 2px;
-    width: rem(18px);
-    height: rem(18px);
-    border-radius: rem(18px);
+    width: rem(22px);
+    height: rem(22px);
+    border-radius: rem(22px);
     background-color: $black;
   }
 }
@@ -49,20 +46,25 @@
     content: " ";
     position: absolute;
     right: 0;
-    width: rem(18px);
-    height: rem(18px);
-    border-radius: rem(18px);
-    background-color: $red;
+    width: rem(22px);
+    height: rem(22px);
+    border-radius: rem(22px);
+    background-color: white;
   }
 }
 
 .game-board__player-name {
   color: $black;
   text-transform: uppercase;
-  font-size: rem(22px);
-  line-height: rem(22px);
+  font-size: rem(24px);
+  line-height: rem(24px);
   font-weight: 700;
   display: block;
+
+  @media (max-width: 720px) {
+    font-size: rem(20px);
+    line-height: rem(20px);
+  }
 }
 
 .game-board__player-info {
@@ -93,9 +95,9 @@
   display: block;
   position: relative;
   width: 11.25%;
-  margin: 1.5%;
+  margin: 0 1.5% 2% 1.5%;
   float: left;
-  background-color: $gray;
+  background-color: $gray-strong;
   border-radius: 100%;
   box-sizing: border-box;
 
@@ -117,13 +119,14 @@
     left: 0;
     box-sizing: border-box;
     border-radius: 100%;
-    border: rem(10px) solid $gray;
+    border: rem(7.5px) solid $gray-strong;
 
+    @include transform(translateZ(0));
     @include transition(all, .5s);
   }
 
   &.guest-play {
-    border-color: $red;
+    border-color: white;
   }
 
   &.home-play {
@@ -132,7 +135,7 @@
 
   &.guest-play::before,
   &.home-play::before {
-    background-color: $red;
+    background-color: white;
     top: 0;
 
     @include animation(play .5s);
@@ -144,7 +147,7 @@
 }
 
 .game-board--finished .game-board__position {
-  opacity: .25;
+  opacity: .15;
 
   &.game-board__position--sequence {
     opacity: 1;

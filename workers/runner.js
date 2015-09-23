@@ -19,13 +19,12 @@ var updateResuts = {
 
 function updateResult(resultMatch) {
 
-  var objectId = mongoose.Schema.Types.ObjectId(resultMatch.id);
+  var objectId = mongoose.Types.ObjectId(resultMatch.id);
   Match.update({'_id': objectId }, {'result': resultMatch }, {}, function (err) {
     console.log('Match ' + resultMatch.id + ' updated.');
     updateResuts.done++;
   });
 }
-
 
 function startRound(callback) {
 

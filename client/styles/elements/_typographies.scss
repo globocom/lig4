@@ -1,16 +1,12 @@
 .title {
   text-transform: uppercase;
-  font-size: rem(70px);
+  font-size: rem(60px);
   font-family: $font-sans;
   font-weight: 700;
-  line-height: rem(65px);
+  line-height: rem(50px);
   letter-spacing: rem(-5px);
-  margin: rem(35px) 0;
-
-  @media screen and (max-width: 420px) {
-    font-size: rem(35px);
-    line-height: rem(30px);
-  }
+  margin: 0 0 rem(35px) 0;
+  color: $orange;
 }
 
 .subtitle {
@@ -18,22 +14,30 @@
   text-transform: uppercase;
   font-size: rem(22px);
   font-weight: 300;
-  line-height: rem(18px);
+  line-height: rem(20px);
   letter-spacing: rem(2px);
+  margin: rem(20px) 0;
+
+  &--divisor {
+    padding-bottom: rem(20px);
+    border-bottom: 1px dotted $gray-strong;
+  }
 }
 
 .description {
-  font-size: rem(24px);
+  font-size: rem(21px);
   font-weight: 400;
-  line-height: rem(34px);
+  line-height: rem(27px);
   letter-spacing: rem(1px);
-  margin: rem(35px) 0;
+  margin: rem(20px) 0;
+}
 
-  @media screen and (max-width: 420px) {
-    font-size: rem(22px);
-    font-weight: 400;
-    line-height: rem(32px);
-    letter-spacing: rem(1px);
-    margin: rem(32px) 0;
-  }
+.description a {
+  font-weight: 700;
+
+  @include transition(color .25s);
+}
+
+.description a:hover {
+  color: $orange;
 }

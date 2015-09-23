@@ -1,311 +1,167 @@
 'use strict';
 
 // imports
-
-var api = require('./libs/api');
-var Editor = require('./libs/editor');
+var Api = require('./libs/api');
 var Algorithm = require('./libs/algorithm');
-var Game = require('../../engine/gameclient');
-var GameBoard = require('./components/gameboard');
+var TestBoard = require('./components/testboard');
 
-// elements and vars
+require('./components/editor');
 
+var player = {};
+var editor;
+var testBoard;
+var template;
+var timeout;
+
+// elements
+var editorElement;
 var testButton;
 var submitButton;
 var resetButtom;
-var closeTestButtom;
-var lastSaveButtom;
-var playgroundEditor;
-var playgroundTextarea;
-var playgroundRunner;
-var playgroundTemplate;
-var playgroundWrapper;
-var gameboard;
-var testBoard;
-var playgroundTestBoard;
-var playgroundTestLogs;
-var player;
-var username;
+var restoreButtom;
 
-// functions
+function submitPlayerHandler (e) {
+  e.preventDefault();
 
-function RandomAlgorithm () {
-  this.move = function(availablePositions) {
-    var index = Math.round((availablePositions.length - 1) * Math.random());
+  if (!window.confirm('Deseja submeter o algoritmo atual para o desafio?')) return;
 
-    return availablePositions[index];
-  };
-
-  this.username = this.char = 'aleatório';
-}
-
-function loadPlayerHandler (_player, status) {
-  player = _player;
-
-  var expiredCode = localStorage.getItem('lig4-' + player.username);
-
-  if (expiredCode) {
-    localStorage.removeItem('lig4-' + player.username);
-    return playgroundTextarea.value = expiredCode;
-  }
-
-  if (!player.code) {
-    return playgroundTextarea.value = playgroundTemplate;
-  }
-
-  playgroundTextarea.value = player.code;
-}
-
-function testAlgorithm (callback, showTestBoard) {
-  var game = null;
-  var result = null;
+  // set state
+  submitButton.disabled = true;
+  submitButton.innerHTML = 'Enviando...';
 
   try {
-    player.algorithm = new Algorithm(playgroundTextarea.value);
-    player.algorithm.username = player.username;
-    player.algorithm.char = player.username;
+    // test algorithm
+    new Algorithm(editor.getValue());
 
-    game = new Game(player.algorithm, new RandomAlgorithm);
-    result = game.run();
-    result.players = [{
-      username: player.username
-    }, {
-      username: 'aleatório'
-    }];
+    // save algorithm
+    Api('/player/' + player.username).put({
+      code: editor.getValue()
+    }, function (res, status) {
+      var timer = 1000;
 
-    if (result.reason == 'INVALID_MOVE') {
-      throw new Error('The Algorithm returned a invalid column: ' + result.invalidMove + ';');
-    }
-
-    if (!showTestBoard) return callback(false, result);
-
-    // show test game
-    playgroundTestLogs.innerHTML = '';
-    playgroundWrapper.style.overflow = 'hidden';
-    playgroundEditor.appendChild(playgroundTestBoard);
-
-    testBoard.load(result).play(function () {
-      console.log('Ganhou: ' + result.winner.username);
-      console.log('Movimentos:', result.moves);
-      console.log('Sequencia:', result.sequence);
-
-      callback(false, result);
-    }, function (play) {
-      playgroundTestLogs.innerHTML += [
-        '<li>',
-          '<b>', play.username, '</b> jogou na coluna <b>', play.move[0], '</b>;',
-        '</li>'
-      ].join('');
-
-
-      console.log(play);
-    });
-  } catch (error) {
-    callback(true, error);
-
-    throw error;
-  }
-}
-
-function testHandler (e) {
-  e.preventDefault();
-
-  testButton.innerHTML = 'Testando...'
-  testButton.disabled = true;
-
-  testAlgorithm(function (err, data) {
-    if (err) {
-      testButton.innerHTML = 'Testar';
-      testButton.disabled = false;
-
-      return alert(data);
-    }
-
-    // show gameboard render
-    testButton.innerHTML = 'Testar';
-    testButton.disabled = false;
-  }, true);
-}
-
-function closeTestHandler (e) {
-  e.preventDefault();
-
-  playgroundTestLogs.innerHTML = '';
-  playgroundWrapper.style.overflow = 'initial';
-  playgroundEditor.removeChild(playgroundTestBoard);
-
-  testButton.innerHTML = 'Testar';
-  testButton.disabled = false;
-}
-
-function resetHandler (e) {
-  e.preventDefault();
-
-  if (window.confirm('Carregar o template inicial do algoritmo?')) {
-    playgroundTextarea.value = playgroundTemplate;
-  }
-}
-
-function submitHandler (e) {
-  e.preventDefault();
-
-  testButton.disabled = true;
-  submitButton.disabled = true;
-  submitButton.innerHTML = 'Salvando...';
-
-  if (playgroundTextarea.value.indexOf('console') !== -1 ||
-      playgroundTextarea.value.indexOf('alert') !== -1 ||
-      playgroundTextarea.value.indexOf('const ') !== -1) {
-    testButton.disabled = false;
-    submitButton.innerHTML = 'Salvar';
-    submitButton.disabled = false;
-
-    return alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.');
-  }
-
-  testAlgorithm(function (err, data) {
-    if (err) {
-      testButton.disabled = false;
-      submitButton.innerHTML = 'Salvar';
-      submitButton.disabled = false;
-
-      return alert(data);
-    }
-
-    if (localStorage) {
-      localStorage.setItem('lig4-' + player.username, playgroundTextarea.value);
-    }
-
-    // save player algorithm
-    api('/player/' + player.username).put({
-      code: playgroundTextarea.value
-  }, function (res, status) {
-
-      if (status >= 400) {
-          alert('Seu código roda em um ambiente NodeJS restrito, remova todos os console.log(), alert, const e funcionalidades do ES6.')
-      } else {
-          submitButton.innerHTML = 'Salvo c/ sucesso!';
-          localStorage.removeItem('lig4-' + player.username);
+      if (status !== 200) {
+        timer = 0;
+        alert('Error: ' + res);
       }
-      testButton.disabled = false;
 
+      // unset state
       setTimeout(function () {
         submitButton.disabled = false;
-        submitButton.innerHTML = 'Salvar';
-      }, 1500);
-    }, false);
+        submitButton.innerHTML = 'Submeter algoritmo';
+      }, timer);
+    });
+  } catch (error) {
+    // unset state
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Submeter algoritmo';
+
+    alert(error.message);
+  }
+}
+
+function savePlayerHandler () {
+  if (timeout) clearTimeout(timeout);
+
+  // debounce
+  timeout = setTimeout(function () {
+    // save draft
+    Api('/player/draft/' + player.username).put({
+      draft: editor.getValue()
+    }, function (res, status) {
+      if (status !== 200) alert('Error: ' + res.message);
+    });
+  }, 500);
+}
+
+function loadPlayerHandler (data) {
+  // data.draft
+  editor.setValue(data.draft, -1);
+}
+
+function resetPlayerHandler (e) {
+  e.preventDefault();
+
+  if (!window.confirm('Deseja carregar o template inicial?')) return;
+
+  editor.setValue(template, -1);
+}
+
+function restorePlayerHandler (e) {
+  e.preventDefault();
+
+  if (!window.confirm('Deseja carregar o último algoritmo submetido?')) return;
+
+  Api('/player/' + player.username).get(function (data) {
+    editor.setValue(data.code, -1);
   });
 }
 
-function lastSaveHandler (e) {
+function testPlayerHandler (e) {
   e.preventDefault();
 
-  if (window.confirm('Carregar o seu último algoritmo salvo?')) {
-    document.location.reload();
+  // test algorithm
+  try {
+    player.algorithm = new Algorithm(editor.getValue());
+    player.algorithm.username = player.username;
+    player.algorithm.char = player.username;
+
+    // open test board
+    testBoard.open(player.algorithm);
+  } catch (error) {
+    alert(error.message);
   }
 }
 
 // main function
 function playground () {
-  testButton = document.getElementById('test-algorithm-button');
-  closeTestButtom = document.createElement('button');
-  submitButton = document.getElementById('submit-algorithm-button');
-  resetButtom = document.getElementById('reset-algorithm-button');
-  lastSaveButtom = document.getElementById('last-save--button');
-  playgroundEditor = document.getElementById('playground-editor');
-  playgroundWrapper = document.getElementById('playground');
-  playgroundTextarea = document.getElementById('playground-textarea');
-  playgroundRunner = document.getElementById('playground-runner');
-  playgroundTestBoard = document.createElement('div');
-  playgroundTestLogs = document.createElement('ul');
-  gameboard = document.createElement('div');
-  username = playgroundTextarea.getAttribute('data-username');
+  // bind elements
+  editorElement = document.getElementById('editor');
+  testButton = document.getElementById('test-button');
+  submitButton = document.getElementById('submit-button');
+  resetButtom = document.getElementById('reset-button');
+  restoreButtom = document.getElementById('restore-button');
 
-  playgroundTestBoard.className = 'playground-test-board';
-  playgroundTestLogs.className = 'playground-test-logs';
-  gameboard.className = 'game-board';
-  closeTestButtom.className = 'button playground__close-test-button';
-  closeTestButtom.innerHTML = 'Fechar';
+  // test board
+  testBoard = new TestBoard();
 
-  new Editor({ textarea: playgroundTextarea });
+  // editor
+  editor = ace.edit('editor');
+  editor.setTheme('ace/theme/monokai');
+  editor.getSession().setMode('ace/mode/javascript');
+  editor.getSession().setUseWorker(false);
+  editor.getSession().on('change', savePlayerHandler);
+  editor.$blockScrolling = Infinity;
+  editor.setOptions({
+    hScrollBarAlwaysVisible: false,
+    vScrollBarAlwaysVisible: false,
+    highlightGutterLine: false,
+    animatedScroll: false,
+    showInvisibles: false,
+    showPrintMargin: false,
+    printMarginColumn: false,
+    printMargin: false,
+    showLineNumbers: true,
+    showGutter: true,
+    displayIndentGuides: false,
+    maxLines: false,
+    minLines: false,
+    highlightActiveLine: false,
+    fixedWidthGutter: false,
+    fontSize: '16px',
+  });
 
-  playgroundTemplate = [
-
-    '\'use strict\';\n\n',
-
-    '/*\n',
-    ' * A função Algorithm encapsula \n',
-    ' * a lógica das jogadas. \n',
-    ' * A instância do Algorithm \n',
-    ' * persiste durante toda a partida. \n',
-    ' */ \n\n',
-
-      'function Algorithm () {\n\n',
-
-        '    /*\n',
-        '     * Cada chamada de \'move\' \n',
-        '     * corresponde a uma peça jogada. \n',
-        '     * Esse método recebe \n',
-        '     * as colunas disponíveis \n',
-        '     * do tabuleiro e o estado atual \n',
-        '     * do mesmo. \n',
-        '     */ \n\n',
-
-        '    this.move = function (availableColumns, gameBoard) {\n\n',
-
-        '        /*\n',
-        '         * Exemplo dos argumentos  \n',
-        '         * passados\n',
-        '         * \n',
-        '         * availableColumns: \n',
-        '         * [0, 1, 2, 3, 4, 5, 6]\n',
-        '         * \n',
-        '         * gameBoard: [\n',
-        '         *  [\'' + username + '\', null, null, null, null, null], \n',
-        '         *  [\'' + username + '\', null, null, null, null, null], \n',
-        '         *  [null, null, null, null, null, null], \n',
-        '         *  [\'' + username + '\', null, null, null, null, null], \n',
-        '         *  [\'aleatório\', null, null, null, null, null], \n',
-        '         *  [\'aleatório\', null, null, null, null, null], \n',
-        '         *  [\'aleatório\', null, null, null, null, null] \n',
-        '         * ] \n',
-        '         */ \n\n',
-
-        '        /*\n',
-        '         * O retorno do método \n',
-        '         * deve ser o índice númerico \n',
-        '         * de uma coluna válida, \n',
-        '         * para que a jogada seja \n',
-        '         * realizada com sucesso. \n',
-        '         */\n\n',
-
-        '        return availableColumns[0];\n',
-      '    }',
-    '\n}\n'
-
-  ].join('');
-
-  // set game board attrs
-  gameboard.setAttribute('data-interval', .5);
-  gameboard.setAttribute('data-rows', 6);
-  gameboard.setAttribute('data-columns', 7);
-  gameboard.setAttribute('data-players', true);
-
-  // create test board
-  testBoard = new GameBoard(gameboard);
-  gameboard.appendChild(playgroundTestLogs);
-  gameboard.appendChild(closeTestButtom);
-  playgroundTestBoard.appendChild(gameboard);
-
-  // set listeners
-  testButton.addEventListener('click', testHandler);
-  submitButton.addEventListener('click', submitHandler);
-  resetButtom.addEventListener('click', resetHandler);
-  lastSaveButtom.addEventListener('click', lastSaveHandler);
-  closeTestButtom.addEventListener('click', closeTestHandler);
+  // set data
+  player.username = editorElement.getAttribute('data-username');
+  template = editor.getValue();
 
   // load player algorithm
-  api('/player/' + username).get(loadPlayerHandler);
+  Api('/player/' + player.username).get(loadPlayerHandler);
+
+  // bind listeners
+  resetButtom.addEventListener('click', resetPlayerHandler);
+  restoreButtom.addEventListener('click', restorePlayerHandler);
+  submitButton.addEventListener('click', submitPlayerHandler);
+  testButton.addEventListener('click', testPlayerHandler);
 }
 
 document.addEventListener('DOMContentLoaded', playground);

@@ -9,7 +9,7 @@ PM2=node_modules/pm2/bin/pm2
 FLY=node_modules/flightplan/bin/fly.js
 GIT=git
 
-.PHONY: deploy-worker run stop logs monit test worker runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client test-client
+.PHONY: deploy-worker run stop logs monit test worker runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client
 
 deploy-worker:
 	$(FLY) production
@@ -48,7 +48,7 @@ stop:
 build-client: clean-client scripts-client styles-client images-client
 
 watch-client: build-client
-	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client' 'client/styles/**/*.scss':'make styles-client'
+	$(VIGILIA) 'client/scripts/**/*.js':'make scripts-client-dev' 'client/styles/**/*.scss':'make styles-client'
 
 clean-client:
 	rm -fr public
@@ -65,9 +65,10 @@ scripts-client: tree-client
 	$(WEBPACK) --bail -p client/scripts/main.js public/scripts/main.js
 	$(WEBPACK) --bail -p client/scripts/playground.js public/scripts/playground.js
 
+scripts-client-dev: tree-client
+	$(WEBPACK) --bail client/scripts/main.js public/scripts/main.js
+	$(WEBPACK) --bail client/scripts/playground.js public/scripts/playground.js
+
 styles-client: tree-client
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/main.scss public/styles/main.css
 	$(SASS) --include-path $(BOURBON) --output public/styles --output-style compressed --quiet client/styles/playground.scss public/styles/playground.css
-
-test-client:
-	$(KARMA) start client/test/config.js

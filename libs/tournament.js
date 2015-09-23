@@ -2,8 +2,11 @@
 
 var Tournament = require('./../models/tournament');
 
-function initialize(app) {
+function init() {
   return function (req, res, next) {
+
+    if (req.app.get('tournament')) return next();
+
     Tournament
       .findOne()
       .where('active')
@@ -18,10 +21,10 @@ function initialize(app) {
             console.log('Tournament is over');
             return res.sendStatus(403);
         };
-        app.set('tournament', tournament);
+        req.app.set('tournament', tournament);
         next();
       });
   }
 }
 
-module.exports.initialize = initialize;
+module.exports.init = init;
