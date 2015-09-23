@@ -3,6 +3,57 @@
 var os = require('os');
 var cp = require('child_process');
 
+var ProcessHandler = function (file, message, events) {
+  this.file = file;
+  this.message = message;
+  this.child = null;
+  this.events = events;
+  this.process_states = { READY: 'READY',
+                          RUNNING: 'RUNNING',
+                          FINISHED: 'FINISHED'
+  };
+  this.status = this.process_states.READY;
+
+}
+
+ProcessHandler.prototype.run = function () {
+  var self = this;
+  this.child = cp.fork(this.file);
+  this.status = this.process_states.RUNNING;
+
+  console.log('Proc forked: ', this.file);
+
+  setTimeout(function () {
+    if (self.isRunning()) {
+      return;
+    }
+    self.child.kill();
+    self.status = self.process_states.FINISHED;
+  }, this.timeout)
+
+  this.child.send(this.message);
+  this.child.on('message', function (msg) {
+    return self.events['message'](msg);
+  });
+
+  this.child.on('close', function () {
+    self.status = self.process_states.FINISHED;
+  });
+}
+
+ProcessHandler.prototype.isReady = function () {
+  return this.status === this.process_states.READY;
+}
+
+ProcessHandler.prototype.isRunning = function () {
+  return this.status === this.process_states.RUNNING;
+}
+
+ProcessHandler.prototype.isFinished = function () {
+  return this.status === this.process_states.FINISHED;
+}
+
+
 var AsyncPool = function (timeout, maxPoolSize) {
   this.queue = [];
   this.slots = [];
@@ -19,51 +70,7 @@ var AsyncPool = function (timeout, maxPoolSize) {
 
 AsyncPool.prototype.add = function (file, message) {
 
-  var pm = this;
-  this.queue.push({
-    file: file,
-    message: message,
-    child: null,
-    status: 'READY',
-    process_states: { READY: 'READY',
-                      RUNNING: 'RUNNING',
-                      FINISHED: 'FINISHED'
-    },
-    run: function () {
-      var _this = this;
-      this.child = cp.fork(this.file);
-      this.status = this.process_states.RUNNING;
-
-      console.log('Proc forked: ', this.file);
-
-      setTimeout(function () {
-        if (_this.isRunning()) {
-          return;
-        }
-        _this.child.kill();
-        _this.status = _this.process_states.FINISHED;
-      }, this.timeout)
-
-      this.child.send(this.message);
-      this.child.on('message', function (msg) {
-        return pm.events['message'](msg);
-      });
-
-      this.child.on('close', function () {
-        _this.status = _this.process_states.FINISHED;
-        console.log('GRACEFULL FINISH');
-      });
-    },
-    isReady: function () {
-      return this.status === this.process_states.READY;
-    },
-    isRunning: function () {
-      return this.status === this.process_states.RUNNING;
-    },
-    isFinished: function () {
-      return this.status === this.process_states.FINISHED;
-    }
-  });
+  this.queue.push(new ProcessHandler(file, message, this.events));
   console.log('Proc added: ', file)
 }
 
