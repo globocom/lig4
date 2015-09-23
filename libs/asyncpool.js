@@ -3,6 +3,57 @@
 var os = require('os');
 var cp = require('child_process');
 
+var ProcessHandler = function (file, message, events) {
+  this.file = file;
+  this.message = message;
+  this.child = null;
+  this.events = events;
+  this.process_states = { READY: 'READY',
+                          RUNNING: 'RUNNING',
+                          FINISHED: 'FINISHED'
+  };
+  this.status = this.process_states.READY;
+
+}
+
+ProcessHandler.prototype.run = function () {
+  var self = this;
+  this.child = cp.fork(this.file);
+  this.status = this.process_states.RUNNING;
+
+  console.log('Proc forked: ', this.file);
+
+  setTimeout(function () {
+    if (self.isRunning()) {
+      return;
+    }
+    self.child.kill();
+    self.status = self.process_states.FINISHED;
+  }, this.timeout)
+
+  this.child.send(this.message);
+  this.child.on('message', function (msg) {
+    return self.events['message'](msg);
+  });
+
+  this.child.on('close', function () {
+    self.status = self.process_states.FINISHED;
+  });
+}
+
+ProcessHandler.prototype.isReady = function () {
+  return this.status === this.process_states.READY;
+}
+
+ProcessHandler.prototype.isRunning = function () {
+  return this.status === this.process_states.RUNNING;
+}
+
+ProcessHandler.prototype.isFinished = function () {
+  return this.status === this.process_states.FINISHED;
+}
+
+
 var AsyncPool = function (timeout, maxPoolSize) {
   this.queue = [];
   this.slots = [];
@@ -18,24 +69,39 @@ var AsyncPool = function (timeout, maxPoolSize) {
 };
 
 AsyncPool.prototype.add = function (file, message) {
-  // populate current queue.
-  this.queue.push({
-    file: file,
-    message: message
-  });
+
+  this.queue.push(new ProcessHandler(file, message, this.events));
   console.log('Proc added: ', file)
 }
 
+AsyncPool.prototype.anyRunning = function () {
+  var running = false;
+  this.slots.forEach(function (element){
+    if (element.isRunning()) {
+      running = true;
+    }
+  });
+  return running;
+}
+
 AsyncPool.prototype.run = function (file, message) {
-  while (this.slots.length < this.maxPoolSize && this.queue.length > 0) {
-    // add to buffer
-    this.slots.push(this.queue.pop());
+
+  for (var i = 0; i < this.maxPoolSize && this.queue.length > 0; i++) {
+
+    if (this.slots[i]) {
+      if (!this.slots[i].isFinished()) {
+        continue;
+      }
+    }
+
+    var proc = this.queue.pop();
+    if (proc.isReady()) {
+      proc.run()
+    }
+    this.slots[i] = proc;
   }
-  // for each proc in buffer, exec do() with its index.
-  for (var index in this.slots) {
-    this.do(index, this.slots[index]);
-  }
-  if (this.queue.length === 0 && this.slots.length === 0 && !this.finalized) {
+
+  if (this.queue.length === 0 && this.anyRunning() && !this.finalized) {
     // no more procs, neither buffer nor queue.
     setTimeout(function () {
       this.finalized = true;
@@ -45,29 +111,6 @@ AsyncPool.prototype.run = function (file, message) {
   // queue is not empty yet, call run again()
   setTimeout(this.run.bind(this), this.wait);
 }
-
-AsyncPool.prototype.do = function (index, proc) {
-  var pm = this;
-  var child = cp.fork(proc.file);
-
-  console.log('Proc forked: ', proc.file, ' at slot ', index);
-
-  // on timeout, kill child process.
-  setTimeout(function () {
-    child.kill()
-  }, this.timeout)
-
-  // fork and send message!
-  child.send(proc.message);
-  child.on('message', function (msg) {
-    return pm.events['message'](msg);
-  });
-
-  // when child exits, remove it from slots at index N.
-  child.on('close', function () {
-    pm.slots.pop(index);
-  });
-};
 
 AsyncPool.prototype.on = function (event, fnc) {
   this.events[event] = fnc;
