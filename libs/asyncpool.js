@@ -16,9 +16,9 @@ var ProcessHandler = function (file, message, events) {
 
 }
 
-ProcessHandler.prototype.run = function () {
+ProcessHandler.prototype.run = function (options) {
   var self = this;
-  this.child = cp.fork(this.file);
+  this.child = cp.fork(this.file, options);
   this.status = this.process_states.RUNNING;
 
   console.log('Proc forked: ', this.file);
@@ -53,18 +53,18 @@ ProcessHandler.prototype.isFinished = function () {
   return this.status === this.process_states.FINISHED;
 }
 
-
-var AsyncPool = function (timeout, maxPoolSize) {
+var AsyncPool = function (timeout, maxPoolSize, options) {
   this.queue = [];
   this.slots = [];
   this.wait = 2000;
   this.maxPoolSize = maxPoolSize || os.cpus().length;
   this.finalized = false;
+  this.options = options || {};
   this.events = {
     exit: function () {},
     message: function () {}
   };
-  this.timeout = timeout || ( 60 * 1000);
+  this.timeout = timeout || (60 * 1000);
   setTimeout(this.run.bind(this), this.wait);
 };
 
@@ -96,7 +96,7 @@ AsyncPool.prototype.run = function (file, message) {
 
     var proc = this.queue.pop();
     if (proc.isReady()) {
-      proc.run()
+      proc.run(this.options)
     }
     this.slots[i] = proc;
   }
