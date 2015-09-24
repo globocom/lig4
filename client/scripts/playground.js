@@ -74,8 +74,9 @@ function savePlayerHandler () {
 }
 
 function loadPlayerHandler (data) {
-  // data.draft
-  editor.setValue(data.draft, -1);
+  if (data.draft && editor.getValue().length > 1) {
+    editor.setValue(data.draft, -1);
+  }
 }
 
 function resetPlayerHandler (e) {
