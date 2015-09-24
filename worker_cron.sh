@@ -9,4 +9,5 @@ export BASH_XTRACEFD=1
 set -x
 mkdir -p $LOG_DIR
 
+export PATH=$PATH:/usr/local/bin
 make -C $ROOT  worker > $LOG_FILE
