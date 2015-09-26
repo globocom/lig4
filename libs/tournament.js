@@ -13,14 +13,11 @@ function init() {
       .equals(true)
       .exec(function (err, tournament) {
         if (err) return res.sendStatus(500);
-        if (!tournament) {
+        if (!tournament || !tournament.isOpen) {
             console.log('At least one tournament should be configured.');
-            return res.sendStatus(404);
+            return res.render('closed');
         };
-        if (!tournament.isOpen) {
-            console.log('Tournament is over');
-            return res.sendStatus(403);
-        };
+
         req.app.set('tournament', tournament);
         next();
       });
