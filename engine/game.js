@@ -47,16 +47,20 @@ Game.prototype.run = function () {
     var column = null;
 
     currentPlayer.context.moveResult = null;
-    currentPlayer.context.board = currentBoard;
-    currentPlayer.context.columns = currentColumns;
+    currentPlayer.context.board = JSON.stringify(currentBoard);
+    currentPlayer.context.columns = JSON.stringify(currentColumns);
 
+    var currentCode = ["var b = JSON.parse(board); " +
+                       "var c = JSON.parse(columns); " +
+                       "var moveResult = player.move(c, b);"].join('');
     try {
-      vm.runInContext(
-        "var moveResult = player.move(columns, board)",
-        currentPlayer.context,
-        { timeout: moveTimeout, displayErrors: false });
+
+      vm.runInContext(currentCode,
+                      currentPlayer.context,
+                      { timeout: moveTimeout, displayErrors: false });
 
       column = currentPlayer.context.moveResult;
+
     }catch(e){
       console.log('Error running player:', currentPlayer.username, ', error: ' , e);
       column = null;
