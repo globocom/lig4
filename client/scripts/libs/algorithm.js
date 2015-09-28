@@ -16,6 +16,7 @@ function Algorithm (source) {
     this.constructor = (new Function('window', 'document', source + ' ;return Algorithm;')).call({}, {}, {});
     this.instance = new this.constructor();
   } catch (error) {
+    console.error(error);
     throw new Error('You need to have a \'Algorithm\' function;');
   }
 
@@ -24,6 +25,7 @@ function Algorithm (source) {
 
     if (typeof move !== 'number') throw new Error();
   } catch (error) {
+    console.error(error);
     throw new Error('The Algorithm need to have a move method and it should return a number;');
   }
 
