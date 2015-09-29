@@ -47,11 +47,14 @@ Game.prototype.run = function () {
     var column = null;
 
     currentPlayer.context.moveResult = null;
+
+    // We used json stringify/parse to avoid prototype copying.
     currentPlayer.context.board = JSON.stringify(currentBoard);
     currentPlayer.context.columns = JSON.stringify(currentColumns);
 
     var currentCode = ["var b = JSON.parse(board); " +
                        "var c = JSON.parse(columns); " +
+                       "board = columns = null; " +
                        "var moveResult = player.move(c, b);"].join('');
     try {
 
