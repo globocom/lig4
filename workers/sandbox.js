@@ -10,7 +10,6 @@ function onFinish(result) {
     console.log(e);
     console.log('error sending result to parent process: ', result)
   }
-  process.exit();
 }
 
 process.on('message', function (match) {
