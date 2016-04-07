@@ -1,12 +1,6 @@
 'use strict'
 
-// defaults
-process.env.NODE_ENV = 'test';
-process.env.PORT = 6666;
-process.env.DBAAS_MONGODB_ENDPOINT = 'mongodb://localhost:27017/test-lig4-api';
-process.env.SESSION_SECRET = 'dummy';
-process.env.GITHUB_ID = 'dummy';
-process.env.GITHUB_SECRET = 'dummy';
+var env = require('./env.js').setEnv(); // loads ENV vars
 
 var supertest = require('supertest');
 var mongoose = require('../libs/mongoose');
@@ -25,38 +19,42 @@ describe('API routes testing', function () {
     code: 'var Player = function (){ this.move = function () { return 0; }};'
   };
 
-  // add a fake Tournament
-  Tournament({
-      name: 'test_lig4_championship_1999',
-      active: true,
-      slug: 'conf_1999',
-      texts: { title :  'Conference 1999'}
-    })
-    .save();
-
 
   before(function (done) {
 
-    // mock github service
-    nock('https://github.com')
-      .post('/login/oauth/access_token')
-      .reply(200, { 'access_token': '123ABC' });
+    // add a fake Tournament
+    Tournament({
+      name: 'test_lig4_championship_1999',
+      active: true,
+      isOpen: true,
+      slug: 'conf_1999',
+      texts: { title :  'Conference 1999'}
+    }).save(function (e, t) {
 
-    nock('https://api.github.com')
-      .get('/user')
-      .reply(200, {
-        login: player.username,
-        email: player.email
-      });
 
-    // starts api server
-    app = require('../app');
-    request = supertest.agent(app);
 
-    // creates a session
-    request
-      .get('/auth/callback')
-      .expect(302, done);
+        // mock github service
+        nock('https://github.com')
+          .post('/login/oauth/access_token')
+          .reply(200, { 'access_token': '123ABC' });
+
+        nock('https://api.github.com')
+          .get('/user')
+          .reply(200, {
+            login: player.username,
+            email: player.email
+          });
+
+        // starts api server
+        app = require('../app');
+        request = supertest.agent(app);
+
+        // creates a session
+        request
+          .get('/auth/callback')
+          .expect(302, done);
+
+        });
   });
 
   it('should return ok after inserting a new player.', function (done) {
