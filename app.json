@@ -19,7 +19,15 @@
     "WEB_CONCURRENCY": {
       "description": "The number of processes to run.",
       "value": "2"
-    }
+    },
+    "GITHUB_ID": {
+      "description": "Github app id (used to log in users).",
+      "value": ""
+    },
+    "GITHUB_SECRET": {
+      "description": "Github app secret (used to log in users).",
+      "value": ""
+    },
   },
   "formation": {
     "web": {
