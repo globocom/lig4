@@ -29,6 +29,6 @@
   },
   "image": "heroku/nodejs",
   "addons": [
-    "mongolab"
+    "mongolab:sandbox"
   ]
 }
