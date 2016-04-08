@@ -1,0 +1,34 @@
+{
+  "name": "Lig4",
+  "description": "Lig4 is a board game brought to the web.",
+  "keywords": [
+    "game",
+    "javascript"
+  ],
+  "website": "https://lig4.globo.com/",
+  "repository": "https://github.com/globocom/lig4",
+  "success_url": "/",
+  "scripts": {
+    "postdeploy": "./install.sh"
+  },
+  "env": {
+    "SESSION_SECRET": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    },
+    "WEB_CONCURRENCY": {
+      "description": "The number of processes to run.",
+      "value": "2"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 2,
+      "size": "Standard-1X"
+    }
+  },
+  "image": "heroku/nodejs",
+  "addons": [
+    "mongolab:shared-single-small"
+  ]
+}
