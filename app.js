@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var session = require('./libs/session');
 var tournament = require('./libs/tournament');
+var Settings = require('./config/settings');
 
 // controllers
 var indexController = require('./controllers/index');
@@ -18,6 +19,9 @@ var playgroundController = require('./controllers/playground');
 
 // create express application
 var app = express();
+
+var settings = new Settings();
+settings.load();
 
 // set view
 app.set('views', path.join(__dirname, 'views'));

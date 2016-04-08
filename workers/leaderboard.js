@@ -1,8 +1,5 @@
 'use strict';
 
-process.env.DBAAS_MONGODB_ENDPOINT = require('../config/dev.json')
-  .apps[0].env.DBAAS_MONGODB_ENDPOINT;
-
 var mongoose = require('mongoose');
 var asyncWait = require('../libs/await');
 
