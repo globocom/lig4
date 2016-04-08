@@ -1,8 +1,5 @@
 'use strict';
 
-process.env.DBAAS_MONGODB_ENDPOINT = require('./config/dev.json').apps[0].env.DBAAS_MONGODB_ENDPOINT;
-
-
 var slugify = require('slugify');
 var optimist = require('optimist');
 
@@ -44,6 +41,7 @@ function addTournament() {
     Tournament({
         name: name,
         active: true,
+        isOpen: true,
         slug: slugify(name).toLowerCase(),
         texts: {
           title: name

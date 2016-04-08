@@ -9,6 +9,7 @@
   "repository": "https://github.com/globocom/lig4",
   "success_url": "/",
   "scripts": {
+    "postdeploy": "node mock_manage.js --add tournament"
   },
   "env": {
     "SESSION_SECRET": {
