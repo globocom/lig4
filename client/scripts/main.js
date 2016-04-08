@@ -11,7 +11,6 @@ function main() {
   var gameBoardElement = document.getElementById('game-board');
   var leaderBoardElement = document.getElementById('leader-board');
   var rulesLinkElement = document.getElementById('rules-link');
-  var rewardLinkElement = document.getElementById('reward-link');
 
   // create boards and dialog
   var dialog = new Dialog();
@@ -24,7 +23,6 @@ function main() {
   }
 
   rulesLinkElement.addEventListener('click', openDialog);
-  rewardLinkElement.addEventListener('click', openDialog);
 
   // load game board
   (function loadGameboard() {
