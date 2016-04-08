@@ -1,0 +1,24 @@
+h3(class='subtitle') Playground
+
+h1(class='title')
+  a(href='/')
+    | Ligue </br>
+    | Quatro
+
+p(class='description')
+  | Olá
+  b  #{ user.login },
+  if user.rank
+    |  o seu algoritmo é o
+    b  ##{ user.rank } colocado.
+  else
+    |  o seu algoritmo ainda não foi classificado.
+
+p(class='description')
+  | Para participar do desafio basta submeter o seu algoritmo.
+  | A cada nova submição o seu algoritmo será atualizado.
+
+button(id='reset-button' class='button' title='Carregar o template inicial do algoritmo.') Template
+button(id='restore-button' class='button' title='Carregar o última versão enviada.') Restaurar
+button(id='test-button' class='button' title='Testar o seu algoritmo.') Testar
+button(id='submit-button' class='button button--black' title='Submeter algoritmo para a classificação.') Submeter algoritmo

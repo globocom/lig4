@@ -1,0 +1,48 @@
+.leader-board {
+  width: 100%;
+  margin: rem(20px) 0;
+  color: $black;
+  font-size: rem(22px);
+
+  tr,
+  td {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: default;
+  }
+}
+
+.leader-board thead {
+  font-weight: 700;
+  color: $gray-strong;
+}
+
+.leader-board__player:hover td {
+  color: $orange;
+}
+
+.leader-board__position {
+  width: 350px;
+}
+
+.leader-board__wins,
+.leader-board__draws,
+.leader-board__losses,
+.leader-board__score {
+  text-align: right;
+  width: 25px;
+  font-weight: 700;
+}
+
+.leader-board thead td {
+  color: $gray-strong;
+  text-transform: uppercase;
+  font-size: rem(22px);
+  font-weight: 300;
+  line-height: rem(20px);
+  letter-spacing: rem(2px);
+  margin: rem(20px) 0;
+  padding-bottom: rem(20px);
+  border-bottom: 1px dotted $gray-strong;
+}

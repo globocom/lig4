@@ -1,25 +1,19 @@
 'use strict';
 
-var vm = require('vm');
 var Board = require('./board');
-var moveTimeout = 500;
+var RandomAlgorithm = function () {
+  this.move = function(availablePositions) {
+    var index = Math.round((availablePositions.length - 1) * Math.random());
 
-function Game(player1, player2) {
-  this.player1Context = {Player: player1.klass }
-  this.player2Context = {Player: player2.klass }
+    return availablePositions[index];
+  };
 
-  vm.createContext(this.player1Context);
-  vm.createContext(this.player2Context);
+  this.username = this.char = 'aleatório';
+}
 
-  vm.runInContext("var player = new Player", this.player1Context);
-  vm.runInContext("var player = new Player", this.player2Context);
-
-  player1.context = this.player1Context;
-  player2.context = this.player2Context;
-
+function Game(player) {
   this.board = new Board();
-  this.players = [player1, player2];
-  this.playerMoving = null;
+  this.players = [player, new RandomAlgorithm];
 }
 
 Game.status = {
@@ -29,50 +23,31 @@ Game.status = {
 };
 
 Game.prototype.run = function () {
+  var players = this.players;
   var result = {
     winner: null,
     reason: null,
     moves: [],
-    sequence: []
+    sequence: [],
+    players: [{
+      username: players[0].username,
+    },{
+      username: players[1].username,
+    }]
   };
 
   for (var play = 0; play < this.board.maxMoves; play++) {
     var currentPlayer = this.players[play % 2];
-    this.playerMoving = currentPlayer;
-
     var columns = this.board.getAvailableColumns();
-
     var currentBoard = this.board.cloneBoard();
-    var currentColumns = columns.slice(0);
-    var column = null;
+    var column = currentPlayer.move(columns, currentBoard);
 
-    currentPlayer.context.moveResult = null;
-
-    // We used json stringify/parse to avoid prototype copying.
-    currentPlayer.context.board = JSON.stringify(currentBoard);
-    currentPlayer.context.columns = JSON.stringify(currentColumns);
-
-    var currentCode = ["var b = JSON.parse(board); " +
-                       "var c = JSON.parse(columns); " +
-                       "board = columns = null; " +
-                       "var moveResult = player.move(c, b);"].join('');
-    try {
-
-      vm.runInContext(currentCode,
-                      currentPlayer.context,
-                      { timeout: moveTimeout, displayErrors: false });
-
-      column = currentPlayer.context.moveResult;
-
-    }catch(e){
-      console.log('Error running player:', currentPlayer.username, ', error: ' , e);
-      column = null;
-    }
-
-    if (column === null || columns.indexOf(column) < 0) {
-      result.winner = { username: this.players[(play + 1) % 2].username } ;
+    if (columns.indexOf(column) < 0) {
+      result.winner = this.players[(play + 1) % 2];
       result.reason = Game.status.INVALID_MOVE;
       result.invalidMove = column;
+
+      throw new Error('The Algorithm returned a invalid move: ' + column);
       break;
     };
 
@@ -84,16 +59,14 @@ Game.prototype.run = function () {
 
     var matchSequence = this.matchAnalyzer();
     if (matchSequence) {
-      result.winner = { username: currentPlayer.username } ;
+      result.winner = currentPlayer;
       result.reason = Game.status.LIG4;
       result.sequence = matchSequence;
       break;
     }
   };
 
-  if (!result.winner) {
-    result.reason = Game.status.DRAW;
-  }
+  if (!result.winner) result.reason = Game.status.DRAW;
 
   return result;
 };

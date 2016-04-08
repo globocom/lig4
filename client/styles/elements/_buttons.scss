@@ -1,0 +1,37 @@
+.button {
+  border: 1px solid $black;
+  display: block;
+  width: 100%;
+  color: $black;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: rem(18px);
+  font-weight: 400;
+  line-height: rem(18px);
+  letter-spacing: rem(2px);
+  padding: rem(20px) rem(25px);
+  border-radius: rem(5px);
+  box-sizing: border-box;
+  margin: rem(20px) 0;
+
+  @include transition(background-color .4s ease-in-out, opacity .4s);
+
+  &--black {
+    background-color: $black;
+    border-color: $black;
+    color: white;
+  }
+}
+
+.button:hover {
+  color: white;
+  background-color: $orange;
+  border-color: $orange;
+}
+
+.button:disabled {
+  color: white;
+  background-color: $orange;
+  border-color: $orange;
+  cursor: no-drop;
+}

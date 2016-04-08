@@ -1,0 +1,50 @@
+.section {
+  position: fixed;
+  width: 70%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  background: $gray;
+  overflow-y: auto;
+
+  @include animation(fadeIn 2s);
+
+  @media (max-width: 720px) {
+    position: initial;
+    overflow-y: initial;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.section-wrapper {
+  box-sizing: border-box;
+  padding: 0 5%;
+  margin: 0 auto;
+  max-width: 780px;
+
+  @media (max-width: 720px) {
+    padding: 5%;
+  }
+}
+
+.aside {
+  position: fixed;
+  width: 30%;
+  height: 100%;
+  top: 0;
+  left: 70%;
+  box-sizing: border-box;
+  padding: 0 2.5%;
+  overflow-y: auto;
+  max-width: 380px;
+
+  @media (max-width: 720px) {
+    position: initial;
+    overflow-y: initial;
+    max-width: initial;
+    width: 100%;
+    height: initial;
+  }
+}
