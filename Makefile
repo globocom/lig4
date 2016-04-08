@@ -38,7 +38,8 @@ test:
 	$(MOCHA)
 
 run: build-client
-	$(PM2)-dev start config/dev.json
+	cp -n .env-sample .env || true
+	export `cat .env| grep -v -e "^#"` && $(PM2)-dev start config/dev.json
 
 stop:
 	$(PM2) delete config/dev.json
