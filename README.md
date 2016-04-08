@@ -19,14 +19,16 @@ $ make run
 # Settings must be set in environment
 
 ```
-NODE_ENV=development
-PORT=9999
+NODE_ENV=development (dev only)
+PORT=9999 (dev only)
 
-# Mongo DataBase endpoint
-#DBAAS_MONGODB_ENDPOINT="mongodb://localhost:27017"
+# mongodb endpoint
+
+MONGOLAB_URI="mongodb://localhost:27017"  (dev only)
 SESSION_SECRET=secret
 
 #github client ID and client secret
-#GITHUB_ID=
-#GITHUB_SECRET=
+
+GITHUB_ID=
+GITHUB_SECRET=
 ```
