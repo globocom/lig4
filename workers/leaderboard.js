@@ -74,7 +74,7 @@ function start(callback) {
 
 function main(done) {
   console.log('Leaderboard update started!')
-  mongoose.connect(process.env.MONGODB_URI, function (err) {
+  mongoose.connect(process.env.MONGOLAB_URI, function (err) {
     Leaderboard.collection.remove(function () {
       start(function () {
         if (done) done()
