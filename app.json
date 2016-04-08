@@ -27,7 +27,7 @@
     "GITHUB_SECRET": {
       "description": "Github app secret (used to log in users).",
       "value": ""
-    },
+    }
   },
   "formation": {
     "web": {
