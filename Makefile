@@ -6,18 +6,9 @@ SASS=node_modules/node-sass/bin/node-sass
 VIGILIA=node_modules/vigilia/bin/vigilia
 WEBPACK=node_modules/webpack/bin/webpack.js
 PM2=node_modules/pm2/bin/pm2
-FLY=node_modules/flightplan/bin/fly.js
 GIT=git
 
-.PHONY: deploy-worker run stop logs monit test worker runner scheduler tsuru-publish clean-client scripts-client styles-client watch-client
-
-deploy-worker:
-	$(FLY) production
-
-# tsuru tasks
-
-tsuru-publish: build-client
-	$(GIT) push tsuru-git@git.tsuru.globoi.com:lig4.git
+.PHONY: deploy-worker run stop logs monit test worker runner scheduler clean-client scripts-client styles-client watch-client
 
 # scheduler & runner tasks
 
