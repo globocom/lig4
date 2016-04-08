@@ -1,7 +1,7 @@
 # lig4
 Lig4 is a board game brought to the web
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/globocom/lig4/tree/heroku)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/globocom/lig4/tree/master)
 
 
 # Running Workers
