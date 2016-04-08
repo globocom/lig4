@@ -11,8 +11,8 @@ Settings.prototype.load = function() {
     process.exit();
   }
 
-  if (!process.env.DBAAS_MONGODB_ENDPOINT) {
-    console.error("DBAAS_MONGODB_ENDPOINT not defined");
+  if (!process.env.DBAAS_MONGODB_ENDPOINT && !MONGOLAB_URI) {
+    console.error("DBAAS_MONGODB_ENDPOINT and MONGOLAB_URI not defined");
     process.exit();
   }
 
