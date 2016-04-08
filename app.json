@@ -9,7 +9,6 @@
   "repository": "https://github.com/globocom/lig4",
   "success_url": "/",
   "scripts": {
-    "postdeploy": "./install.sh"
   },
   "env": {
     "SESSION_SECRET": {
