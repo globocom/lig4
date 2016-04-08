@@ -1,8 +1,5 @@
 'use strict';
 
-process.env.DBAAS_MONGODB_ENDPOINT = require('../config/dev.json')
-  .apps[0].env.DBAAS_MONGODB_ENDPOINT;
-
 var mongoose = require('mongoose');
 var asyncWait = require('../libs/await');
 
@@ -77,7 +74,7 @@ function start(callback) {
 
 function main(done) {
   console.log('Leaderboard update started!')
-  mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
+  mongoose.connect(process.env.MONGODB_URI, function (err) {
     Leaderboard.collection.remove(function () {
       start(function () {
         if (done) done()

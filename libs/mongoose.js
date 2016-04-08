@@ -8,7 +8,7 @@ function disconnect () {
 }
 
 // connect to mongo
-mongoose.connect(process.env.DBAAS_MONGODB_ENDPOINT, function (err) {
+mongoose.connect(process.env.MONGOLAB_URI, function (err) {
   if (err) {
     console.log(err);
     process.exit(0);
