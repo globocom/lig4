@@ -4,10 +4,18 @@ Lig4 is a board game brought to the web
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/globocom/lig4/tree/heroku)
 
 
-# Running workers
+# Running Workers
 
 ```
-$ tsuru app-shell
-$ cd $LIG
 $ make worker
 ```
+
+# Runnning Web Server
+
+```
+$ make run
+```
+
+# Settings must be set in environment
+
+{}(.env-sample)
