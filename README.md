@@ -4,7 +4,7 @@ Lig4 is a board game brought to the web by globo.com. Made to be part of it's pr
 We made this small tournament at the 2015 Braziljs  conference and also at the 2015 TDC Porto Alegre.
 Each winner got a Kindle Paperwhite prize.
 
-During both conferences and later discussions, we were asked to release a permament tournament(we are working on that) and open source our code.
+During both conferences and later discussions, we were asked to release a permanent tournament(we are working on that) and open source our code.
 
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/globocom/lig4/tree/master)
