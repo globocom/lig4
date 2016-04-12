@@ -36,7 +36,7 @@ Everything setup, you can now workers(they take care of ranking and running the 
 $ make worker
 ```
 
-# Runnning Web Server
+# Running Web Server
 
 ```
 $ make run
