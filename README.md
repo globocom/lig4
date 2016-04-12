@@ -23,7 +23,7 @@ After cloning this repo and making sure you have the requirements installed
 $ npm install
 ```
 
-Most `make` commands are very straighforward, all needed tasks should be there. Fill a bug if you find something
+Most `make` commands are very straightforward, all needed tasks should be there. Fill a bug if you find something
 
 Take a look at the end of this readme, there is a few env vars your should set before running the webserver or the worker.
 
