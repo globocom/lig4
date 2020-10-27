@@ -58,3 +58,5 @@ SESSION_SECRET=secret
 GITHUB_ID=
 GITHUB_SECRET=
 ```
+
+*This article can also be read in [Brazilian Portuguese](README-pt-BR.md).*
